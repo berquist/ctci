@@ -138,15 +138,30 @@ def ch1_5_1(s1, s2):
             return False
         return True
 
-# def ch1_5_2(s1, s2):
-#     l1, l2 = len(s1), len(s2)
-#     if abs(l1 - l2) > 1:
-#         return False
-#     if s1 == s2:
-#         return True
-#     index = -1
-#     ls = [l1 - 1, l1, l1 + 1]
-#     ils = [x == l2 for x in ls].index(True)
+def ch1_5_2(s1, s2):
+    l1, l2 = len(s1), len(s2)
+    if abs(l1 - l2) > 1:
+        return False
+    if s1 == s2:
+        return True
+    index = -1
+    if l2 == (l1 - 1):
+        lr, il1, il2 = l2, 1, 0
+    elif l2 == (l1 + 1):
+        lr, il1, il2 = l1, 0, 1
+    else:
+        lr, il1, il2 = l1, 1, 1
+    for i in range(lr):
+        if s1[i] != s2[i]:
+            index = i
+            break
+    if index == -1:
+        return True
+    sr1 = s1[index + il1:]
+    sr2 = s2[index + il2:]
+    if sr1 != sr2:
+        return False
+    return True
 
 tests = [
     ('pale', 'ple', True),
@@ -157,7 +172,7 @@ tests = [
 
 for (s1, s2, outcome) in tests:
     assert ch1_5_1(s1, s2) == outcome
-    # assert ch1_5_2(s1, s2) == outcome
+    assert ch1_5_2(s1, s2) == outcome
 
 def ch1_6_1(s):
     ls = len(s)
