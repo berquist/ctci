@@ -92,34 +92,61 @@ def ch1_5_1(s1, s2):
         return False
     if s1 == s2:
         return True
-    index = 0
+    # index = 0
+    index = -1
+    # removal
     if l2 == (l1 - 1):
-        for i in range(l1):
-            if s1[i] != s2[i]:
-                index = i
-        sr1 = s1[index + 1:]
-        sr2 = s2[index:]
-        if sr1 != sr2:
-            return False
-        return True
-    elif l2 == (l1 + 1):
+        # for i in range(l1):
         for i in range(l2):
             if s1[i] != s2[i]:
                 index = i
-        sr1 = s1[index:]
-        sr2 = s2[index + 1:]
+                break
+        sr1 = s1[index + 1:]
+        sr2 = s2[index:]
+        if index == -1:
+            return True
         if sr1 != sr2:
             return False
         return True
+    # insertion
+    elif l2 == (l1 + 1):
+        # for i in range(l2):
+        for i in range(l1):
+            if s1[i] != s2[i]:
+                index = i
+                break
+        sr1 = s1[index:]
+        sr2 = s2[index + 1:]
+        if index == -1:
+            return True
+        if sr1 != sr2:
+            return False
+        return True
+    # replacement
     else:
         for i in range(l1):
             if s1[i] != s2[i]:
                 index = i
-        sr1 = s1[index:]
-        sr2 = s2[index:]
+                break
+        # sr1 = s1[index:]
+        # sr2 = s2[index:]
+        sr1 = s1[index + 1:]
+        sr2 = s2[index + 1:]
+        if index == -1:
+            return True
         if sr1 != sr2:
             return False
         return True
+
+# def ch1_5_2(s1, s2):
+#     l1, l2 = len(s1), len(s2)
+#     if abs(l1 - l2) > 1:
+#         return False
+#     if s1 == s2:
+#         return True
+#     index = -1
+#     ls = [l1 - 1, l1, l1 + 1]
+#     ils = [x == l2 for x in ls].index(True)
 
 tests = [
     ('pale', 'ple', True),
@@ -130,12 +157,13 @@ tests = [
 
 for (s1, s2, outcome) in tests:
     assert ch1_5_1(s1, s2) == outcome
+    # assert ch1_5_2(s1, s2) == outcome
 
 def ch1_6_1(s):
     ls = len(s)
     if ls == 1:
         return s
-    pairs, count, curr, prev = [], 0, '', ''
+    pairs, count, curr, prev = [], 1, '', ''
     for i in range(1, ls):
         curr = s[i]
         prev = s[i - 1]
@@ -151,5 +179,4 @@ def ch1_6_1(s):
 
 s = 'aabcccccaaa'
 ns = 'a2b1c5a3'
-print(ch1_6_1(s))
 assert ch1_6_1(s) == ns
