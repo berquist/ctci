@@ -1,0 +1,155 @@
+def ch1_1_1(s):
+    ss = set()
+    for c in s:
+        ss.add(c)
+    if len(ss) < len(s):
+        return False
+    return True
+
+def ch1_1_2(s):
+    ss = set()
+    for c in s:
+        if c not in ss:
+            ss.add(c)
+        else:
+            return False
+    return True
+
+def ch1_1_3(s):
+    ss = sorted(s)
+    lss = len(ss)
+    if lss == 1:
+        return True
+    for i in range(1, lss):
+        if ss[i] == ss[i - 1]:
+            return False
+    return True
+
+s1 = 'abcddaasdfh'
+s2 = 'abcdefgh'
+assert not ch1_1_1(s1)
+assert not ch1_1_2(s1)
+assert not ch1_1_3(s1)
+assert ch1_1_1(s2)
+assert ch1_1_2(s2)
+assert ch1_1_3(s2)
+
+# %timeit ch1_1_1(s1)
+# %timeit ch1_1_2(s1)
+# %timeit ch1_1_3(s1)
+# %timeit ch1_1_1(s2)
+# %timeit ch1_1_2(s2)
+# %timeit ch1_1_3(s2)
+
+def ch1_2_1(s1, s2):
+    if len(s1) != len(s2):
+        return False
+    ss1 = sorted(s1)
+    ss2 = sorted(s2)
+    if ss1 != ss2:
+        return False
+    return True
+
+assert not ch1_2_1(s1, s2)
+assert ch1_2_1(s1, s1)
+assert ch1_2_1(s2, s2[::-1])
+
+def ch1_3_1(s):
+    return s.rstrip().replace(' ', '%20')
+
+def ch1_4_1(s):
+    # forgot this...
+    s = s.lower().replace(' ', '')
+    frequencies = dict()
+    for c in s:
+        if c not in frequencies:
+            frequencies[c] = 1
+        else:
+            frequencies[c] += 1
+        if frequencies[c] > 2:
+            return False
+    values = frequencies.values()
+    # c1 = values.count(1)
+    c1 = list(values).count(1)
+    if c1 > 1:
+        return False
+    # c2 = values.count(2)
+    c2 = list(values).count(2)
+    # if (c1 + c2) != len(s):
+    if (c1 + 2 * c2) != len(s):
+        return False
+    return True
+
+# 1. forgot to lower case and remove spaces
+# 2. dict_values doesn't have a count method
+# 3. forgot that characters with frequency 2 count twice to length
+
+assert ch1_4_1('Tact Coa')
+
+def ch1_5_1(s1, s2):
+    l1, l2 = len(s1), len(s2)
+    if abs(l1 - l2) > 1:
+        return False
+    if s1 == s2:
+        return True
+    index = 0
+    if l2 == (l1 - 1):
+        for i in range(l1):
+            if s1[i] != s2[i]:
+                index = i
+        sr1 = s1[index + 1:]
+        sr2 = s2[index:]
+        if sr1 != sr2:
+            return False
+        return True
+    elif l2 == (l1 + 1):
+        for i in range(l2):
+            if s1[i] != s2[i]:
+                index = i
+        sr1 = s1[index:]
+        sr2 = s2[index + 1:]
+        if sr1 != sr2:
+            return False
+        return True
+    else:
+        for i in range(l1):
+            if s1[i] != s2[i]:
+                index = i
+        sr1 = s1[index:]
+        sr2 = s2[index:]
+        if sr1 != sr2:
+            return False
+        return True
+
+tests = [
+    ('pale', 'ple', True),
+    ('pales', 'pale', True),
+    ('pale', 'bale', True),
+    ('pale', 'bake', False),
+]
+
+for (s1, s2, outcome) in tests:
+    assert ch1_5_1(s1, s2) == outcome
+
+def ch1_6_1(s):
+    ls = len(s)
+    if ls == 1:
+        return s
+    pairs, count, curr, prev = [], 0, '', ''
+    for i in range(1, ls):
+        curr = s[i]
+        prev = s[i - 1]
+        if prev != curr:
+            pairs.append((prev, count))
+            count = 0
+        count += 1
+    pairs.append((curr, count))
+    ns = ''.join(['{}{}'.format(c, str(count)) for (c, count) in pairs])
+    if len(ns) > ls:
+        return s
+    return ns
+
+s = 'aabcccccaaa'
+ns = 'a2b1c5a3'
+print(ch1_6_1(s))
+assert ch1_6_1(s) == ns
