@@ -131,3 +131,25 @@ class SetOfStacks(object):
             return self.stacks[index].pop()
         except:
             raise
+
+
+def test_stackmin():
+    stack = StackMin()
+    # from bottom to top
+    pairs = [
+        (10, 10),
+        (6, 6),
+        (3, 3),
+        (2, 2),
+        (9, 2),
+        (4, 2),
+        (5, 2),
+    ]
+    for item, _ in pairs:
+        stack.push(item)
+    for expected_item, expected_min in reversed(pairs):
+        assert stack.min() == expected_min
+        assert stack.pop() == expected_item
+
+if __name__ == '__main__':
+    test_stackmin()
