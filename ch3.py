@@ -78,9 +78,15 @@ class StackMin(Stack):
 
     def push(self, item):
         node = StackNode(item)
-        node.min = item
-        if self.top and (item < self.top.min):
-            self.top.min, node.min = item, self.top.min
+        if self.top:
+            if item < self.top.min:
+                # originally self.top.min, node.min = item, self.top.min
+                node.min = item
+            else:
+                # originally node.min = item
+                node.min = self.top.min
+        else:
+            node.min = item
         node.next = self.top
         self.top = node
 
