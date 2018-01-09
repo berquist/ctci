@@ -1,18 +1,15 @@
 class StackNode(object):
 
-    self.data = None
-    self.next = None
-
     def __init__(self, data):
         self.data = data
+        self.next = None
 
 
 class Stack(object):
 
-    self.top = None
 
     def __init__(self):
-        pass
+        self.top = None
 
     def pop(self):
         if not self.top:
@@ -37,17 +34,16 @@ class Stack(object):
 
 class QueueNode(object):
 
-    self.data = None
-    self.next = None
-
     def __init__(self, data):
         self.data = data
+        self.next = None
 
 
 class Queue(object):
 
-    self.first = None
-    self.last = None
+    def __init__(self):
+        self.first = None
+        self.last = None
 
     def add(self, item):
         # to end
@@ -82,13 +78,9 @@ class StackMin(Stack):
 
     def push(self, item):
         node = StackNode(item)
-        if self.top:
-            if item < self.top.min:
-                self.top.min, node.min = item, self.top.min
-            else:
-                node.min = item
-        else:
-            node.min = item
+        node.min = item
+        if self.top and (item < self.top.min):
+            self.top.min, node.min = item, self.top.min
         node.next = self.top
         self.top = node
 
@@ -100,12 +92,11 @@ class StackMin(Stack):
 
 class SetOfStacks(object):
 
-    self.stacks = []
-    self.counter = 0
-
     def __init__(self, thresh):
         if thresh < 1:
             raise Exception
+        self.stacks = []
+        self.counter = 0
         self.thresh = thresh
 
     def push(self, item):
@@ -138,3 +129,5 @@ class SetOfStacks(object):
     def pop_at(self, index):
         try:
             return self.stacks[index].pop()
+        except:
+            raise
