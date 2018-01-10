@@ -105,6 +105,11 @@ class SetOfStacks(object):
         self.counter = 0
         self.thresh = thresh
 
+    def peek(self):
+        if not self.stacks:
+            raise Exception
+        return self.stacks[-1].peek()
+
     def push(self, item):
         if not self.stacks:
             stack = Stack()
@@ -157,5 +162,39 @@ def test_stackmin():
         assert stack.min() == expected_min
         assert stack.pop() == expected_item
 
+def test_setofstacks():
+    # from itertools import cycle
+    thresh = 3
+    threshl = list(range(1, 1 + thresh))
+    # cycler = cycle(threshl)
+    items = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    nstacks = (len(items) // thresh) + int((len(items) % thresh) > 0)
+    pairs = [
+        (10, 1),
+        (9, 3),
+        (8, 2),
+        (7, 1),
+        (6, 3),
+        (5, 2),
+        (4, 1),
+        (3, 3),
+        (2, 2),
+        (1, 1),
+    ]
+    nstacks = 4
+    setofstacks = SetOfStacks(thresh)
+    for item in reversed(items):
+        setofstacks.push(item)
+    # for item, counter in zip(items, cycler):
+    for item, counter in pairs:
+        assert setofstacks.counter == counter
+        assert setofstacks.pop() == item
+        newcounter = counter - 1
+        if not newcounter:
+            newcounter = thresh
+        if not setofstacks.stacks:
+            newcounter = 0
+        assert setofstacks.counter == newcounter
 if __name__ == '__main__':
     test_stackmin()
+    test_setofstacks()
