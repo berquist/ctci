@@ -1,3 +1,8 @@
+import numpy as np
+
+np.set_printoptions(linewidth=200)
+
+
 def ch1_1_1(s):
     ss = set()
     for c in s:
@@ -50,6 +55,8 @@ def ch1_2_1(s1, s2):
         return False
     return True
 
+# there is also a solution that uses a hash table to store frequencies
+
 assert not ch1_2_1(s1, s2)
 assert ch1_2_1(s1, s1)
 assert ch1_2_1(s2, s2[::-1])
@@ -85,6 +92,9 @@ def ch1_4_1(s):
 # 3. forgot that characters with frequency 2 count twice to length
 
 assert ch1_4_1('Tact Coa')
+
+# does this run in O(N) time?
+# use a bit vector?
 
 def ch1_5_1(s1, s2):
     l1, l2 = len(s1), len(s2)
@@ -195,3 +205,83 @@ def ch1_6_1(s):
 s = 'aabcccccaaa'
 ns = 'a2b1c5a3'
 assert ch1_6_1(s) == ns
+
+
+def ch1_7_1(mat):
+    nr, nc = mat.shape
+    assert nr == nc
+    for i in range(nr):
+        for j in range(i):
+            # Pythonic way
+            mat[i, j], mat[j, i] = mat[j, i], mat[i, j]
+            # non-Pythonic way
+            # eij = mat[i][j]
+            # mat[i][j] = mat[j][i]
+            # mat[j][i] = eij
+    return
+
+
+mat = np.array([[1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9]])
+mat_t = np.array([[1, 4, 7],
+                  [2, 5, 8],
+                  [3, 6, 9]])
+ch1_7_1(mat)
+assert np.all(mat == mat_t)
+
+
+def find_zero_indices(mat, thresh=1.0e-15):
+    nr, nc = mat.shape
+    zero_index_pairs = []
+    for i in range(nr):
+        for j in range(nc):
+            if abs(mat[i, j]) < thresh:
+                zero_index_pairs.append((i, j))
+    return zero_index_pairs
+
+
+def ch1_8_1(mat):
+    """zero_matrix"""
+    nr, nc = mat.shape
+    zero_index_pairs = find_zero_indices(mat)
+    zrows = set([pair[0] for pair in zero_index_pairs])
+    zcols = set([pair[1] for pair in zero_index_pairs])
+    for ir in zrows:
+        for ic in range(nc):
+            mat[ir, ic] = 0
+    for ic in zcols:
+        for ir in range(nr):
+            mat[ir, ic] = 0
+    return
+
+
+dim = 10
+a = np.random.random((dim, dim))
+b = a.copy()
+# print(a)
+a[4, 5] = 0
+a[4, 7] = 0
+b[4, :] = 0
+b[:, 5] = 0
+b[:, 7] = 0
+# print(a)
+# print(b)
+ch1_8_1(a)
+# print(a)
+assert np.all(a == b)
+
+
+def ch1_9_1(parent, rotated):
+    """string_rotation"""
+    doubled = rotated + rotated
+    index = doubled.find(parent)
+    if index > -1:
+        return True
+    return False
+
+s1 = 'waterbottle'
+s2 = 'erbottlewat'
+s3 = 'erbottlewaf'
+assert ch1_9_1(s1, s2)
+assert not ch1_9_1(s1, s3)
