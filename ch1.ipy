@@ -1,6 +1,18 @@
+import sys
+
 import numpy as np
 
 np.set_printoptions(linewidth=200)
+
+
+def make_frequencies(s):
+    frequencies = dict()
+    for c in s:
+        if c not in frequencies:
+            frequencies[c] = 1
+        else:
+            frequencies[c] += 1
+    return frequencies
 
 
 def ch1_1_1(s):
@@ -30,21 +42,28 @@ def ch1_1_3(s):
             return False
     return True
 
+def ch1_1_4(s):
+    """This is a direct translation from the answer on page 193."""
+
+    checker = 0
+    ls = len(s)
+    for i in range(ls):
+        val = int.from_bytes(s[i].encode('ascii'), sys.byteorder)
+        if (checker & (1 << val)) > 0:
+            return False
+        checker |= (1 << val)
+    return True
+
 s1 = 'abcddaasdfh'
 s2 = 'abcdefgh'
-assert not ch1_1_1(s1)
-assert not ch1_1_2(s1)
-assert not ch1_1_3(s1)
-assert ch1_1_1(s2)
-assert ch1_1_2(s2)
-assert ch1_1_3(s2)
-
-# %timeit ch1_1_1(s1)
-# %timeit ch1_1_2(s1)
-# %timeit ch1_1_3(s1)
-# %timeit ch1_1_1(s2)
-# %timeit ch1_1_2(s2)
-# %timeit ch1_1_3(s2)
+# assert not ch1_1_1(s1)
+# assert not ch1_1_2(s1)
+# assert not ch1_1_3(s1)
+# assert not ch1_1_4(s1)
+# assert ch1_1_1(s2)
+# assert ch1_1_2(s2)
+# assert ch1_1_3(s2)
+# assert ch1_1_4(s2)
 
 def ch1_2_1(s1, s2):
     if len(s1) != len(s2):
@@ -55,11 +74,35 @@ def ch1_2_1(s1, s2):
         return False
     return True
 
-# there is also a solution that uses a hash table to store frequencies
+def ch1_2_2(s1, s2):
+    if len(s1) != len(s2):
+        return False
+    return sorted(s1) == sorted(s2)
+
+def ch1_2_3(s1, s2):
+    """there is also a solution that uses a hash table to store frequencies"""
+    f1 = make_frequencies(s1)
+    f2 = make_frequencies(s2)
+    # first check keys
+    if set(f1.keys()).difference(set(f2.keys())):
+        return False
+    # then check counts
+    for k in f1:
+        if f1[k] != f2[k]:
+            return False
+    return True
 
 assert not ch1_2_1(s1, s2)
 assert ch1_2_1(s1, s1)
 assert ch1_2_1(s2, s2[::-1])
+
+assert not ch1_2_2(s1, s2)
+assert ch1_2_2(s1, s1)
+assert ch1_2_2(s2, s2[::-1])
+
+assert not ch1_2_3(s1, s2)
+assert ch1_2_3(s1, s1)
+assert ch1_2_3(s2, s2[::-1])
 
 def ch1_3_1(s):
     return s.rstrip().replace(' ', '%20')
@@ -91,10 +134,57 @@ def ch1_4_1(s):
 # 2. dict_values doesn't have a count method
 # 3. forgot that characters with frequency 2 count twice to length
 
-assert ch1_4_1('Tact Coa')
-
 # does this run in O(N) time?
 # use a bit vector?
+
+# The above solution is wrong because no character can appear more
+# than twice, with a "middle" character that can appear only once. It
+# should really be that no character can appear more than an even
+# number of times, with a "middle" characted that can appear an even +
+# 1 (odd) number of times.
+
+def ch1_4_2(s):
+    s = s.lower().replace(' ', '')
+    frequencies = make_frequencies(s)
+    check_odd = lambda x: (x % 2) != 0
+    count_odd = [check_odd(count) for count in frequencies.values()]
+    if sum(count_odd) > 1:
+        return False
+    return True
+
+def ch1_4_3(s):
+    s = s.lower().replace(' ', '')
+    def toggle(bit_vector, index):
+        if index < 0:
+            return bit_vector
+        mask = 1 << index
+        if not (bit_vector & mask):
+            bit_vector |= mask
+        else:
+            bit_vector &= ~mask
+        return bit_vector
+    def create_bit_vector(s):
+        bit_vector = 0
+        for c in s:
+            val = int.from_bytes(c.encode('ascii'), sys.byteorder)
+            bit_vector = toggle(bit_vector, val)
+        return bit_vector
+    def check_exactly_one_bit_set(bit_vector):
+        return not (bit_vector & (bit_vector - 1))
+    def is_permutation_of_palindrome(s):
+        bit_vector = create_bit_vector(s)
+        return (bit_vector == 0) or check_exactly_one_bit_set(bit_vector)
+    return is_permutation_of_palindrome(s)
+
+test_cases = [
+    ('Tact Coa', True),
+    ('tactcoapapa', True),
+    ('tactcoapapad', False),
+]
+for test_case, outcome in test_cases:
+    # assert ch1_4_1(test_case) == outcome
+    assert ch1_4_2(test_case) == outcome
+    assert ch1_4_3(test_case) == outcome
 
 def ch1_5_1(s1, s2):
     l1, l2 = len(s1), len(s2)
@@ -173,6 +263,27 @@ def ch1_5_2(s1, s2):
         return False
     return True
 
+def ch1_5_3(first, second):
+    """This is the solution from the answer key."""
+    if abs(len(first) - len(second)) > 1:
+        return False
+    # get shorter and longer string
+    s1 = first if len(first) < len(second) else second
+    s2 = second if len(first) < len(second) else first
+    i1, i2 = 0, 0
+    found_diff = False
+    while (i1 < len(s1)) and (i2 < len(s2)):
+        if s1[i1] != s2[i2]:
+            if found_diff:
+                return False
+            found_diff = True
+            if len(s1) == len(s2):
+                i1 += 1
+        else:
+            i1 += 1
+        i2 += 1
+    return True
+
 tests = [
     ('pale', 'ple', True),
     ('pales', 'pale', True),
@@ -183,6 +294,11 @@ tests = [
 for (s1, s2, outcome) in tests:
     assert ch1_5_1(s1, s2) == outcome
     assert ch1_5_2(s1, s2) == outcome
+    assert ch1_5_3(s1, s2) == outcome
+
+# %timeit ch1_5_2(s1, s2)
+# Answer key solution is slower.
+# %timeit ch1_5_3(s1, s2)
 
 def ch1_6_1(s):
     ls = len(s)
@@ -231,6 +347,16 @@ ch1_7_1(mat)
 assert np.all(mat == mat_t)
 
 
+# I don't understand this question, apparently. But as far as I can
+# tell, it would _never_ be done this way.
+
+# def ch1_7_2():
+#     nr, nc = mat.shape
+#     assert nr == nc
+
+#     return
+
+
 def find_zero_indices(mat, thresh=1.0e-15):
     nr, nc = mat.shape
     zero_index_pairs = []
@@ -255,21 +381,29 @@ def ch1_8_1(mat):
             mat[ir, ic] = 0
     return
 
+# def ch1_8_2(mat):
 
-dim = 10
-a = np.random.random((dim, dim))
-b = a.copy()
-# print(a)
-a[4, 5] = 0
-a[4, 7] = 0
-b[4, :] = 0
-b[:, 5] = 0
-b[:, 7] = 0
-# print(a)
-# print(b)
-ch1_8_1(a)
-# print(a)
-assert np.all(a == b)
+#     return
+
+impls = [
+    ch1_8_1,
+    # ch1_8_2,
+]
+for impl in impls:
+    dim = 10
+    a = np.random.random((dim, dim))
+    b = a.copy()
+    # print(a)
+    a[4, 5] = 0
+    a[4, 7] = 0
+    b[4, :] = 0
+    b[:, 5] = 0
+    b[:, 7] = 0
+    # print(a)
+    # print(b)
+    impl(a)
+    # print(a)
+    assert np.all(a == b)
 
 
 def ch1_9_1(parent, rotated):
