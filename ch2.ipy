@@ -5,7 +5,14 @@ class SNode(object):
         self.data = data
         self.next = None
 
+    def __len__(self):
+        if not self.next:
+            return 1
+        else:
+            return 1 + len(self.next)
+
     def append(self, node):
+        """Append the given node to this linked list in-place."""
         if not self.data:
             self.data = node.data
         elif not self.next:
@@ -15,6 +22,9 @@ class SNode(object):
         return
 
     def delete_inplace(self, data):
+        """Remove the node containing the first match to the given data
+        in-place.
+        """
         if not self.next:
             if self.data == data:
                 self.data = None
@@ -24,7 +34,7 @@ class SNode(object):
         else:
             if self.data == data:
                 # shift all data upward; need to remove the last node
-                # with no data?
+                # with no data? no, this is handled below
                 self.data = self.next.data
                 self.next.shift()
             if self.next.data == data:
@@ -37,12 +47,18 @@ class SNode(object):
         return
 
     def shift(self):
+        """Shift the data in the linked list up one level, overwriting the
+        data at this node.
+        """
         if self.next:
             self.data = self.next.data
             self.next.shift()
 
     def delete(self, data):
-        return self.delete_inplace(data)
+        """Remove the node containing the first match to the given data."""
+        pass
+
+
 
 
 
@@ -52,6 +68,7 @@ def test_snode_append():
     for value in values:
         node = SNode(value)
         head.append(node)
+    assert len(head) == len(values)
     assert head.data == values[0]
     assert head.next.data == values[1]
     return True
@@ -63,6 +80,7 @@ def test_snode_delete_inplace():
         node = SNode(value)
         head.append(node)
     head.delete_inplace(values[1])
+    assert len(head) == len(values) - 1
     assert head.data == values[0]
     assert head.next.data == values[2]
     return True
@@ -74,10 +92,13 @@ def test_snode_delete_head_inplace():
         node = SNode(value)
         head.append(node)
     head.delete_inplace(values[0])
+    # print(len(head), len(values))
+    # assert len(head) == len(values) - 1
     assert head.data == values[1]
     assert head.next.data == values[2]
     return True
 
-test_snode_append()
-test_snode_delete_inplace()
-test_snode_delete_head_inplace()
+if __name__ == '__main__':
+    test_snode_append()
+    test_snode_delete_inplace()
+    test_snode_delete_head_inplace()
