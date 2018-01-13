@@ -1,0 +1,83 @@
+class SNode(object):
+
+    def __init__(self, data=None):
+
+        self.data = data
+        self.next = None
+
+    def append(self, node):
+        if not self.data:
+            self.data = node.data
+        elif not self.next:
+            self.next = node
+        else:
+            self.next.append(node)
+        return
+
+    def delete_inplace(self, data):
+        if not self.next:
+            if self.data == data:
+                self.data = None
+            else:
+                # don't need to do anything
+                pass
+        else:
+            if self.data == data:
+                # shift all data upward; need to remove the last node
+                # with no data?
+                self.data = self.next.data
+                self.next.shift()
+            if self.next.data == data:
+                if self.next.next:
+                    self.next = self.next.next
+                else:
+                    self.next = None
+            else:
+                self.next.delete(data)
+        return
+
+    def shift(self):
+        if self.next:
+            self.data = self.next.data
+            self.next.shift()
+
+    def delete(self, data):
+        return self.delete_inplace(data)
+
+
+
+def test_snode_append():
+    values = [2, 4, 8, 9, 10]
+    head = SNode()
+    for value in values:
+        node = SNode(value)
+        head.append(node)
+    assert head.data == values[0]
+    assert head.next.data == values[1]
+    return True
+
+def test_snode_delete_inplace():
+    values = [2, 4, 8, 9, 10]
+    head = SNode()
+    for value in values:
+        node = SNode(value)
+        head.append(node)
+    head.delete_inplace(values[1])
+    assert head.data == values[0]
+    assert head.next.data == values[2]
+    return True
+
+def test_snode_delete_head_inplace():
+    values = [2, 4, 8, 9, 10]
+    head = SNode()
+    for value in values:
+        node = SNode(value)
+        head.append(node)
+    head.delete_inplace(values[0])
+    assert head.data == values[1]
+    assert head.next.data == values[2]
+    return True
+
+test_snode_append()
+test_snode_delete_inplace()
+test_snode_delete_head_inplace()
