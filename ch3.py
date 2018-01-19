@@ -152,6 +152,8 @@ class MyQueue(object):
         self.spop = Stack()
 
     def peek(self):
+        if self.spop.is_empty():
+            self._transfer()
         return self.spop.peek()
 
     def add(self, item):
