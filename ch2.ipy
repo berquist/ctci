@@ -48,7 +48,7 @@ class SNode(object):
             if self.data == data:
                 self.data = None
             else:
-                # don't need to do anything
+                # don't need to do anything, this is the null node
                 pass
         else:
             if self.data == data:

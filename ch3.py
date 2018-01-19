@@ -144,6 +144,36 @@ class SetOfStacks(object):
             raise
 
 
+class MyQueue(object):
+    """Implement a queue using a pair of stacks."""
+
+    def __init__(self):
+        self.spush = Stack()
+        self.spop = Stack()
+
+    def peek(self):
+        return self.spop.peek()
+
+    def add(self, item):
+        self.spush.push(item)
+
+    def remove(self):
+        if self.spop.is_empty():
+            self.transfer()
+        return self.spop.pop()
+
+    def transfer(self):
+        if self.spush.is_empty():
+            raise Exception
+        while not self.spush.is_empty():
+            self.spop.push(self.spush.pop())
+
+    def is_empty(self):
+        # A transfer may not have been done, so need to inspect both
+        # stacks.
+        return self.spush.is_empty() or self.spop.is_empty()
+
+
 def test_stackmin():
     stack = StackMin()
     # from bottom to top
@@ -161,6 +191,8 @@ def test_stackmin():
     for expected_item, expected_min in reversed(pairs):
         assert stack.min() == expected_min
         assert stack.pop() == expected_item
+    return True
+
 
 def test_setofstacks():
     # from itertools import cycle
@@ -195,6 +227,22 @@ def test_setofstacks():
         if not setofstacks.stacks:
             newcounter = 0
         assert setofstacks.counter == newcounter
+    return True
+
+
+def test_myqueue():
+    q = Queue()
+    mq = MyQueue()
+    l = [4, 3, 2, 1]
+    for item in l:
+        q.add(item)
+        mq.add(item)
+    assert q.peek() == l[0]
+    assert mq.peek() == l[0]
+    return True
+
+
 if __name__ == '__main__':
     test_stackmin()
     test_setofstacks()
+    test_myqueue()
