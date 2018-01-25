@@ -161,10 +161,10 @@ class MyQueue(object):
 
     def remove(self):
         if self.spop.is_empty():
-            self.transfer()
+            self._transfer()
         return self.spop.pop()
 
-    def transfer(self):
+    def _transfer(self):
         if self.spush.is_empty():
             raise Exception
         while not self.spush.is_empty():
@@ -239,8 +239,41 @@ def test_myqueue():
     for item in l:
         q.add(item)
         mq.add(item)
-    assert q.peek() == l[0]
-    assert mq.peek() == l[0]
+    assert not mq.spush.is_empty()
+    assert mq.spop.is_empty()
+    assert mq.spush.peek() == 1
+    assert q.peek() == mq.peek() == 4
+    assert q.remove() == mq.remove() == 4
+    q.add(5)
+    q.add(6)
+    mq.add(5)
+    mq.add(6)
+    assert not mq.spush.is_empty()
+    assert not mq.spop.is_empty()
+    assert mq.spush.peek() == 6
+    assert mq.spop.peek() == 3
+    assert q.remove() == mq.remove() == 3
+    assert q.remove() == mq.remove() == 2
+    assert q.remove() == mq.remove() == 1
+    assert not q.is_empty()
+    assert mq.spop.is_empty()
+    assert not mq.spush.is_empty()
+    # assert not mq.is_empty()
+    q.add(7)
+    q.add(8)
+    mq.add(7)
+    mq.add(8)
+    assert q.remove() == mq.remove() == 5
+    assert q.remove() == mq.remove() == 6
+    assert q.remove() == mq.remove() == 7
+    assert q.remove() == mq.remove() == 8
+    return True
+
+
+def rever
+
+
+def test_reverse_stack_recursive():
     return True
 
 
@@ -248,3 +281,4 @@ if __name__ == '__main__':
     test_stackmin()
     test_setofstacks()
     test_myqueue()
+    test_reverse_stack_recursive()
