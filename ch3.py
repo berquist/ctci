@@ -287,7 +287,7 @@ def sort_stack(stack):
     sorted_stack.push(stack.pop())
     while not stack.is_empty():
         current_element = stack.pop()
-        while (current_element > sorted_stack.peek()) and (not sorted_stack.is_empty()):
+        while (not sorted_stack.is_empty()) and (current_element > sorted_stack.peek()):
             stack.push(sorted_stack.pop())
         sorted_stack.push(current_element)
     return sorted_stack
@@ -298,10 +298,13 @@ def test_sort_stack():
     sorted_elements = sorted(elements)
     stack = Stack()
     reference_stack = Stack()
-    for i, j in zip(reversed(elements), reversed(sorted_elements)):
-        stack.push(i)
-        reference_stack.push(j)
+    for a, b in zip(reversed(elements), reversed(sorted_elements)):
+        stack.push(a)
+        reference_stack.push(b)
     sorted_stack = sort_stack(stack)
+    for i in range(len(elements)):
+        assert reference_stack.pop() == sorted_elements[i]
+        assert sorted_stack.pop() == sorted_elements[i]
     return True
 
 
