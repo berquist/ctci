@@ -62,7 +62,7 @@ class SNode(object):
                 else:
                     self.next = None
             else:
-                self.next.delete(data)
+                self.next.delete_inplace(data)
         return
 
     def shift(self):
@@ -72,10 +72,12 @@ class SNode(object):
         if self.next:
             self.data = self.next.data
             self.next.shift()
+        else:
+            self.data = None
 
-    def delete(self, data):
-        """Remove the node containing the first match to the given data."""
-        pass
+    # def delete(self, data):
+    #     """Remove the node containing the first match to the given data."""
+    #     pass
 
 
 class SLinkedList(object):
@@ -111,6 +113,15 @@ class SLinkedList(object):
             self.head = node
         else:
             self.head.append(node)
+
+    def _delete(self, data, node):
+        if node.data == data:
+            return node.next
+        else:
+            return self._delete(data, node.next)
+
+    def delete(self, data):
+        return self._delete(data, self.head)
 
 
 def delete(head, data):
@@ -207,14 +218,16 @@ def test_snode_delete_head_inplace():
         head.append(node)
     head.delete_inplace(values[0])
     # print(len(head), len(values))
-    # assert len(head) == len(values) - 1
+    assert len(head) == len(values) - 1
     assert head.data == values[1]
     assert head.next.data == values[2]
     assert head.next.next.data == values[3]
     assert head.next.next.next.data == values[4]
-    # print(head.next.next.next.next.data)
     assert head.next.next.next.next is None
     return True
+
+
+# def test_slinkedlist_delete_head()
 
 
 if __name__ == '__main__':
