@@ -10,21 +10,28 @@ class Stack(object):
 
     def __init__(self):
         self.top = None
+        self.length = 0
+
+    def __len__(self):
+        return self.length
 
     def pop(self):
         if not self.top:
             raise Exception
         item = self.top.data
         self.top = self.top.next
+        self.length -= 1
         return item
 
     def push(self, item):
         node = StackNode(item)
         node.next = self.top
         self.top = node
+        self.length += 1
 
     def peek(self):
         if not self.top:
+            assert len(self) == 0
             raise Exception
         return self.top.data
 
@@ -270,10 +277,31 @@ def test_myqueue():
     return True
 
 
-def rever
+def sort_stack(stack):
+    if stack.is_empty():
+        raise Exception
+    if len(stack) == 1:
+        return stack
+    # initialize the secondary stack for comparison
+    sorted_stack = Stack()
+    sorted_stack.push(stack.pop())
+    while not stack.is_empty():
+        current_element = stack.pop()
+        while (current_element > sorted_stack.peek()) and (not sorted_stack.is_empty()):
+            stack.push(sorted_stack.pop())
+        sorted_stack.push(current_element)
+    return sorted_stack
 
 
-def test_reverse_stack_recursive():
+def test_sort_stack():
+    elements = [6, 2, 12, 3, 10]
+    sorted_elements = sorted(elements)
+    stack = Stack()
+    reference_stack = Stack()
+    for i, j in zip(reversed(elements), reversed(sorted_elements)):
+        stack.push(i)
+        reference_stack.push(j)
+    sorted_stack = sort_stack(stack)
     return True
 
 
@@ -281,4 +309,4 @@ if __name__ == '__main__':
     test_stackmin()
     test_setofstacks()
     test_myqueue()
-    test_reverse_stack_recursive()
+    test_sort_stack()
