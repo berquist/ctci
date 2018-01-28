@@ -73,75 +73,61 @@ is_not_bst.right = BinaryNode(10)
 is_not_bst.right.right = BinaryNode(20)
 
 
+bst_small_1 = BinaryNode(4)
+bst_small_1.left = BinaryNode(2)
+bst_small_2 = BinaryNode(4)
+bst_small_2.left = BinaryNode(2)
+bst_small_2.right = BinaryNode(6)
+
+
 def test_binary_tree_min():
     assert is_bst.min() == 2
     assert is_not_bst.min() == 2
+    assert bst_small_1.min() == 2
+    assert bst_small_2.min() == 2
     return True
 
 
 def test_binary_tree_max():
     assert is_bst.max() == 20
     assert is_not_bst.max() == 20
+    assert bst_small_1.max() == 4
+    assert bst_small_2.max() == 6
     return True
 
 
-# def is_binary_search_tree(node):
-#     if node.left:
-#         nmin = node.left.data
-#     else:
-#         nmin = None
-#     if node.right:
-#         nmax = node.right.data
-#     else:
-#         nmax = None
-#     return _is_binary_search_tree(node, nmin, nmax)
+def is_binary_search_tree(node):
+    """Return True if the given binary tree is actually a binary search
+    tree (BST), otherwise return False.
+    """
+    # base case: empty nodes are BSTs
+    if node is None:
+        return True
+    lmax, rmin = None, None
+    has_left = node.left is not None
+    has_right = node.right is not None
+    if has_left:
+        lmax = node.left.max()
+    if has_right:
+        rmin = node.right.min()
+    # early short-circuit if anything on the left is larger than
+    # anything on the right
+    if (has_left and has_right) and lmax > rmin:
+        return False
+    if has_left and (not lmax <= node.data):
+        return False
+    if has_right and (not node.data < rmin):
+        return False
+    return is_binary_search_tree(node.left) \
+        and is_binary_search_tree(node.right)
 
 
-# def _is_binary_search_tree(node, nmin, nmax):
-#     """A binary search tree is a binary tree in which every node fits a
-#     specific ordering property: all left descendents <= n < all right
-#     descendents. This must be true for each node n.
-#     """
-#     # base case: the null and empty nodes are BSTs
-#     if node is None:
-#         return True
-#     else:
-#         assert isinstance(node, BinaryNode)
-#     left, right, condmin, condmax = True, True, True, True
-#     # check ordering
-#     if node.left is not None:
-#         left = (node.left.data <= node.data)
-#     if node.right is not None:
-#         right = (node.data < node.right.data)
-#     # check BST condition: everything on the left must be smaller than
-#     # nmax, and everything on the right must be larger than nmin
-#     if nmin is not None:
-#         condmin = nmin <= node.data
-#     if nmax is not None:
-#         condmax = node.data < nmax
-#     print(node.data, nmin, condmin, nmax, condmax)
-#     return left and right and condmin and condmax \
-#         and _is_binary_search_tree(node.left, nmin, nmin) \
-#         and _is_binary_search_tree(node.right, nmax, nmax)
-
-# def test_is_binary_search_tree():
-#     # create the binary search tree
-#     is_bst = BinaryNode(8)
-#     is_bst.left = BinaryNode(4)
-#     is_bst.left.left = BinaryNode(2)
-#     is_bst.left.right = BinaryNode(6)
-#     is_bst.right = BinaryNode(10)
-#     is_bst.right.right = BinaryNode(20)
-#     # create the binary (not search) tree
-#     is_not_bst = BinaryNode(8)
-#     is_not_bst.left = BinaryNode(4)
-#     is_not_bst.left.left = BinaryNode(2)
-#     is_not_bst.left.right = BinaryNode(12)
-#     is_not_bst.right = BinaryNode(10)
-#     is_not_bst.right.right = BinaryNode(20)
-#     assert is_binary_search_tree(is_bst)
-#     assert not is_binary_search_tree(is_not_bst)
-#     return True
+def test_is_binary_search_tree():
+    assert is_binary_search_tree(bst_small_1)
+    assert is_binary_search_tree(bst_small_2)
+    assert is_binary_search_tree(is_bst)
+    assert not is_binary_search_tree(is_not_bst)
+    return True
 
 
 # class Tree(object):
