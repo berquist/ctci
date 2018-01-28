@@ -103,20 +103,11 @@ def is_binary_search_tree(node):
     # base case: empty nodes are BSTs
     if node is None:
         return True
-    lmax, rmin = None, None
     has_left = node.left is not None
     has_right = node.right is not None
-    if has_left:
-        lmax = node.left.max()
-    if has_right:
-        rmin = node.right.min()
-    # early short-circuit if anything on the left is larger than
-    # anything on the right
-    if (has_left and has_right) and lmax > rmin:
+    if has_left and (not node.left.max() <= node.data):
         return False
-    if has_left and (not lmax <= node.data):
-        return False
-    if has_right and (not node.data < rmin):
+    if has_right and (not node.data < node.right.min()):
         return False
     return is_binary_search_tree(node.left) \
         and is_binary_search_tree(node.right)
