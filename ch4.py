@@ -1,3 +1,6 @@
+import math
+
+
 class _Node(object):
 
     def __init__(self, data=None):
@@ -66,18 +69,30 @@ class BinaryNode(_Node):
             _max = max(_max, self.right.max())
         return _max
 
-    # def insert_complete(self, element):
-    #     """Insert the given element into the binary tree, ensuring that the
-    #     tree is complete, by finding the rightmost (?) empty
-    #     spot. Assume that the current tree is already complete.
-    #     """
-    #     if self.left is None:
-    #         assert self.right is None
-    #         self.left = type(self)(element)
-    #     elif self.right is None:
-    #         self.right = type(self)(element)
-    #     else:
-    #     return
+    def insert_complete(self, element):
+        """Insert the given element into the binary tree, ensuring that the
+        tree is complete, by finding the rightmost (?) empty
+        spot. Assume that the current tree is already complete.
+        """
+        if self.left is None:
+            assert self.right is None
+            self.left = type(self)(element)
+        elif self.right is None:
+            self.right = type(self)(element)
+        else:
+            assert (self.left is not None) and (self.right is not None)
+            # lsize = self.left.size()
+            rsize = self.right.size()
+            # loglsize = math.log2(lsize + 1)
+            logrsize = math.log2(rsize + 1)
+            # lcomplete = (loglsize - math.floor(loglsize)) < 1.0e-10
+            rcomplete = (logrsize - math.floor(logrsize)) < 1.0e-10
+            # print(lsize, rsize, loglsize, logrsize, lcomplete, rcomplete)
+            if not rcomplete:
+                self.right.insert_complete(element)
+            else:
+                self.left.insert_complete(element)
+        return
 
 
 complete_1 = BinaryNode(4)
@@ -133,18 +148,47 @@ def test_binary_tree_size():
 
 
 def test_binary_tree_min():
-    assert is_bst.min() == 2
-    assert is_not_bst.min() == 2
-    assert bst_small_1.min() == 2
-    assert bst_small_2.min() == 2
+    tests = [
+        (is_bst, 2),
+        (is_not_bst, 2),
+        (bst_small_1, 2),
+        (bst_small_2, 2),
+    ]
+    for (tree, outcome) in tests:
+        assert tree.min() == outcome
     return True
 
 
 def test_binary_tree_max():
-    assert is_bst.max() == 20
-    assert is_not_bst.max() == 20
-    assert bst_small_1.max() == 4
-    assert bst_small_2.max() == 6
+    tests = [
+        (is_bst, 20),
+        (is_not_bst, 20),
+        (bst_small_1, 4),
+        (bst_small_2, 6),
+    ]
+    for (tree, outcome) in tests:
+        assert tree.max() == outcome
+    return True
+
+
+binarynode_unfixed = BinaryNode(4)
+binarynode_unfixed.left = BinaryNode(50)
+binarynode_unfixed.left.left = BinaryNode(55)
+binarynode_unfixed.left.right = BinaryNode(90)
+binarynode_unfixed.right = BinaryNode(7)
+binarynode_unfixed.right.left = BinaryNode(87)
+binarynode_unfixed.right.right = BinaryNode(2)
+
+
+def test_binary_tree_insert_complete():
+    element = 27
+    binarynode_unfixed.insert_complete(element)
+    assert binarynode_unfixed.left.left.left is not None
+    assert binarynode_unfixed.left.left.left.data == element
+    element = 28
+    binarynode_unfixed.insert_complete(element)
+    assert binarynode_unfixed.left.left.right is not None
+    assert binarynode_unfixed.left.left.right.data == element
     return True
 
 
