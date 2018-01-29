@@ -29,6 +29,15 @@ class BinaryNode(_Node):
         self.left = None
         self.right = None
 
+    def size(self):
+        """Calculate the size of the tree."""
+        _size = 1 if self.data is not None else 0
+        if self.left is not None:
+            _size += self.left.size()
+        if self.right is not None:
+            _size += self.right.size()
+        return _size
+
     def min(self):
         """Brute-force find the smallest element in the tree. Works if the
         tree is not a binary search tree.
@@ -57,6 +66,33 @@ class BinaryNode(_Node):
             _max = max(_max, self.right.max())
         return _max
 
+    # def insert_complete(self, element):
+    #     """Insert the given element into the binary tree, ensuring that the
+    #     tree is complete, by finding the rightmost (?) empty
+    #     spot. Assume that the current tree is already complete.
+    #     """
+    #     if self.left is None:
+    #         assert self.right is None
+    #         self.left = type(self)(element)
+    #     elif self.right is None:
+    #         self.right = type(self)(element)
+    #     else:
+    #     return
+
+
+complete_1 = BinaryNode(4)
+
+complete_2 = BinaryNode(4)
+complete_2.left = BinaryNode(2)
+
+complete_3 = BinaryNode(10)
+complete_3.left = BinaryNode(20)
+complete_3.right = BinaryNode(30)
+
+complete_4 = BinaryNode(10)
+complete_4.left = BinaryNode(20)
+complete_4.left.left = BinaryNode(40)
+complete_4.right = BinaryNode(30)
 
 is_bst = BinaryNode(8)
 is_bst.left = BinaryNode(4)
@@ -72,12 +108,28 @@ is_not_bst.left.right = BinaryNode(12)
 is_not_bst.right = BinaryNode(10)
 is_not_bst.right.right = BinaryNode(20)
 
-
 bst_small_1 = BinaryNode(4)
 bst_small_1.left = BinaryNode(2)
+
 bst_small_2 = BinaryNode(4)
 bst_small_2.left = BinaryNode(2)
 bst_small_2.right = BinaryNode(6)
+
+
+def test_binary_tree_size():
+    tests = [
+        (complete_1, 1),
+        (complete_2, 2),
+        (complete_3, 3),
+        (complete_4, 4),
+        (is_bst, 6),
+        (is_not_bst, 6),
+        (bst_small_1, 2),
+        (bst_small_2, 3),
+    ]
+    for (tree, outcome) in tests:
+        assert tree.size() == outcome
+    return True
 
 
 def test_binary_tree_min():
