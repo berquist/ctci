@@ -223,17 +223,53 @@ def test_is_binary_search_tree():
 
 #         self.root = None
 
-# class MinHeap(BinaryNode):
+class MinHeap(BinaryNode):
 
-#     def __init__(self):
-#         super().__init__()
+    def __init__(self, data=None):
+        super().__init__(data)
 
-#     def extract_min(self):
-#         pass
+    def extract_min(self):
+        """Pop off the minimum (top) element of the heap, replace it with the
+        rightmost element, then do swaps on the correct side of the heap to
+        maintain minimum ordering.
+        """
+        pass
 
-#     def insert(self):
-#         pass
+    def insert(self, element):
+        """Insert the element at the rightmost position to ensure the heap is
+        complete, then fix it by bubbling the new minimum up to the top.
+        """
+        self.insert_complete(element)
+        # TODO should take an argument?
+        self.bubble()
 
+    def bubble(self):
+        """Find the location of the minimum element (not necessarily at the
+        top) and bubble it up to the top.
+        """
+        pass
+
+minheap_unfixed = MinHeap(4)
+minheap_unfixed.left = MinHeap(50)
+minheap_unfixed.left.left = MinHeap(55)
+minheap_unfixed.left.right = MinHeap(90)
+minheap_unfixed.right = MinHeap(7)
+minheap_unfixed.right.left = MinHeap(87)
+minheap_unfixed.right.right = MinHeap(2)
+
+minheap_fixed = MinHeap(2)
+minheap_fixed.left = MinHeap(50)
+minheap_fixed.left.left = MinHeap(55)
+minheap_fixed.left.right = MinHeap(90)
+minheap_fixed.right = MinHeap(4)
+minheap_fixed.right.left = MinHeap(87)
+minheap_fixed.right.right = MinHeap(7)
+
+
+# def test_minheap_insert():
+#     minheap_unfixed.insert(2)
+#     assert minheap_unfixed.data == 2
+#     return True
 
 # class Graph(object):
 
