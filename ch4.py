@@ -1,5 +1,7 @@
 import math
 
+from ch3 import Queue
+
 
 class _Node(object):
 
@@ -283,8 +285,11 @@ minheap_fixed.right.right = MinHeap(7)
 class AdjacencyMatrix(object):
 
     def __init__(self, edges=None):
+
         self.edges = edges
         self._repr = []
+        self._len = 0
+
         # edges must be a list of pairs
         if edges is not None:
             # figure out the dimensionality; can't just count total
@@ -305,11 +310,20 @@ class AdjacencyMatrix(object):
             self._repr[start][end] = 1
         if is_undirected:
             self._repr[end][start] = 1
+        # todo
+        self._len = len(self._repr[0])
         return
 
     def __eq__(self, other):
         return self._repr == other._repr
 
+    def __len__(self):
+        return self._len
+
+    def __getitem__(self, index):
+        return self._repr[index]
+
+    # todo __setitem__
 
 def test_adjacency_matrix():
     # pg 107, 1
@@ -348,6 +362,55 @@ def test_adjacency_matrix():
     am_ref._repr = matrix
     am = AdjacencyMatrix(edges)
     assert am == am_ref
+    return True
+
+
+def is_path(start, end, graph):
+    """Problem 4.1: Is there a path between the given start and end nodes
+    of a directed graph?
+
+    Implemented using breadth-first search on a graph implemented as
+    an adjacency matrix.
+    """
+    if start == end:
+        return True
+    queue = Queue()
+    graphlen = len(graph)
+    marked = [False for _ in range(graphlen)]
+    marked[start] = True
+    queue.add(start)
+    while not queue.is_empty():
+        next_node = queue.remove()
+        if next_node == end:
+            return True
+        neighbors = [i for (i, n) in zip(range(graphlen), graph[next_node])
+                     if n == 1]
+        for neighbor in neighbors:
+            if not marked[neighbor]:
+                marked[neighbor] = True
+                queue.add(neighbor)
+    return False
+
+
+def test_is_path():
+    edges = [
+        (0, 1),
+        (1, 2),
+        (2, 0),
+        (2, 3),
+        (3, 2),
+        (4, 6),
+        (5, 4),
+        (6, 5),
+    ]
+    graph = AdjacencyMatrix(edges)
+    assert is_path(0, 0, graph)
+    assert is_path(0, 1, graph)
+    assert is_path(5, 6, graph)
+    assert is_path(6, 4, graph)
+    assert not is_path(6, 3, graph)
+    assert not is_path(6, 0, graph)
+    assert not is_path(0, 6, graph)
     return True
 
 
@@ -416,7 +479,6 @@ def test_adjacency_list():
 
 
 # def bfs(root):
-#     from ch3 import Queue
 #     queue = Queue()
 #     # why not root.visit()?
 #     root.marked = True
@@ -489,5 +551,4 @@ def test_adjacency_list():
 #     return True
 
 if __name__ == '__main__':
-    # test_graph_1()
-    test_adjacency_matrix()
+    pass
