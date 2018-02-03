@@ -315,9 +315,6 @@ class AdjacencyMatrix(Container):
         self._len = len(self._repr[0])
         return
 
-    def __len__(self):
-        return self._len
-
     # todo __setitem__
 
 def test_adjacency_matrix():
@@ -409,7 +406,7 @@ def test_is_path():
     return True
 
 
-class AdjacencyList(object):
+class AdjacencyList(Container):
 
     def __init__(self, edges=None):
         self.edges = edges
@@ -430,9 +427,6 @@ class AdjacencyList(object):
                 self._repr[end] = set()
             self._repr[end].add(start)
         return
-
-    def __eq__(self, other):
-        return self._repr == other._repr
 
 
 def test_adjacency_list():

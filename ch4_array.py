@@ -12,7 +12,10 @@ class Container(object):
             self._repr = []
 
     def __len__(self):
-        return len(self._repr)
+        if hasattr(self, '_len'):
+            return self._len
+        else:
+            return len(self._repr)
 
     def __eq__(self, other):
         return self._repr == other._repr
