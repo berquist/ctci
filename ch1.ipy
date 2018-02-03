@@ -23,6 +23,7 @@ def ch1_1_1(s):
         return False
     return True
 
+
 def ch1_1_2(s):
     ss = set()
     for c in s:
@@ -31,6 +32,7 @@ def ch1_1_2(s):
         else:
             return False
     return True
+
 
 def ch1_1_3(s):
     ss = sorted(s)
@@ -41,6 +43,7 @@ def ch1_1_3(s):
         if ss[i] == ss[i - 1]:
             return False
     return True
+
 
 def ch1_1_4(s):
     """This is a direct translation from the answer on page 193."""
@@ -54,16 +57,6 @@ def ch1_1_4(s):
         checker |= (1 << val)
     return True
 
-s1 = 'abcddaasdfh'
-s2 = 'abcdefgh'
-# assert not ch1_1_1(s1)
-# assert not ch1_1_2(s1)
-# assert not ch1_1_3(s1)
-# assert not ch1_1_4(s1)
-# assert ch1_1_1(s2)
-# assert ch1_1_2(s2)
-# assert ch1_1_3(s2)
-# assert ch1_1_4(s2)
 
 def ch1_2_1(s1, s2):
     if len(s1) != len(s2):
@@ -73,6 +66,7 @@ def ch1_2_1(s1, s2):
     if ss1 != ss2:
         return False
     return True
+
 
 def ch1_2_2(s1, s2):
     if len(s1) != len(s2):
@@ -92,20 +86,10 @@ def ch1_2_3(s1, s2):
             return False
     return True
 
-assert not ch1_2_1(s1, s2)
-assert ch1_2_1(s1, s1)
-assert ch1_2_1(s2, s2[::-1])
-
-assert not ch1_2_2(s1, s2)
-assert ch1_2_2(s1, s1)
-assert ch1_2_2(s2, s2[::-1])
-
-assert not ch1_2_3(s1, s2)
-assert ch1_2_3(s1, s1)
-assert ch1_2_3(s2, s2[::-1])
 
 def ch1_3_1(s):
     return s.rstrip().replace(' ', '%20')
+
 
 def ch1_4_1(s):
     # forgot this...
@@ -152,6 +136,7 @@ def ch1_4_2(s):
         return False
     return True
 
+
 def ch1_4_3(s):
     s = s.lower().replace(' ', '')
     def toggle(bit_vector, index):
@@ -176,15 +161,6 @@ def ch1_4_3(s):
         return (bit_vector == 0) or check_exactly_one_bit_set(bit_vector)
     return is_permutation_of_palindrome(s)
 
-test_cases = [
-    ('Tact Coa', True),
-    ('tactcoapapa', True),
-    ('tactcoapapad', False),
-]
-for test_case, outcome in test_cases:
-    # assert ch1_4_1(test_case) == outcome
-    assert ch1_4_2(test_case) == outcome
-    assert ch1_4_3(test_case) == outcome
 
 def ch1_5_1(s1, s2):
     l1, l2 = len(s1), len(s2)
@@ -238,6 +214,7 @@ def ch1_5_1(s1, s2):
             return False
         return True
 
+
 def ch1_5_2(s1, s2):
     l1, l2 = len(s1), len(s2)
     if abs(l1 - l2) > 1:
@@ -263,6 +240,7 @@ def ch1_5_2(s1, s2):
         return False
     return True
 
+
 def ch1_5_3(first, second):
     """This is the solution from the answer key."""
     if abs(len(first) - len(second)) > 1:
@@ -284,21 +262,6 @@ def ch1_5_3(first, second):
         i2 += 1
     return True
 
-tests = [
-    ('pale', 'ple', True),
-    ('pales', 'pale', True),
-    ('pale', 'bale', True),
-    ('pale', 'bake', False),
-]
-
-for (s1, s2, outcome) in tests:
-    assert ch1_5_1(s1, s2) == outcome
-    assert ch1_5_2(s1, s2) == outcome
-    assert ch1_5_3(s1, s2) == outcome
-
-# %timeit ch1_5_2(s1, s2)
-# Answer key solution is slower.
-# %timeit ch1_5_3(s1, s2)
 
 def ch1_6_1(s):
     ls = len(s)
@@ -318,10 +281,6 @@ def ch1_6_1(s):
         return s
     return ns
 
-s = 'aabcccccaaa'
-ns = 'a2b1c5a3'
-assert ch1_6_1(s) == ns
-
 
 def ch1_7_1(mat):
     nr, nc = mat.shape
@@ -335,16 +294,6 @@ def ch1_7_1(mat):
             # mat[i][j] = mat[j][i]
             # mat[j][i] = eij
     return
-
-
-mat = np.array([[1, 2, 3],
-                [4, 5, 6],
-                [7, 8, 9]])
-mat_t = np.array([[1, 4, 7],
-                  [2, 5, 8],
-                  [3, 6, 9]])
-ch1_7_1(mat)
-assert np.all(mat == mat_t)
 
 
 # I don't understand this question, apparently. But as far as I can
@@ -381,29 +330,10 @@ def ch1_8_1(mat):
             mat[ir, ic] = 0
     return
 
+
 # def ch1_8_2(mat):
 
 #     return
-
-impls = [
-    ch1_8_1,
-    # ch1_8_2,
-]
-for impl in impls:
-    dim = 10
-    a = np.random.random((dim, dim))
-    b = a.copy()
-    # print(a)
-    a[4, 5] = 0
-    a[4, 7] = 0
-    b[4, :] = 0
-    b[:, 5] = 0
-    b[:, 7] = 0
-    # print(a)
-    # print(b)
-    impl(a)
-    # print(a)
-    assert np.all(a == b)
 
 
 def ch1_9_1(parent, rotated):
@@ -414,8 +344,92 @@ def ch1_9_1(parent, rotated):
         return True
     return False
 
-s1 = 'waterbottle'
-s2 = 'erbottlewat'
-s3 = 'erbottlewaf'
-assert ch1_9_1(s1, s2)
-assert not ch1_9_1(s1, s3)
+
+if __name__ == '__main__':
+    s1 = 'abcddaasdfh'
+    s2 = 'abcdefgh'
+    # assert not ch1_1_1(s1)
+    # assert not ch1_1_2(s1)
+    # assert not ch1_1_3(s1)
+    # assert not ch1_1_4(s1)
+    # assert ch1_1_1(s2)
+    # assert ch1_1_2(s2)
+    # assert ch1_1_3(s2)
+    # assert ch1_1_4(s2)
+
+    assert not ch1_2_1(s1, s2)
+    assert ch1_2_1(s1, s1)
+    assert ch1_2_1(s2, s2[::-1])
+
+    assert not ch1_2_2(s1, s2)
+    assert ch1_2_2(s1, s1)
+    assert ch1_2_2(s2, s2[::-1])
+
+    assert not ch1_2_3(s1, s2)
+    assert ch1_2_3(s1, s1)
+    assert ch1_2_3(s2, s2[::-1])
+
+    tests = [
+        ('pale', 'ple', True),
+        ('pales', 'pale', True),
+        ('pale', 'bale', True),
+        ('pale', 'bake', False),
+    ]
+
+    for (s1, s2, outcome) in tests:
+        assert ch1_5_1(s1, s2) == outcome
+        assert ch1_5_2(s1, s2) == outcome
+        assert ch1_5_3(s1, s2) == outcome
+
+    # %timeit ch1_5_2(s1, s2)
+    # Answer key solution is slower.
+    # %timeit ch1_5_3(s1, s2)
+
+    test_cases = [
+        ('Tact Coa', True),
+        ('tactcoapapa', True),
+        ('tactcoapapad', False),
+    ]
+    for test_case, outcome in test_cases:
+        # assert ch1_4_1(test_case) == outcome
+        assert ch1_4_2(test_case) == outcome
+        assert ch1_4_3(test_case) == outcome
+
+    s = 'aabcccccaaa'
+    ns = 'a2b1c5a3'
+    assert ch1_6_1(s) == ns
+
+    mat = np.array([[1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 9]])
+    mat_t = np.array([[1, 4, 7],
+                      [2, 5, 8],
+                      [3, 6, 9]])
+    ch1_7_1(mat)
+    assert np.all(mat == mat_t)
+
+    impls = [
+        ch1_8_1,
+        # ch1_8_2,
+    ]
+    for impl in impls:
+        dim = 10
+        a = np.random.random((dim, dim))
+        b = a.copy()
+        # print(a)
+        a[4, 5] = 0
+        a[4, 7] = 0
+        b[4, :] = 0
+        b[:, 5] = 0
+        b[:, 7] = 0
+        # print(a)
+        # print(b)
+        impl(a)
+        # print(a)
+        assert np.all(a == b)
+
+    s1 = 'waterbottle'
+    s2 = 'erbottlewat'
+    s3 = 'erbottlewaf'
+    assert ch1_9_1(s1, s2)
+    assert not ch1_9_1(s1, s3)

@@ -1,5 +1,6 @@
 from __future__ import division
 
+
 # n = 1000
 n = 35
 
@@ -77,22 +78,24 @@ def s5(n):
         count += len(rl) ** 2
     return count
 
-print('1')
-l1 = s1(n)
-print(len(l1))
 
-print('2')
-l2 = s2(n)
-print(len(l2))
+if __name__ == '__main__':
+    print('1')
+    l1 = s1(n)
+    print(len(l1))
 
-# print('3')
-# l3 = s3(n)
-# print(len(l3))
+    print('2')
+    l2 = s2(n)
+    print(len(l2))
 
-print('4')
-c4 = s4(n)
-print(c4)
+    # print('3')
+    # l3 = s3(n)
+    # print(len(l3))
 
-print('5')
-c5 = s5(n)
-print(c5)
+    print('4')
+    c4 = s4(n)
+    print(c4)
+
+    print('5')
+    c5 = s5(n)
+    print(c5)

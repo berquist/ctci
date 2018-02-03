@@ -1,15 +1,5 @@
 from itertools import permutations
 
-s = 'abbc'
-b = 'cbabadcbbabbcbabaabccbabc'
-r = 7
-
-ps = [''.join(t) for t in sorted(set(permutations(s)))]
-print(ps)
-print(len(ps))
-
-ls = len(s)
-lb = len(b)
 
 def a1():
     count = 0
@@ -20,7 +10,6 @@ def a1():
                 count += 1
     return count
 
-assert a1() == r
 
 def a2():
     count = 0
@@ -30,7 +19,6 @@ def a2():
             count += 1
     return count
 
-assert a2() == r
 
 def a3():
     count = 0
@@ -45,7 +33,6 @@ def a3():
                 count += 1
     return count
 
-assert a3() == r
 
 # Consider the permutation generation to be part of the algorithm.
 
@@ -56,7 +43,6 @@ def a1p(s, b):
     count = a1()
     return count
 
-assert a1p(s, b) == r
 
 def a2p(s, b):
     ps = [''.join(t) for t in sorted(set(permutations(s)))]
@@ -64,8 +50,6 @@ def a2p(s, b):
     lb = len(b)
     count = a2()
     return count
-
-assert a1p(s, b) == r
 
 
 def a4(s, b):
@@ -78,12 +62,32 @@ def a4(s, b):
             count += 1
     return count
 
-print(a4(s, b))
-# assert a4(s, b) == r
+if __name__ == '__main__':
+    s = 'abbc'
+    b = 'cbabadcbbabbcbabaabccbabc'
+    r = 7
 
-%timeit a1()
-%timeit a2()
-%timeit a3()
-%timeit a1p(s, b)
-%timeit a2p(s, b)
-%timeit a4(s, b)
+    ps = [''.join(t) for t in sorted(set(permutations(s)))]
+    print(ps)
+    print(len(ps))
+
+    ls = len(s)
+    lb = len(b)
+
+    assert a1() == r
+    assert a2() == r
+    assert a3() == r
+
+    assert a1p(s, b) == r
+    assert a1p(s, b) == r
+
+    print(a4(s, b))
+    # assert a4(s, b) == r
+
+    %timeit a1()
+    %timeit a2()
+    %timeit a3()
+    %timeit a1p(s, b)
+    %timeit a2p(s, b)
+    %timeit a4(s, b)
+
