@@ -83,11 +83,3 @@ if __name__ == '__main__':
 
     print(a4(s, b))
     # assert a4(s, b) == r
-
-    %timeit a1()
-    %timeit a2()
-    %timeit a3()
-    %timeit a1p(s, b)
-    %timeit a2p(s, b)
-    %timeit a4(s, b)
-

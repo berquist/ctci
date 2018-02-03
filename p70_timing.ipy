@@ -1,0 +1,22 @@
+from p70 import *
+
+
+if __name__ == '__main__':
+
+    s = 'abbc'
+    b = 'cbabadcbbabbcbabaabccbabc'
+    r = 7
+
+    ps = [''.join(t) for t in sorted(set(permutations(s)))]
+    print(ps)
+    print(len(ps))
+
+    ls = len(s)
+    lb = len(b)
+
+    %timeit a1()
+    %timeit a2()
+    %timeit a3()
+    %timeit a1p(s, b)
+    %timeit a2p(s, b)
+    %timeit a4(s, b)
