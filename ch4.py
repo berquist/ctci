@@ -284,7 +284,7 @@ class AdjacencyMatrix(object):
 
     def __init__(self, edges=None):
         self.edges = edges
-        self.matrix = []
+        self._repr = []
         # edges must be a list of pairs
         if edges is not None:
             # figure out the dimensionality; can't just count total
@@ -293,22 +293,22 @@ class AdjacencyMatrix(object):
             tmp2 = set(x[1] for x in edges)
             dim = len(tmp1.union(tmp2))
             # create placeholders
-            self.matrix = []
+            self._repr = []
             for _ in range(dim):
-                self.matrix.append([0 for _ in range(dim)])
+                self._repr.append([0 for _ in range(dim)])
             self._form_adjacency_matrix(is_undirected=False)
 
     def _form_adjacency_matrix(self, is_undirected=False):
         if self.edges is None:
             raise Exception
         for (start, end) in self.edges:
-            self.matrix[start][end] = 1
+            self._repr[start][end] = 1
         if is_undirected:
-            self.matrix[end][start] = 1
+            self._repr[end][start] = 1
         return
 
     def __eq__(self, other):
-        return self.matrix == other.matrix
+        return self._repr == other._repr
 
 
 def test_adjacency_matrix():
@@ -324,7 +324,7 @@ def test_adjacency_matrix():
               [1, 0, 0, 0],
               [0, 0, 1, 0]]
     am_ref = AdjacencyMatrix()
-    am_ref.matrix = matrix
+    am_ref._repr = matrix
     am = AdjacencyMatrix(edges)
     assert am == am_ref
     # pg 107, 2
@@ -345,9 +345,63 @@ def test_adjacency_matrix():
               [0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0, 0]]
     am_ref = AdjacencyMatrix()
-    am_ref.matrix = matrix
+    am_ref._repr = matrix
     am = AdjacencyMatrix(edges)
     assert am == am_ref
+    return True
+
+
+class AdjacencyList(object):
+
+    def __init__(self, edges=None):
+        self.edges = edges
+        self._repr = dict()
+        # edges must be a list of pairs
+        if edges is not None:
+            self._form_adjacency_list(is_undirected=False)
+
+    def _form_adjacency_list(self, is_undirected=False):
+        if self.edges is None:
+            raise Exception
+        for (start, end) in self.edges:
+            if start not in self._repr:
+                self._repr[start] = set()
+            self._repr[start].add(end)
+        if is_undirected:
+            if end not in self._repr:
+                self._repr[end] = set()
+            self._repr[end].add(start)
+        return
+
+    def __eq__(self, other):
+        return self._repr == other._repr
+
+
+def test_adjacency_list():
+    # pg 106, 1
+    edges = [
+        (0, 1),
+        (1, 2),
+        (2, 0),
+        (2, 3),
+        (3, 2),
+        (4, 6),
+        (5, 4),
+        (6, 5),
+    ]
+    l = {
+        0: {1},
+        1: {2},
+        2: {0, 3},
+        3: {2},
+        4: {6},
+        5: {4},
+        6: {5},
+    }
+    al_ref = AdjacencyList()
+    al_ref._repr = l
+    al = AdjacencyList(edges)
+    assert al == al_ref
     return True
 
 
