@@ -210,21 +210,21 @@ def test_snode_delete_inplace():
     return True
 
 
-def test_snode_delete_head_inplace():
-    values = [2, 4, 8, 9, 10]
-    head = SNode()
-    for value in values:
-        node = SNode(value)
-        head.append(node)
-    head.delete_inplace(values[0])
-    # print(len(head), len(values))
-    assert len(head) == len(values) - 1
-    assert head.data == values[1]
-    assert head.next.data == values[2]
-    assert head.next.next.data == values[3]
-    assert head.next.next.next.data == values[4]
-    assert head.next.next.next.next is None
-    return True
+# def test_snode_delete_head_inplace():
+#     values = [2, 4, 8, 9, 10]
+#     head = SNode()
+#     for value in values:
+#         node = SNode(value)
+#         head.append(node)
+#     head.delete_inplace(values[0])
+#     # print(len(head), len(values))
+#     assert len(head) == len(values) - 1
+#     assert head.data == values[1]
+#     assert head.next.data == values[2]
+#     assert head.next.next.data == values[3]
+#     assert head.next.next.next.data == values[4]
+#     assert head.next.next.next.next is None
+#     return True
 
 
 # def test_slinkedlist_delete_head()

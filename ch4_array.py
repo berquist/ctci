@@ -2,45 +2,44 @@ import math
 import operator
 
 
-class Heap(object):
+class Container(object):
 
     def __init__(self, data=None):
 
         if data is not None:
-            self._heap = data.copy()
+            self._repr = data.copy()
         else:
-            self._heap = []
+            self._repr = []
 
     def __len__(self):
-        return len(self._heap)
+        return len(self._repr)
 
     def __eq__(self, other):
-        return self._heap == other._heap
+        return self._repr == other._repr
 
     def __getitem__(self, index):
-        return self._heap[index]
+        return self._repr[index]
 
 
-
-class MinHeap(Heap):
+class MinHeap(Container):
 
     def __init__(self, data=None):
         super().__init__(data)
 
     def extract(self):
-        if not self._heap:
+        if not self._repr:
             raise Exception
-        val = self._heap[0]
+        val = self._repr[0]
         if len(self) >= 2:
-            self._heap[0], self._heap[-1] = self._heap[-1], self._heap[0]
-            self._heap.pop()
+            self._repr[0], self._repr[-1] = self._repr[-1], self._repr[0]
+            self._repr.pop()
             self._bubble_down(0)
         else:
-            self._heap.pop()
+            self._repr.pop()
         return val
 
     def insert(self, element):
-        self._heap.append(element)
+        self._repr.append(element)
         self._bubble_up()
         return
 
@@ -52,12 +51,12 @@ class MinHeap(Heap):
         left = 2*i + 1
         right = 2*i + 2
         smallest = i
-        if left < len(self) and self._heap[left] < self._heap[smallest]:
+        if left < len(self) and self._repr[left] < self._repr[smallest]:
             smallest = left
-        if right < len(self) and self._heap[right] < self._heap[smallest]:
+        if right < len(self) and self._repr[right] < self._repr[smallest]:
             smallest = right
         if smallest != i:
-            self._heap[i], self._heap[smallest] = self._heap[smallest], self._heap[i]
+            self._repr[i], self._repr[smallest] = self._repr[smallest], self._repr[i]
             self._bubble_down(smallest)
         return
 
@@ -68,8 +67,8 @@ class MinHeap(Heap):
             raise IndexError
         parent = math.floor((i - 1) / 2)
         if parent >= 0:
-            if self._heap[i] < self._heap[parent]:
-                self._heap[i], self._heap[parent] = self._heap[parent], self._heap[i]
+            if self._repr[i] < self._repr[parent]:
+                self._repr[i], self._repr[parent] = self._repr[parent], self._repr[i]
                 self._bubble_up(parent)
         return
 
@@ -80,7 +79,9 @@ def test_minheap_extract():
     heap = MinHeap(data_start)
     val = heap.extract()
     assert val == 2
-    assert heap._heap == data_ref
+    assert heap._repr == data_ref
+    heap_ref = MinHeap(data_ref)
+    assert heap == heap_ref
     return True
 
 
@@ -89,7 +90,9 @@ def test_minheap_insert():
     data_ref = [2, 50, 4, 55, 90, 87, 7]
     heap = MinHeap(data_start)
     heap.insert(2)
-    assert heap._heap == data_ref
+    assert heap._repr == data_ref
+    heap_ref = MinHeap(data_ref)
+    assert heap == heap_ref
     return True
 
 

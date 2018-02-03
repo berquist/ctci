@@ -1,6 +1,7 @@
 import math
 
 from ch3 import Queue
+from ch4_array import Container
 
 
 class _Node(object):
@@ -282,7 +283,7 @@ minheap_fixed.right.right = MinHeap(7)
 #         self.nodes = []
 
 
-class AdjacencyMatrix(object):
+class AdjacencyMatrix(Container):
 
     def __init__(self, edges=None):
 
@@ -314,14 +315,8 @@ class AdjacencyMatrix(object):
         self._len = len(self._repr[0])
         return
 
-    def __eq__(self, other):
-        return self._repr == other._repr
-
     def __len__(self):
         return self._len
-
-    def __getitem__(self, index):
-        return self._repr[index]
 
     # todo __setitem__
 
