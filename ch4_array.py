@@ -15,7 +15,7 @@ class Container(object):
         if hasattr(self, '_len'):
             return self._len
         else:
-            return len(self._repr)
+            return len(self._repr) - self._repr.count(None)
 
     def __eq__(self, other):
         return self._repr == other._repr
@@ -93,9 +93,11 @@ class BinaryTree(Container):
         acc = self._repr[i]
         left = 2*i + 1
         right = 2*i + 2
-        if left < len(self):
+        has_left = left < len(self) and self._repr[left] is not None
+        has_right = right < len(self) and self._repr[right] is not None
+        if has_left:
             acc = min(acc, self.min(left))
-        if right < len(self):
+        if has_right:
             acc = min(acc, self.min(right))
         return acc
 
@@ -108,13 +110,16 @@ class BinaryTree(Container):
         acc = self._repr[i]
         left = 2*i + 1
         right = 2*i + 2
-        if left < len(self):
+        has_left = left < len(self) and self._repr[left] is not None
+        has_right = right < len(self) and self._repr[right] is not None
+        if has_left:
             acc = max(acc, self.max(left))
-        if right < len(self):
+        if has_right:
             acc = max(acc, self.max(right))
         return acc
 
-    def insert_complete(self, element):
+    def insert(self, element):
+        # TODO
         self._repr.append(element)
         return
 
@@ -125,8 +130,8 @@ class BinaryTree(Container):
             return True
         left = 2*i + 1
         right = 2*i + 2
-        has_left = left < len(self)
-        has_right = right < len(self)
+        has_left = left < len(self) and self._repr[left] is not None
+        has_right = right < len(self) and self._repr[right] is not None
         if has_left and (not self.max(left) <= self._repr[i]):
             return False
         if has_right and (not self._repr[i] < self.min(right)):
@@ -166,6 +171,8 @@ is_bst = BinaryTree([8, 4, 10, 2, 6, 9])
 is_not_bst = BinaryTree([8, 4, 10, 2, 12, 9])
 bst_small_1 = BinaryTree([4, 2])
 bst_small_2 = BinaryTree([4, 2, 6])
+is_bst_2 = BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None])
+is_not_bst_2 = BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, None, 13])
 
 
 def test_binary_tree_size():
@@ -190,6 +197,7 @@ def test_binary_tree_min():
         (is_not_bst, 2),
         (bst_small_1, 2),
         (bst_small_2, 2),
+        (is_bst_2, 1),
     ]
     for (tree, outcome) in tests:
         assert tree.min() == outcome
@@ -202,17 +210,28 @@ def test_binary_tree_max():
         (is_not_bst, 12),
         (bst_small_1, 4),
         (bst_small_2, 6),
+        (is_bst_2, 14),
     ]
     for (tree, outcome) in tests:
         assert tree.max() == outcome
     return True
 
 
+def test_binary_tree_insert():
+    return True
+
+
 def test_is_binary_search_tree():
-    assert bst_small_1.is_binary_search_tree()
-    assert bst_small_2.is_binary_search_tree()
-    assert is_bst.is_binary_search_tree()
-    assert not is_not_bst.is_binary_search_tree()
+    tests = [
+        (bst_small_1, True),
+        (bst_small_2, True),
+        (is_bst, True),
+        (is_not_bst, False),
+        (is_bst_2, True),
+        (is_not_bst_2, True),
+    ]
+    for (tree, outcome) in tests:
+        assert tree.is_binary_search_tree() == outcome
     return True
 
 
@@ -222,4 +241,5 @@ if __name__ == '__main__':
     test_binary_tree_size()
     test_binary_tree_min()
     test_binary_tree_max()
+    test_binary_tree_insert()
     test_is_binary_search_tree()
