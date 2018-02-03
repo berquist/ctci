@@ -10,6 +10,8 @@ class _Node(object):
 
     def visit(self):
         print(self.data)
+        if hasattr(self, 'children'):
+            print([child.data for child in self.children])
         self.visited = True
         return self.data
 
@@ -278,6 +280,77 @@ minheap_fixed.right.right = MinHeap(7)
 #         self.nodes = []
 
 
+class AdjacencyMatrix(object):
+
+    def __init__(self, edges=None):
+        self.edges = edges
+        self.matrix = []
+        # edges must be a list of pairs
+        if edges is not None:
+            # figure out the dimensionality; can't just count total
+            # number of elements, because there may be duplicates
+            tmp1 = set(x[0] for x in edges)
+            tmp2 = set(x[1] for x in edges)
+            dim = len(tmp1.union(tmp2))
+            # create placeholders
+            self.matrix = []
+            for _ in range(dim):
+                self.matrix.append([0 for _ in range(dim)])
+            self._form_adjacency_matrix(is_undirected=False)
+
+    def _form_adjacency_matrix(self, is_undirected=False):
+        if self.edges is None:
+            raise Exception
+        for (start, end) in self.edges:
+            self.matrix[start][end] = 1
+        if is_undirected:
+            self.matrix[end][start] = 1
+        return
+
+    def __eq__(self, other):
+        return self.matrix == other.matrix
+
+
+def test_adjacency_matrix():
+    # pg 107, 1
+    edges = [
+        (0, 1),
+        (1, 2),
+        (2, 0),
+        (3, 2),
+    ]
+    matrix = [[0, 1, 0, 0],
+              [0, 0, 1, 0],
+              [1, 0, 0, 0],
+              [0, 0, 1, 0]]
+    am_ref = AdjacencyMatrix()
+    am_ref.matrix = matrix
+    am = AdjacencyMatrix(edges)
+    assert am == am_ref
+    # pg 107, 2
+    edges = [
+        (0, 1),
+        (0, 4),
+        (0, 5),
+        (1, 3),
+        (1, 4),
+        (2, 1),
+        (3, 2),
+        (3, 4),
+    ]
+    matrix = [[0, 1, 0, 0, 1, 1],
+              [0, 0, 0, 1, 1, 0],
+              [0, 1, 0, 0, 0, 0],
+              [0, 0, 1, 0, 1, 0],
+              [0, 0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0, 0]]
+    am_ref = AdjacencyMatrix()
+    am_ref.matrix = matrix
+    am = AdjacencyMatrix(edges)
+    assert am == am_ref
+    return True
+
+
 # def dfs(root):
 #     if root.data is None:
 #         return
@@ -311,11 +384,21 @@ minheap_fixed.right.right = MinHeap(7)
 #     #   2 -> 0
 #     #   3 -> 2
 #     # }
+#     # edges = [
+#     #     (0, 1),
+#     #     (1, 2),
+#     #     (2, 0),
+#     #     (3, 2),
+#     # ]
 #     edges = [
 #         (0, 1),
 #         (1, 2),
 #         (2, 0),
+#         (2, 3),
 #         (3, 2),
+#         (4, 6),
+#         (5, 4),
+#         (6, 5),
 #     ]
 #     parents = set([start for (start, end) in edges])
 #     graph = Graph()
@@ -350,3 +433,7 @@ minheap_fixed.right.right = MinHeap(7)
 #         (3, 4),
 #     ]
 #     return True
+
+if __name__ == '__main__':
+    # test_graph_1()
+    test_adjacency_matrix()

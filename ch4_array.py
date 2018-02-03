@@ -1,4 +1,5 @@
 import math
+import operator
 
 
 class Heap(object):
@@ -79,9 +80,6 @@ def test_minheap_extract():
     heap = MinHeap(data_start)
     val = heap.extract()
     assert val == 2
-    print(data_start)
-    print('ref', data_ref)
-    print('act', heap._heap)
     assert heap._heap == data_ref
     return True
 
