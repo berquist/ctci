@@ -71,53 +71,67 @@ Common data structures and language paradigms.
 '''
 
 
-def flood_fill_recursive(array, shape, index, target_val, replacement_val):
+def index_in_array(array, index):
+    n = len(array)
+    if n == 0:
+        raise Exception
+    m = len(array[0])
+    if m == 0:
+        raise Exception
+    i, j = index
+    if i < 0:
+        return False
+    if i >= n:
+        return False
+    if j < 0:
+        return False
+    if j >= m:
+        return False
+    return True
+
+
+def flood_fill_recursive(array, index, target_val, replacement_val):
     """Perform flood fill on a 2D array using a stack."""
     if target_val == replacement_val:
         return
-    n, m = shape
+    if not index_in_array(array, index):
+        return
     i, j = index
-    if i >= n:
-        return
-    if j >= m:
-        return
     if array[i][j] != target_val:
         return
     array[i][j] = replacement_val
-    flood_fill_recursive(array, shape, (i + 1, j), target_val, replacement_val)
-    flood_fill_recursive(array, shape, (i - 1, j), target_val, replacement_val)
-    flood_fill_recursive(array, shape, (i, j - 1), target_val, replacement_val)
-    flood_fill_recursive(array, shape, (i, j + 1), target_val, replacement_val)
+    flood_fill_recursive(array, (i + 1, j), target_val, replacement_val)
+    flood_fill_recursive(array, (i - 1, j), target_val, replacement_val)
+    flood_fill_recursive(array, (i, j - 1), target_val, replacement_val)
+    flood_fill_recursive(array, (i, j + 1), target_val, replacement_val)
     return
 
 
-def flood_fill_iterative(array, shape, index, target_val, replacement_val):
+def flood_fill_iterative(array, index, target_val, replacement_val):
     """Perform flood fill on a 2D array using a queue."""
     if target_val == replacement_val:
         return
-    n, m = shape
+    if not index_in_array(array, index):
+        return
     i, j = index
-    if i >= n:
-        return
-    if j >= m:
-        return
     if array[i][j] != target_val:
         return
-    q = Queue()
     array[i][j] = replacement_val
+    q = Queue()
     q.add(index)
     while not q.is_empty():
         a, b = q.remove()
-        pairs = (
+        pairs = [
             (a, b - 1),
             (a, b + 1),
             (a - 1, b),
             (a + 1, b),
-        )
+        ]
         for (c, d) in pairs:
-            if array[c][d] == target_val:
-                array[c][d] == replacement_val
-                q.add((c, d))
+            if index_in_array(array, (c, d)):
+                if array[c][d] == target_val:
+                    array[c][d] = replacement_val
+                    q.add((c, d))
     return
 
 
@@ -144,12 +158,16 @@ def check_representation(grid, flood_fill_method=flood_fill_recursive):
     # cost reduction: only check left half
     # 2.1 Perform flood fill to try and mark all light squares with a 2.
     # Find the first light square and use that as the seed index.
+    find = False
     for i in range(n):
         for j in range(m):
             if grid[i][j] == 1:
                 index = (i, j)
+                find = True
                 break
-    flood_fill_method(grid, shape, index, 1, 2)
+        if find:
+            break
+    flood_fill_method(grid, index, 1, 2)
     # 2.2 Look at every array element; if any 1s remain, not all light
     # squares were connected.
     for i in range(n):
@@ -159,16 +177,22 @@ def check_representation(grid, flood_fill_method=flood_fill_recursive):
     return True
 
 
+def test_index_in_array():
+    good_2_1 = [[1],
+                [1]]
+    assert index_in_array(good_2_1, (0, 0))
+    assert index_in_array(good_2_1, (1, 0))
+    assert not index_in_array(good_2_1, (0, 1))
+    assert not index_in_array(good_2_1, (0, -1))
+    return True
+
+
 def test_check_representation():
-    for flood_fill_method in (flood_fill_recursive, flood_fill_iterative):
-        grid_good = [[0, 0, 1, 1, 1, 1],
-                     [0, 1, 1, 1, 1, 0],
-                     [1, 1, 1, 1, 0, 0]]
-        assert check_representation(grid_good, flood_fill_method)
-        grid_bad = [[0, 0, 1, 1, 0, 0],
-                    [1, 1, 0, 0, 1, 1],
-                    [0, 0, 1, 1, 0, 0]]
-        assert not check_representation(grid_bad, flood_fill_method)
+    flood_fill_methods = (
+        flood_fill_recursive,
+        flood_fill_iterative,
+    )
+    for flood_fill_method in flood_fill_methods:
         small_not_symmetric = [[0],
                                [1]]
         assert not check_representation(small_not_symmetric, flood_fill_method)
@@ -181,4 +205,16 @@ def test_check_representation():
         good_2_2 = [[1, 1],
                     [1, 1]]
         assert check_representation(good_2_2, flood_fill_method)
+        grid_good = [[0, 0, 1, 1, 1, 1],
+                     [0, 1, 1, 1, 1, 0],
+                     [1, 1, 1, 1, 0, 0]]
+        assert check_representation(grid_good, flood_fill_method)
+        grid_bad = [[0, 0, 1, 1, 0, 0],
+                    [1, 1, 0, 0, 1, 1],
+                    [0, 0, 1, 1, 0, 0]]
+        assert not check_representation(grid_bad, flood_fill_method)
     return True
+
+
+if __name__ == '__main__':
+    test_check_representation()
