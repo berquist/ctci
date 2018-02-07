@@ -1,3 +1,6 @@
+from ch3 import Queue
+
+
 '''Notes from mock interview.
 
 n x m rectangle
@@ -67,7 +70,9 @@ Common data structures and language paradigms.
   https://docs.python.org/3/library/array.html
 '''
 
+
 def flood_fill_recursive(array, shape, index, target_val, replacement_val):
+    """Perform flood fill on a 2D array using a stack."""
     if target_val == replacement_val:
         return
     n, m = shape
@@ -86,10 +91,37 @@ def flood_fill_recursive(array, shape, index, target_val, replacement_val):
     return
 
 
-flood_fill = flood_fill_recursive
+def flood_fill_iterative(array, shape, index, target_val, replacement_val):
+    """Perform flood fill on a 2D array using a queue."""
+    if target_val == replacement_val:
+        return
+    n, m = shape
+    i, j = index
+    if i >= n:
+        return
+    if j >= m:
+        return
+    if array[i][j] != target_val:
+        return
+    q = Queue()
+    array[i][j] = replacement_val
+    q.add(index)
+    while not q.is_empty():
+        a, b = q.remove()
+        pairs = (
+            (a, b - 1),
+            (a, b + 1),
+            (a - 1, b),
+            (a + 1, b),
+        )
+        for (c, d) in pairs:
+            if array[c][d] == target_val:
+                array[c][d] == replacement_val
+                q.add((c, d))
+    return
 
 
-def check_representation(grid):
+def check_representation(grid, flood_fill_method=flood_fill_recursive):
     """Take in an [n, m] grid and return a boolean for whether or not the
     grid is C2 symmetric and all light squares are connected to
     each other.
@@ -117,7 +149,7 @@ def check_representation(grid):
             if grid[i][j] == 1:
                 index = (i, j)
                 break
-    flood_fill(grid, shape, index, 1, 2)
+    flood_fill_method(grid, shape, index, 1, 2)
     # 2.2 Look at every array element; if any 1s remain, not all light
     # squares were connected.
     for i in range(n):
@@ -128,24 +160,25 @@ def check_representation(grid):
 
 
 def test_check_representation():
-    grid_good = [[0, 0, 1, 1, 1, 1],
-                 [0, 1, 1, 1, 1, 0],
-                 [1, 1, 1, 1, 0, 0]]
-    assert check_representation(grid_good)
-    grid_bad = [[0, 0, 1, 1, 0, 0],
-                [1, 1, 0, 0, 1, 1],
-                [0, 0, 1, 1, 0, 0]]
-    assert not check_representation(grid_bad)
-    small_not_symmetric = [[0],
-                           [1]]
-    assert not check_representation(small_not_symmetric)
-    small_not_connected = [[0, 1],
-                           [1, 0]]
-    assert not check_representation(small_not_connected)
-    good_2_1 = [[1],
-                [1]]
-    assert check_representation(good_2_1)
-    good_2_2 = [[1, 1],
-                [1, 1]]
-    assert check_representation(good_2_2)
+    for flood_fill_method in (flood_fill_recursive, flood_fill_iterative):
+        grid_good = [[0, 0, 1, 1, 1, 1],
+                     [0, 1, 1, 1, 1, 0],
+                     [1, 1, 1, 1, 0, 0]]
+        assert check_representation(grid_good, flood_fill_method)
+        grid_bad = [[0, 0, 1, 1, 0, 0],
+                    [1, 1, 0, 0, 1, 1],
+                    [0, 0, 1, 1, 0, 0]]
+        assert not check_representation(grid_bad, flood_fill_method)
+        small_not_symmetric = [[0],
+                               [1]]
+        assert not check_representation(small_not_symmetric, flood_fill_method)
+        small_not_connected = [[0, 1],
+                               [1, 0]]
+        assert not check_representation(small_not_connected, flood_fill_method)
+        good_2_1 = [[1],
+                    [1]]
+        assert check_representation(good_2_1, flood_fill_method)
+        good_2_2 = [[1, 1],
+                    [1, 1]]
+        assert check_representation(good_2_2, flood_fill_method)
     return True
