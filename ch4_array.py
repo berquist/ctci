@@ -139,6 +139,38 @@ class BinaryTree(Container):
         return self.is_binary_search_tree(left) \
             and self.is_binary_search_tree(right)
 
+    def search_recursively(self, value, i=0):
+        if self._repr[i] == value:
+            return i
+        left = 2*i + 1
+        right = 2*i + 2
+        has_left = left < len(self) and self._repr[left] is not None
+        has_right = right < len(self) and self._repr[right] is not None
+        print(value, i, left, has_left, right, has_right)
+        if has_left and value < self._repr[i]:
+            return self.search_recursively(value, left)
+        elif has_right and value > self._repr[i]:
+            return self.search_recursively(value, right)
+        else:
+            return None
+
+    def search_iteratively(self, value, i=0):
+        current_node = i
+        while current_node is not None:
+            if value == self._repr[current_node]:
+                return current_node
+            left = 2*current_node + 1
+            right = 2*current_node + 2
+            has_left = left < len(self) and self._repr[left] is not None
+            has_right = right < len(self) and self._repr[right] is not None
+            if has_left and value < self._repr[current_node]:
+                current_node = left
+            elif has_right and value > self._repr[current_node]:
+                current_node = right
+            else:
+                current_node = None
+        return current_node
+
 
 def test_minheap_extract():
     data_start = [2, 50, 23, 88, 90, 32, 74, 80]
@@ -235,6 +267,74 @@ def test_is_binary_search_tree():
     return True
 
 
+def test_binary_tree_search_recursively():
+    tests = {
+        4: [
+            (complete_1, 0),
+            (complete_2, 0),
+            (complete_3, None),
+            (complete_4, None),
+            (is_bst, 1),
+            # (is_not_bst, 1),
+            (bst_small_1, 0),
+            (bst_small_2, 0),
+            (is_bst_2, 9),
+            # (is_not_bst_2, 9),
+        ],
+        13: [
+            (complete_1, None),
+            (complete_2, None),
+            (complete_3, None),
+            (complete_4, None),
+            (is_bst, None),
+            # (is_not_bst, None),
+            (bst_small_1, None),
+            (bst_small_2, None),
+            (is_bst_2, 13),
+            # (is_not_bst_2, 14),
+        ],
+    }
+    for value in tests:
+        for (tree, outcome) in tests[value]:
+            print(value, tree, outcome)
+            assert tree.search_recursively(value) == outcome
+    return True
+
+
+def test_binary_tree_search_iteratively():
+    tests = {
+        4: [
+            (complete_1, 0),
+            (complete_2, 0),
+            (complete_3, None),
+            (complete_4, None),
+            (is_bst, 1),
+            # (is_not_bst, 1),
+            (bst_small_1, 0),
+            (bst_small_2, 0),
+            (is_bst_2, 9),
+            # (is_not_bst_2, 9),
+        ],
+        13: [
+            (complete_1, None),
+            (complete_2, None),
+            (complete_3, None),
+            (complete_4, None),
+            (is_bst, None),
+            # (is_not_bst, None),
+            (bst_small_1, None),
+            (bst_small_2, None),
+            (is_bst_2, 13),
+            # (is_not_bst_2, 14),
+        ],
+    }
+    for value in tests:
+        for (tree, outcome) in tests[value]:
+            print(value, tree, outcome)
+            assert tree.search_iteratively(value) == outcome
+    return True
+
+
 if __name__ == '__main__':
     test_minheap_extract()
     test_minheap_insert()
@@ -243,3 +343,5 @@ if __name__ == '__main__':
     test_binary_tree_max()
     test_binary_tree_insert()
     test_is_binary_search_tree()
+    test_binary_tree_search_recursively()
+    test_binary_tree_search_iteratively()
