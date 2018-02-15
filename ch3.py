@@ -80,6 +80,14 @@ class Queue(object):
     def is_empty(self):
         return self.first is None
 
+    # def __str__(self, acc=None):
+    #     if self.is_empty():
+    #         return acc
+    #     if acc is None:
+    #         acc = '['
+    #     acc += str(self.peek()) + ', '
+    #     return acc
+
 
 class StackMin(Stack):
 

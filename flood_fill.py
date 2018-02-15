@@ -217,4 +217,5 @@ def test_check_representation():
 
 
 if __name__ == '__main__':
+    test_index_in_array()
     test_check_representation()

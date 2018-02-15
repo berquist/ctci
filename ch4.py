@@ -1,5 +1,7 @@
 import math
 
+import numpy as np
+
 from ch3 import Queue
 from ch4_array import Container
 
@@ -21,11 +23,18 @@ class _Node(object):
 
 class Node(_Node):
 
-    def __init__(self, data=None):
+    def __init__(self, data=None, name=None, children=None):
 
         super().__init__(data)
 
-        self.children = []
+        assert isinstance(name, (int, str, ))
+        self.name = name
+
+        if children is None:
+            self.children = []
+        else:
+            assert isinstance(children, (set, list, tuple, ))
+            self.children = children
 
 
 class BinaryNode(_Node):
@@ -276,12 +285,6 @@ minheap_fixed.right.right = MinHeap(7)
 #     assert minheap_unfixed.data == 2
 #     return True
 
-# class Graph(object):
-
-#     def __init__(self):
-
-#         self.nodes = []
-
 
 class AdjacencyMatrix(Container):
 
@@ -455,6 +458,57 @@ def test_adjacency_list():
     al = AdjacencyList(edges)
     assert al == al_ref
     return True
+
+
+class Graph(object):
+
+    def __init__(self, nodes=None):
+
+        if nodes is None:
+            self.nodes = []
+        else:
+            assert isinstance(nodes, (set, list, tuple, np.ndarray, ))
+            self.nodes = nodes
+
+
+def adjacency_list_to_matrix(graph):
+    assert isinstance(graph, Graph)
+    dim = len(graph.nodes)
+    adjmat = np.zeros(shape=(dim, dim), dtype=int)
+    for node in graph.nodes:
+        # assume it's an int, otherwise will need to map string to a
+        # unique id
+        idx_from = node.name
+        for idex_to in node.children:
+            adjmat[idx_from][idx_to] = 1
+    return adjmat
+
+
+def adjacency_matrix_to_list(adjmat, data=None):
+    if data is not None:
+        assert isinstance(data, (set, list, tuple, np.ndarray, ))
+    assert isinstance(adjmat, (list, tuple, np.ndarray, ))
+    dim = len(adjmat)
+    assert dim > 0
+    assert len(adjmat[0]) == dim
+    nodes = []
+    for idx_from in range(dim):
+        children
+        if data is not None:
+            element = data[idx_from]
+        else:
+            element = None
+        node = Node(data=element, name=idx_from, children=children)
+        nodes.append(node)
+    return Graph(nodes)
+
+
+# def test_adjacency_list_to_matrix():
+#     return True
+
+
+# def test_adjacency_matrix_to_list():
+#     return True
 
 
 # def dfs(root):
