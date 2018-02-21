@@ -7,23 +7,20 @@ def sorted_matrix_search(mat, element):
     assert len(mat) > 0
     assert len(mat[0]) > 0
     m, n = len(mat), len(mat[0])
-    # the other extreme will be found quickly
+    if mat[0][0] > element:
+        return None
     if mat[m - 1][n - 1] < element:
         return None
-    i = None
-    for p in range(m):
-        if mat[p][0] == element:
-            return (p, 0)
-        elif mat[p][0] > element:
-            # need to scan the other dimension
-            i = p - 1
+    for i in range(m):
+        if mat[i][0] == element:
+            return (i, 0)
+        elif mat[i][0] > element:
+            i = i - 1
             break
-    if i is None:
-        return None
-    for q in range(n):
-        if mat[i][q] == element:
-            return (i, q)
-        elif mat[i][q] > element:
+    for j in range(n):
+        if mat[i][j] == element:
+            return (i, j)
+        elif mat[i][j] > element:
             break
     return None
 
