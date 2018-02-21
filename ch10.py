@@ -200,6 +200,34 @@ def test_insertion3_sort():
     return True
 
 
+def insertion4_sort(l):
+    """The second piece of pseudocode from Wikipedia"""
+    if len(l) == 1:
+        return
+    i = 1
+    while i < len(l):
+        x = l[i]
+        j = i - 1
+        while j >= 0 and l[j] > x:
+            l[j + 1] = l[j]
+            j = j - 1
+        l[j + 1] = x
+        i = i + 1
+    return
+
+
+def test_insertion4_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    insertion4_sort(l1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    insertion4_sort(l2)
+    assert l2 == l2_ref
+    return True
+
+
 def sorted_matrix_search(mat, element):
     """return the matrix tuple (i, j) of the element's location in the
     matrix; if not found, return None
@@ -258,4 +286,5 @@ if __name__ == '__main__':
     test_insert()
     test_insertion2_sort()
     test_insertion3_sort()
+    test_insertion4_sort()
     test_sorted_matrix_search()
