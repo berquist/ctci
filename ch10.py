@@ -114,6 +114,68 @@ def test_insertion_sort():
     return True
 
 
+def insert(l, element, index):
+    _len = len(l)
+    assert index <= _len
+    if index == _len:
+        l.append(element)
+    else:
+        # strategy: grow the list by appending its own last element,
+        # shuffle everything up from index to the end (by iterating
+        # backwards), then assign at the index
+        l.append(l[-1])
+        for i in range(_len, index, -1):
+            l[i] = l[i - 1]
+        l[index] = element
+    return
+
+
+def test_insert():
+    l1 = []
+    l1r = [4]
+    insert(l1, 4, 0)
+    assert l1 == l1r
+    l2 = [4]
+    l2r = [4, 5]
+    insert(l2, 5, 1)
+    assert l2 == l2r
+    l3 = [4]
+    l3r = [5, 4]
+    insert(l3, 5, 0)
+    assert l3 == l3r
+    l4 = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    l4r = [1, 2, 3, 4, 5, 6, 7, 20, 8, 9]
+    insert(l4, 20, 7)
+    assert l4 == l4r
+    return
+
+
+# def insertion2_sort(l):
+#     ln = len(l)
+#     if ln == 1:
+#         return
+#     for i in range(1, ln):
+#         element = l[i]
+#         for j in range(i):
+#             sorted_element = l[j]
+#             if element < sorted_element:
+#                 l.insert(j, l.pop(i))
+#                 break
+#     return
+
+
+# def test_insertion2_sort():
+#     l1 = [9, 8, 7, 6, 5, -1, -2]
+#     l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+#     insertion2_sort(l1)
+#     assert l1 == l1_ref
+#     l2 = [2, 3, 4, 10, 20, 90]
+#     l2_ref = l2.copy()
+#     insertion2_sort(l2)
+#     assert l2 == l2_ref
+#     return True
+
+
 def sorted_matrix_search(mat, element):
     """return the matrix tuple (i, j) of the element's location in the
     matrix; if not found, return None
@@ -169,4 +231,6 @@ if __name__ == '__main__':
     test_selection_sort()
     test_insertion_new_sort()
     test_insertion_sort()
+    test_insert()
+    # test_insertion2_sort()
     test_sorted_matrix_search()
