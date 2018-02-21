@@ -60,12 +60,12 @@ def test_selection_sort():
     return True
 
 
-def insertion_sort(l):
+def insertion_new_sort(l):
     if len(l) == 1:
         return ln
     nl = []
     while len(l) > 0:
-        element = l.pop(0)
+        element = l.pop()
         lnl = len(nl)
         for i, sorted_element in enumerate(nl):
             if element < sorted_element:
@@ -76,15 +76,41 @@ def insertion_sort(l):
     return nl
 
 
-def test_insertion_sort():
+def test_insertion_new_sort():
     l1 = [9, 8, 7, 6, 5, -1, -2]
     l1_ref = [-2, -1, 5, 6, 7, 8, 9]
-    nl1 = insertion_sort(l1)
+    nl1 = insertion_new_sort(l1)
     assert nl1 == l1_ref
     l2 = [2, 3, 4, 10, 20, 90]
     l2_ref = l2.copy()
-    nl2 = insertion_sort(l2)
+    nl2 = insertion_new_sort(l2)
     assert nl2 == l2_ref
+    return True
+
+
+def insertion_sort(l):
+    ln = len(l)
+    if ln == 1:
+        return
+    for i in range(1, ln):
+        element = l[i]
+        for j in range(i):
+            sorted_element = l[j]
+            if element < sorted_element:
+                l.insert(j, l.pop(i))
+                break
+    return
+
+
+def test_insertion_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    insertion_sort(l1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    insertion_sort(l2)
+    assert l2 == l2_ref
     return True
 
 
@@ -141,5 +167,6 @@ def test_sorted_matrix_search():
 if __name__ == '__main__':
     test_bubble_sort()
     test_selection_sort()
+    test_insertion_new_sort()
     test_insertion_sort()
     test_sorted_matrix_search()
