@@ -7,9 +7,7 @@ def bubble_sort(l):
         # bubble pass
         for i in range(1, ln):
             if l[i - 1] > l[i]:
-                tmp = l[i - 1]
-                l[i - 1] = l[i]
-                l[i] = tmp
+                l[i - 1], l[i] = l[i], l[i - 1]
         # check pass
         pass_is_sorted = True
         for i in range(1, ln):
@@ -59,6 +57,34 @@ def test_selection_sort():
     l2_ref = l2.copy()
     selection_sort(l2)
     assert l2 == l2_ref
+    return True
+
+
+def insertion_sort(l):
+    if len(l) == 1:
+        return ln
+    nl = []
+    while len(l) > 0:
+        element = l.pop(0)
+        lnl = len(nl)
+        for i, sorted_element in enumerate(nl):
+            if element < sorted_element:
+                nl.insert(i, element)
+                break
+        if lnl == len(nl):
+            nl.append(element)
+    return nl
+
+
+def test_insertion_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    nl1 = insertion_sort(l1)
+    assert nl1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    nl2 = insertion_sort(l2)
+    assert nl2 == l2_ref
     return True
 
 
@@ -115,4 +141,5 @@ def test_sorted_matrix_search():
 if __name__ == '__main__':
     test_bubble_sort()
     test_selection_sort()
+    test_insertion_sort()
     test_sorted_matrix_search()
