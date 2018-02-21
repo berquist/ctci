@@ -33,6 +33,35 @@ def test_bubble_sort():
     return True
 
 
+def selection_sort(l):
+    ln = len(l)
+    if ln == 1:
+        return
+    for i in range(ln):
+        # find the smallest element
+        _min = l[i]
+        k = i
+        for j in range(k, ln):
+            if l[j] < _min:
+                k = j
+        # swap
+        if k > i:
+            l[i], l[k] = l[k], l[i]
+    return
+
+
+def test_selection_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    selection_sort(l1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    selection_sort(l2)
+    assert l2 == l2_ref
+    return True
+
+
 def sorted_matrix_search(mat, element):
     """return the matrix tuple (i, j) of the element's location in the
     matrix; if not found, return None
@@ -85,4 +114,5 @@ def test_sorted_matrix_search():
 
 if __name__ == '__main__':
     test_bubble_sort()
+    test_selection_sort()
     test_sorted_matrix_search()
