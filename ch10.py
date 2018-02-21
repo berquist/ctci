@@ -29,6 +29,23 @@ def sorted_matrix_search(mat, element):
 
 
 def test_sorted_matrix_search():
+    mat1 = [[1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]]
+    # mat1t = [[1, 4, 7],
+    #          [2, 5, 8],
+    #          [3, 6, 9]]
+    assert sorted_matrix_search(mat1, 0) == None
+    assert sorted_matrix_search(mat1, 1) == (0, 0)
+    assert sorted_matrix_search(mat1, 2) == (0, 1)
+    assert sorted_matrix_search(mat1, 3) == (0, 2)
+    assert sorted_matrix_search(mat1, 4) == (1, 0)
+    assert sorted_matrix_search(mat1, 5) == (1, 1)
+    assert sorted_matrix_search(mat1, 6) == (1, 2)
+    assert sorted_matrix_search(mat1, 7) == (2, 0)
+    assert sorted_matrix_search(mat1, 8) == (2, 1)
+    assert sorted_matrix_search(mat1, 9) == (2, 2)
+    assert sorted_matrix_search(mat1, 10) == None
     return True
 
 
