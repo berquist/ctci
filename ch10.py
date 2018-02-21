@@ -150,30 +150,54 @@ def test_insert():
     return
 
 
-# def insertion2_sort(l):
-#     ln = len(l)
-#     if ln == 1:
-#         return
-#     for i in range(1, ln):
-#         element = l[i]
-#         for j in range(i):
-#             sorted_element = l[j]
-#             if element < sorted_element:
-#                 l.insert(j, l.pop(i))
-#                 break
-#     return
+def insertion2_sort(l):
+    ln = len(l)
+    if ln == 1:
+        return
+    for i in range(1, ln):
+        for j in range(i):
+            if l[i] < l[j]:
+                insert(l, l.pop(i), j)
+                break
+    return
 
 
-# def test_insertion2_sort():
-#     l1 = [9, 8, 7, 6, 5, -1, -2]
-#     l1_ref = [-2, -1, 5, 6, 7, 8, 9]
-#     insertion2_sort(l1)
-#     assert l1 == l1_ref
-#     l2 = [2, 3, 4, 10, 20, 90]
-#     l2_ref = l2.copy()
-#     insertion2_sort(l2)
-#     assert l2 == l2_ref
-#     return True
+def test_insertion2_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    insertion2_sort(l1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    insertion2_sort(l2)
+    assert l2 == l2_ref
+    return True
+
+
+def insertion3_sort(l):
+    """The first piece of pseudocode from Wikipedia"""
+    if len(l) == 1:
+        return
+    i = 1
+    while i < len(l):
+        j = i
+        while j > 0 and l[j - 1] > l[j]:
+            l[j], l[j - 1] = l[j - 1], l[j]
+            j = j - 1
+        i = i + 1
+    return
+
+
+def test_insertion3_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    insertion3_sort(l1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    insertion3_sort(l2)
+    assert l2 == l2_ref
+    return True
 
 
 def sorted_matrix_search(mat, element):
@@ -232,5 +256,6 @@ if __name__ == '__main__':
     test_insertion_new_sort()
     test_insertion_sort()
     test_insert()
-    # test_insertion2_sort()
+    test_insertion2_sort()
+    test_insertion3_sort()
     test_sorted_matrix_search()
