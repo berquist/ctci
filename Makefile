@@ -3,4 +3,4 @@ test:
 	find . -type f -name "*.py" -exec pytest -v '{}' +
 
 clean:
-	\rm -rf __pycache__
+	find . -type f -name "*.pyc" -exec rm -f '{}' +
