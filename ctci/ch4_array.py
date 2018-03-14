@@ -1,5 +1,6 @@
 import math
 import operator
+import random
 
 
 class Container(object):
@@ -30,6 +31,9 @@ class Container(object):
 
     def __getitem__(self, index):
         return self._repr[index]
+
+    def _index_parent(self, i):
+        return math.floor((i - 1) / 2)
 
 
 class MinHeap(Container):
@@ -76,7 +80,7 @@ class MinHeap(Container):
             i = len(self) - 1
         if i >= len(self):
             raise IndexError
-        parent = math.floor((i - 1) / 2)
+        parent = self._index_parent(i)
         if parent >= 0:
             if self._repr[i] < self._repr[parent]:
                 self._repr[i], self._repr[parent] = self._repr[parent], self._repr[i]
@@ -88,6 +92,17 @@ class BinaryTree(Container):
 
     def __init__(self, data=None):
         super().__init__(data)
+
+    def _make_lr_indices(self, index):
+        return (2*index + 1, 2*index + 2)
+
+    def _has_children(self, index):
+        left, right = self._make_lr_indices(index)
+        left_is_indexable = left < len(self)
+        right_is_indexable = right < len(self)
+        has_left = left_is_indexable and (self._repr[left] is not None)
+        has_right = right_is_indexable and (self._repr[right] is not None)
+        return (has_left, has_right)
 
     def size(self):
         return self.count()
@@ -137,6 +152,7 @@ class BinaryTree(Container):
         return
 
     def insert(self, element, i=0):
+        """Insert into a binary search tree."""
         # grow the containter to ensure we can insert into it; when
         # combined with the fact that we match above when the current
         # node is none, it is no longer necessary to check has_left or
@@ -152,6 +168,39 @@ class BinaryTree(Container):
             self.insert(element, left)
         else:
             self.insert(element, right)
+        return
+
+    def _replace_node_in_parent(self, new_value=None, i=0):
+        parent = self._index_parent(i)
+        if parent >= 0:
+            parent_left, parent_right = self._make_lr_indices(parent)
+            parent_has_left, parent_has_right = self._has_children(parent)
+            
+
+    def delete(self, element, i=0):
+        """Delete from a binary search tree."""
+        left, right = self._make_lr_indices(i)
+        has_left_child, has_right_child = self._has_children(i)
+        if has_left_child and element < self._repr[i]:
+            self.delete(element, left)
+            return
+        if has_right_child and element > self._repr[i]:
+            self.delete(element, right)
+            return
+        assert element == self._repr[i]
+        if has_left_child and has_right_child:
+            pass
+        elif has_left_child:
+            # self._repr[i] = self._repr[right]
+            # self._repr[right] = None
+            pass
+        elif has_right_child:
+            # self._repr[i] = self._repr[right]
+            # self._repr[right] = None
+            # self.replace_node_in_parent(
+            pass
+        else:
+            self._repr[i] = None
         return
 
     def is_binary_search_tree(self, i=0):
@@ -298,6 +347,17 @@ def test_binary_tree_insert():
     return True
 
 
+def test_binary_tree_replace_node_in_parent():
+    return True
+
+
+def test_binary_search_tree_delete():
+    _complete_1 = BinaryTree(complete_1._repr)
+    _complete_1.delete(4)
+    assert _complete_1 == BinaryTree([None])
+    return True
+
+
 def test_is_binary_search_tree():
     tests = [
         (complete_1, True),
@@ -392,6 +452,8 @@ if __name__ == '__main__':
     test_binary_tree_min()
     test_binary_tree_max()
     test_binary_tree_insert()
+    test_binary_tree_replace_node_in_parent()
+    test_binary_tree_delete()
     test_is_binary_search_tree()
     test_binary_tree_search_recursively()
     test_binary_tree_search_iteratively()
