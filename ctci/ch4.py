@@ -310,10 +310,10 @@ class AdjacencyMatrix(Container):
     def _form_adjacency_matrix(self, is_undirected=False):
         if self.edges is None:
             raise Exception
-        for (start, end) in self.edges:
-            self._repr[start][end] = 1
+        for (start, end, weight) in self.edges:
+            self._repr[start][end] = weight
         if is_undirected:
-            self._repr[end][start] = 1
+            self._repr[end][start] = weight
         # todo
         self._len = len(self._repr[0])
         return
@@ -323,10 +323,10 @@ class AdjacencyMatrix(Container):
 def test_adjacency_matrix():
     # pg 107, 1
     edges = [
-        (0, 1),
-        (1, 2),
-        (2, 0),
-        (3, 2),
+        (0, 1, 1),
+        (1, 2, 1),
+        (2, 0, 1),
+        (3, 2, 1),
     ]
     matrix = [[0, 1, 0, 0],
               [0, 0, 1, 0],
@@ -338,14 +338,14 @@ def test_adjacency_matrix():
     assert am == am_ref
     # pg 107, 2
     edges = [
-        (0, 1),
-        (0, 4),
-        (0, 5),
-        (1, 3),
-        (1, 4),
-        (2, 1),
-        (3, 2),
-        (3, 4),
+        (0, 1, 1),
+        (0, 4, 1),
+        (0, 5, 1),
+        (1, 3, 1),
+        (1, 4, 1),
+        (2, 1, 1),
+        (3, 2, 1),
+        (3, 4, 1),
     ]
     matrix = [[0, 1, 0, 0, 1, 1],
               [0, 0, 0, 1, 1, 0],
@@ -389,14 +389,14 @@ def is_path(start, end, graph):
 
 def test_is_path():
     edges = [
-        (0, 1),
-        (1, 2),
-        (2, 0),
-        (2, 3),
-        (3, 2),
-        (4, 6),
-        (5, 4),
-        (6, 5),
+        (0, 1, 1),
+        (1, 2, 1),
+        (2, 0, 1),
+        (2, 3, 1),
+        (3, 2, 1),
+        (4, 6, 1),
+        (5, 4, 1),
+        (6, 5, 1),
     ]
     graph = AdjacencyMatrix(edges)
     assert is_path(0, 0, graph)
@@ -421,37 +421,37 @@ class AdjacencyList(Container):
     def _form_adjacency_list(self, is_undirected=False):
         if self.edges is None:
             raise Exception
-        for (start, end) in self.edges:
+        for (start, end, weight) in self.edges:
             if start not in self._repr:
                 self._repr[start] = set()
-            self._repr[start].add(end)
+            self._repr[start].add((end, weight))
         if is_undirected:
             if end not in self._repr:
                 self._repr[end] = set()
-            self._repr[end].add(start)
+            self._repr[end].add((start, weight))
         return
 
 
 def test_adjacency_list():
     # pg 106, 1
     edges = [
-        (0, 1),
-        (1, 2),
-        (2, 0),
-        (2, 3),
-        (3, 2),
-        (4, 6),
-        (5, 4),
-        (6, 5),
+        (0, 1, 1),
+        (1, 2, 1),
+        (2, 0, 1),
+        (2, 3, 1),
+        (3, 2, 1),
+        (4, 6, 1),
+        (5, 4, 1),
+        (6, 5, 1),
     ]
     l = {
-        0: {1},
-        1: {2},
-        2: {0, 3},
-        3: {2},
-        4: {6},
-        5: {4},
-        6: {5},
+        0: {(1, 1)},
+        1: {(2, 1)},
+        2: {(0, 1), (3, 1)},
+        3: {(2, 1)},
+        4: {(6, 1)},
+        5: {(4, 1)},
+        6: {(5, 1)},
     }
     al_ref = AdjacencyList()
     al_ref._repr = l
@@ -479,8 +479,8 @@ def adjacency_list_to_matrix(graph):
         # assume it's an int, otherwise will need to map string to a
         # unique id
         idx_from = node.name
-        for idex_to in node.children:
-            adjmat[idx_from][idx_to] = 1
+        for (idex_to, weight) in node.children:
+            adjmat[idx_from][idx_to] = weight
     return adjmat
 
 
