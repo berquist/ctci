@@ -348,6 +348,77 @@ def test_quick_sort():
     return True
 
 
+def merge_sort(l):
+    """Runtime: O(N*log(N)) average and worst case. Memory: Depends.
+
+    Merge sort divides the array in half, sorts each of those halves,
+    and then merges them back together. Each of those halves has the
+    same sorting algorithm applied to it. Eventually, you are merging
+    just two single-element array. It is the "merge" part that does
+    all the heavy lifting.
+
+    The merge method operates by copying all the elements from the
+    target array segment into a helper array, keeping track of where
+    the start of the left and right halves should be (`helper_left`
+    and `helper_right`). We then iterate through `helper`, copying the
+    smaller element from each half into the array. At the end, we copy
+    any remaining elements into the target array.
+    """
+    helper = ['' for _ in range(len(l))]
+    _merge_sort(l, helper, 0, len(l) - 1)
+    return
+
+
+def _merge_sort(l, helper, low, high):
+    if low < high:
+        middle = (low + high) // 2
+        _merge_sort(l, helper, low, middle)
+        _merge_sort(l, helper, middle + 1, high)
+        merge(l, helper, low, middle, high)
+    return
+
+
+def merge(l, helper, low, middle, high):
+    # copy both halves into a helper array
+    for i in range(low, high + 1):
+        helper[i] = l[i]
+
+    helper_left = low
+    helper_right = middle + 1
+    current = low
+
+    # Interate through helper array. Compare the left and right half,
+    # copying back the smaller element from the two halves into the
+    # original array.
+    while (helper_left <= middle) and (helper_right <= high):
+        if helper[helper_left] <= helper[helper_right]:
+            l[current] = helper[helper_left]
+            helper_left += 1
+        else:
+            l[current] = helper[helper_right]
+            helper_right += 1
+        current += 1
+
+    # Copy the rest of the left side of the array into the target
+    # array
+    remaining = middle - helper_left
+    for i in range(remaining + 1):
+        l[current + i] = helper[helper_left + i]
+    return
+
+
+def test_merge_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    merge_sort(l1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    merge_sort(l2)
+    assert l2 == l2_ref
+    return True
+
+
 
 if __name__ == '__main__':
     test_bubble_sort()
@@ -360,3 +431,4 @@ if __name__ == '__main__':
     test_insertion4_sort()
     test_sorted_matrix_search()
     test_quick_sort()
+    test_merge_sort()
