@@ -36,6 +36,10 @@ def test_bubble_sort():
     l2_ref = l2.copy()
     bubble_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    bubble_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
@@ -73,6 +77,10 @@ def test_selection_sort():
     l2_ref = l2.copy()
     selection_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    selection_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
@@ -127,6 +135,10 @@ def test_insertion_sort():
     l2_ref = l2.copy()
     insertion_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    insertion_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
@@ -187,6 +199,10 @@ def test_insertion2_sort():
     l2_ref = l2.copy()
     insertion2_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    insertion2_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
@@ -213,6 +229,10 @@ def test_insertion3_sort():
     l2_ref = l2.copy()
     insertion3_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    insertion3_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
@@ -241,6 +261,10 @@ def test_insertion4_sort():
     l2_ref = l2.copy()
     insertion4_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    insertion4_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
@@ -345,6 +369,10 @@ def test_quick_sort():
     l2_ref = l2.copy()
     quick_sort(l2, 0, len(l2) - 1)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    quick_sort(l3, 0, len(l3) - 1)
+    assert l3 == l3_ref
     return True
 
 
@@ -416,6 +444,10 @@ def test_merge_sort():
     l2_ref = l2.copy()
     merge_sort(l2)
     assert l2 == l2_ref
+    l3 = [1, 4, 5, 2, 8, 9]
+    l3_ref = [1, 2, 4, 5, 8, 9]
+    merge_sort(l3)
+    assert l3 == l3_ref
     return True
 
 
