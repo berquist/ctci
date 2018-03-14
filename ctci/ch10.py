@@ -1,4 +1,12 @@
 def bubble_sort(l):
+    """Runtime: O(N^2) average and worst case. Memory: O(1).
+
+    We start at the beginning of the array and swap the first two
+    elements if the first is greater than the second. Them, we go to
+    the next pair, and so on, continuously making sweeps of the array
+    until it is sorted. In doing so, the smaller items slowly "bubble"
+    up to the beginning of the list.
+    """
     ln = len(l)
     if ln == 1:
         return
@@ -32,6 +40,14 @@ def test_bubble_sort():
 
 
 def selection_sort(l):
+    """Runtime: O(N^2) average and worst case. Memory: O(1).
+
+    Selection sort is the child's algorithm: simple, but
+    inefficient. Find the smallest element using a linear scan and
+    move it to the fron (swapping it with the front element). Then,
+    find the second smallest and move it, again doing a linear
+    scan. Continue doing this until all the elements are in place.
+    """
     ln = len(l)
     if ln == 1:
         return
@@ -278,6 +294,61 @@ def test_sorted_matrix_search():
     return True
 
 
+def quick_sort(l, left, right):
+    """Runtime: O(N*log(N)) average, O(N^2) worst case. Memory: O(log(N)).
+
+    In quick sort, we pick a random element and partition the array,
+    such that all numbers that are less than the partitioning element
+    come before all elements that are greater than it. The
+    partitioning can be performed efficiently through a series of
+    swaps.
+
+    If we repeatedly partition the array (and its sub-arrays) around
+    an element, the array will eventually become sorted. However, as
+    the partitioned element is not guaranteed to be the media (or
+    anywhere near the median), our sorting could be very slow. This is
+    the reason for the O(N^2) worst case runtime.
+    """
+    index = partition(l, left, right)
+    # sort left half
+    if left < (index - 1):
+        quick_sort(l, left, index - 1)
+    # sort right half
+    if index < right:
+        quick_sort(l, index, right)
+    return
+
+
+def partition(l, left, right):
+    pivot = l[(left + right) // 2]
+    while left <= right:
+        # find element on the left that should be on the right
+        while l[left] < pivot:
+            left += 1
+        # find element on the right that should be on the left
+        while l[right] > pivot:
+            right -= 1
+        # swap elements and move left/right indices
+        if left <= right:
+            l[left], l[right] = l[right], l[left]
+            left += 1
+            right -= 1
+    return left
+
+
+def test_quick_sort():
+    l1 = [9, 8, 7, 6, 5, -1, -2]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    quick_sort(l1, 0, len(l1) - 1)
+    assert l1 == l1_ref
+    l2 = [2, 3, 4, 10, 20, 90]
+    l2_ref = l2.copy()
+    quick_sort(l2, 0, len(l2) - 1)
+    assert l2 == l2_ref
+    return True
+
+
+
 if __name__ == '__main__':
     test_bubble_sort()
     test_selection_sort()
@@ -288,3 +359,4 @@ if __name__ == '__main__':
     test_insertion3_sort()
     test_insertion4_sort()
     test_sorted_matrix_search()
+    test_quick_sort()
