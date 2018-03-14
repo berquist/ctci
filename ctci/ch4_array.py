@@ -11,6 +11,9 @@ class Container(object):
         else:
             self._repr = []
 
+    def __str__(self):
+        return str(self._repr)
+
     def __len__(self):
         # if hasattr(self, '_len'):
         #     return self._len
@@ -123,9 +126,32 @@ class BinaryTree(Container):
             acc = max(acc, self.max(right))
         return acc
 
-    def insert(self, element):
-        # TODO
-        self._repr.append(element)
+    def _pad(self, nlen):
+        """Extend the underlying representation of the tree so that elements
+        can be added into None nodes.
+        """
+        if nlen <= len(self._repr):
+            return
+        while len(self._repr) < nlen:
+            self._repr.append(None)
+        return
+
+    def insert(self, element, i=0):
+        # grow the containter to ensure we can insert into it; when
+        # combined with the fact that we match above when the current
+        # node is none, it is no longer necessary to check has_left or
+        # has_right
+        if i >= len(self._repr):
+            self._pad(i + 1)
+        if self._repr[i] is None:
+            self._repr[i] = element
+            return
+        left = 2*i + 1
+        right = 2*i + 2
+        if element < self._repr[i]:
+            self.insert(element, left)
+        else:
+            self.insert(element, right)
         return
 
     def is_binary_search_tree(self, i=0):
@@ -207,8 +233,12 @@ is_bst = BinaryTree([8, 4, 10, 2, 6, 9])
 is_not_bst = BinaryTree([8, 4, 10, 2, 12, 9])
 bst_small_1 = BinaryTree([4, 2])
 bst_small_2 = BinaryTree([4, 2, 6])
-is_bst_2 = BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None])
-is_not_bst_2 = BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, None, 13])
+
+is_bst_2 =      BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None])
+is_not_bst_2 =  BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, None, 13])
+is_bst_3 =      BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None, None, None, None, None, None, 5])
+is_not_bst_3 =  BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None, None, None, None, None, 5])
+is_not2_bst_3 = BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None, None, None, None, None, None, None, 5])
 
 
 def test_binary_tree_size():
@@ -234,6 +264,7 @@ def test_binary_tree_min():
         (bst_small_1, 2),
         (bst_small_2, 2),
         (is_bst_2, 1),
+        (is_bst_3, 1),
     ]
     for (tree, outcome) in tests:
         assert tree.min() == outcome
@@ -247,6 +278,7 @@ def test_binary_tree_max():
         (bst_small_1, 4),
         (bst_small_2, 6),
         (is_bst_2, 14),
+        (is_bst_3, 14),
     ]
     for (tree, outcome) in tests:
         assert tree.max() == outcome
@@ -254,17 +286,33 @@ def test_binary_tree_max():
 
 
 def test_binary_tree_insert():
+    _complete_1 = BinaryTree([])
+    _complete_1.insert(4)
+    assert _complete_1 == complete_1
+    _complete_2 = BinaryTree(complete_1._repr.copy())
+    _complete_2.insert(2)
+    assert _complete_2 == complete_2
+    _is_bst_3 = BinaryTree(is_bst_2._repr.copy())
+    _is_bst_3.insert(5)
+    assert _is_bst_3 == is_bst_3
     return True
 
 
 def test_is_binary_search_tree():
     tests = [
+        (complete_1, True),
+        (complete_2, True),
+        (complete_3, False),
+        (complete_4, False),
         (bst_small_1, True),
         (bst_small_2, True),
         (is_bst, True),
         (is_not_bst, False),
         (is_bst_2, True),
         (is_not_bst_2, False),
+        (is_bst_3, True),
+        (is_not_bst_3, False),
+        (is_not2_bst_3, False),
     ]
     for (tree, outcome) in tests:
         assert tree.is_binary_search_tree() == outcome
