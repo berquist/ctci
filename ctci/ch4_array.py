@@ -109,38 +109,54 @@ class BinaryTree(Container):
     def size(self):
         return self.count()
 
-    def min(self, i=0):
+    def min(self, i=0, return_index=False):
         """Brute-force find the smallest element in the tree. Works if the
         tree is not a binary search tree.
         """
         if not self._repr:
             raise Exception
-        acc = self._repr[i]
+        acc, index = self._repr[i], i
         left = 2*i + 1
         right = 2*i + 2
         has_left = left < len(self) and self._repr[left] is not None
         has_right = right < len(self) and self._repr[right] is not None
         if has_left:
-            acc = min(acc, self.min(left))
+            _acc, _index = self.min(left, True)
+            if _acc < acc:
+                acc = _acc
+                index = _index
         if has_right:
-            acc = min(acc, self.min(right))
+            _acc, _index = self.min(right, True)
+            if _acc < acc:
+                acc = _acc
+                index = _index
+        if return_index:
+            return acc, index
         return acc
 
-    def max(self, i=0):
+    def max(self, i=0, return_index=False):
         """Brute-force find the largest element in the tree. Works if the tree
         is not a binary search tree.
         """
         if not self._repr:
             raise Exception
-        acc = self._repr[i]
+        acc, index = self._repr[i], i
         left = 2*i + 1
         right = 2*i + 2
         has_left = left < len(self) and self._repr[left] is not None
         has_right = right < len(self) and self._repr[right] is not None
         if has_left:
-            acc = max(acc, self.max(left))
+            _acc, _index = self.max(left, True)
+            if _acc > acc:
+                acc = _acc
+                index = _index
         if has_right:
-            acc = max(acc, self.max(right))
+            _acc, _index = self.max(right, True)
+            if _acc > acc:
+                acc = _acc
+                index = _index
+        if return_index:
+            return acc, index
         return acc
 
     def _pad(self, nlen):
@@ -181,7 +197,6 @@ class BinaryTree(Container):
         while not indices_q.is_empty():
             current_index = indices_q.remove()
             left, right = self._make_lr_indices(current_index)
-            has_left, has_right = self._has_children(current_index)
             if left < len(self):
                 indices_q.add(left)
             if right < len(self):
@@ -190,15 +205,14 @@ class BinaryTree(Container):
         elements = [self._repr[index] for index in indices]
         return BinaryTree(elements)
 
-    def _replace_node_in_parent(self, new_value=None, i=0):
-        parent = self._index_parent(i)
-        if parent >= 0:
-            parent_left, parent_right = self._make_lr_indices(parent)
-            parent_has_left, parent_has_right = self._has_children(parent)
-            
+    # def _replace_node_in_parent(self, new_value=None, i=0):
+    #     parent = self._index_parent(i)
+    #     if parent >= 0:
+    #         parent_left, parent_right = self._make_lr_indices(parent)
+    #         parent_has_left, parent_has_right = self._has_children(parent)
 
     def delete(self, element, i=0):
-        """Delete from a binary search tree."""
+        """Delete an element from a binary search tree."""
         left, right = self._make_lr_indices(i)
         has_left_child, has_right_child = self._has_children(i)
         if has_left_child and element < self._repr[i]:
@@ -209,16 +223,17 @@ class BinaryTree(Container):
             return
         assert element == self._repr[i]
         if has_left_child and has_right_child:
+            # choose either in-order predecessor or successor as
+            # replacement:
+            # - predecessor: max of left subtree (rightmost child)
+            # - successor: min of right subtree (leftmost child)
             pass
         elif has_left_child:
-            # self._repr[i] = self._repr[right]
-            # self._repr[right] = None
-            pass
+            self._repr[i] = self._repr[left]
+            self._repr[left] = None
         elif has_right_child:
-            # self._repr[i] = self._repr[right]
-            # self._repr[right] = None
-            # self.replace_node_in_parent(
-            pass
+            self._repr[i] = self._repr[right]
+            self._repr[right] = None
         else:
             self._repr[i] = None
         return
@@ -337,6 +352,16 @@ def test_binary_tree_min():
     ]
     for (tree, outcome) in tests:
         assert tree.min() == outcome
+    tests = [
+        (is_bst, (2, 3)),
+        (is_not_bst, (2, 3)),
+        (bst_small_1, (2, 1)),
+        (bst_small_2, (2, 1)),
+        (is_bst_2, (1, 3)),
+        (is_bst_3, (1, 3)),
+    ]
+    for (tree, outcome) in tests:
+        assert tree.min(return_index=True) == outcome
     return True
 
 
@@ -351,6 +376,16 @@ def test_binary_tree_max():
     ]
     for (tree, outcome) in tests:
         assert tree.max() == outcome
+    tests = [
+        (is_bst, (10, 2)),
+        (is_not_bst, (12, 4)),
+        (bst_small_1, (4, 0)),
+        (bst_small_2, (6, 2)),
+        (is_bst_2, (14, 6)),
+        (is_bst_3, (14, 6)),
+    ]
+    for (tree, outcome) in tests:
+        assert tree.max(return_index=True) == outcome
     return True
 
 
