@@ -22,17 +22,18 @@ function knows(i, j) -> boolean
 
 
 def mayor(pairs, n):
-    print('-' * 70)
+    # print('-' * 70)
     left = set([pair[0] for pair in pairs])
     right = set([pair[1] for pair in pairs])
     people = set(range(n))
     candidates = people.copy()
-    print(n, candidates)
+    # print(n, candidates)
+    # print(pairs)
     candidates = people.difference(left)
     if not candidates:
         return {}
     _candidates = candidates.copy()
-    print(candidates)
+    # print(candidates)
     for candidate in candidates:
         everyone_else = people.copy()
         everyone_else.discard(candidate)
@@ -40,7 +41,7 @@ def mayor(pairs, n):
             if (person, candidate) not in pairs:
                 _candidates.discard(candidate)
                 break
-    print(_candidates)
+    # print(_candidates)
     return _candidates
 
 
@@ -98,6 +99,44 @@ def test_mayor():
         (2, 1),
         (3, 1),
         (1, 4),
+    ]
+    assert list(mayor(pairs, 5)) == []
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+        (0, 4),
+        (2, 4),
+        (3, 4),
+    ]
+    assert list(mayor(pairs, 5)) == []
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+        (0, 4),
+        (2, 4),
+        (3, 4),
+        (4, 1),
+    ]
+    assert list(mayor(pairs, 5)) == [1]
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+        (0, 4),
+        (2, 4),
+        (3, 4),
+        (1, 4),
+    ]
+    assert list(mayor(pairs, 5)) == [4]
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+        (0, 4),
+        (1, 4),
+        (3, 4),
     ]
     assert list(mayor(pairs, 5)) == []
     return
