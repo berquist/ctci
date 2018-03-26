@@ -2,6 +2,8 @@ import math
 import operator
 import random
 
+from ch3 import Queue
+
 
 class Container(object):
 
@@ -169,6 +171,24 @@ class BinaryTree(Container):
         else:
             self.insert(element, right)
         return
+
+    def subtree(self, i=0):
+        if i >= len(self):
+            return BinaryTree([])
+        indices_q = Queue()
+        indices_q.add(i)
+        indices = []
+        while not indices_q.is_empty():
+            current_index = indices_q.remove()
+            left, right = self._make_lr_indices(current_index)
+            has_left, has_right = self._has_children(current_index)
+            if left < len(self):
+                indices_q.add(left)
+            if right < len(self):
+                indices_q.add(right)
+            indices.append(current_index)
+        elements = [self._repr[index] for index in indices]
+        return BinaryTree(elements)
 
     def _replace_node_in_parent(self, new_value=None, i=0):
         parent = self._index_parent(i)
@@ -347,6 +367,23 @@ def test_binary_tree_insert():
     return True
 
 
+t = BinaryTree([3, 1, 6, None, None, 4, 7, None, None, None, None, None, 5, None, None])
+u = BinaryTree([6, 4, 7, None, 5, None, None])
+v = BinaryTree([3, 1, 6, None, None, 4, 7])
+w = BinaryTree([10, None, 14, None, None, 13, None])
+
+
+def test_binary_tree_subtree():
+    assert t.is_binary_search_tree()
+    _u = t.subtree(2)
+    assert _u == u
+    _v = is_bst_2.subtree(1)
+    assert _v == v
+    _w = is_bst_2.subtree(2)
+    assert _w == w
+    return True
+
+
 def test_binary_tree_replace_node_in_parent():
     return True
 
@@ -452,6 +489,7 @@ if __name__ == '__main__':
     test_binary_tree_min()
     test_binary_tree_max()
     test_binary_tree_insert()
+    test_binary_tree_subtree()
     test_binary_tree_replace_node_in_parent()
     test_binary_tree_delete()
     test_is_binary_search_tree()

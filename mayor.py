@@ -22,18 +22,13 @@ function knows(i, j) -> boolean
 
 
 def mayor(pairs, n):
-    # print('-' * 70)
     left = set([pair[0] for pair in pairs])
-    right = set([pair[1] for pair in pairs])
     people = set(range(n))
     candidates = people.copy()
-    # print(n, candidates)
-    # print(pairs)
     candidates = people.difference(left)
     if not candidates:
         return {}
     _candidates = candidates.copy()
-    # print(candidates)
     for candidate in candidates:
         everyone_else = people.copy()
         everyone_else.discard(candidate)
@@ -41,7 +36,6 @@ def mayor(pairs, n):
             if (person, candidate) not in pairs:
                 _candidates.discard(candidate)
                 break
-    # print(_candidates)
     return _candidates
 
 
