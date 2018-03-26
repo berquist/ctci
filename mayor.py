@@ -29,13 +29,13 @@ def mayor(pairs, n):
     candidates = people.copy()
     print(n, candidates)
     candidates = people.difference(left)
+    if not candidates:
+        return {}
     _candidates = candidates.copy()
     print(candidates)
     for candidate in candidates:
         everyone_else = people.copy()
         everyone_else.discard(candidate)
-        # if everyone_else != left:
-        #     candidates.discard(candidate)
         for person in everyone_else:
             if (person, candidate) not in pairs:
                 _candidates.discard(candidate)
@@ -80,6 +80,26 @@ def test_mayor():
         (2, 0),
     ]
     assert list(mayor(pairs, 3)) == []
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+    ]
+    assert list(mayor(pairs, 5)) == []
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+        (4, 1),
+    ]
+    assert list(mayor(pairs, 5)) == [1]
+    pairs = [
+        (0, 1),
+        (2, 1),
+        (3, 1),
+        (1, 4),
+    ]
+    assert list(mayor(pairs, 5)) == []
     return
 
 if __name__ == '__main__':
