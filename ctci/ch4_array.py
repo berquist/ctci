@@ -189,6 +189,7 @@ class BinaryTree(Container):
         return
 
     def subtree(self, i=0):
+        """Return the subtree starting at the given index."""
         if i >= len(self):
             return BinaryTree([])
         indices_q = Queue()
@@ -211,8 +212,9 @@ class BinaryTree(Container):
     #         parent_left, parent_right = self._make_lr_indices(parent)
     #         parent_has_left, parent_has_right = self._has_children(parent)
 
-    def delete(self, element, i=0):
+    def delete(self, element, i=0, replacement_choice='predecessor'):
         """Delete an element from a binary search tree."""
+        assert replacement_choice in ('predecessor', 'successor')
         left, right = self._make_lr_indices(i)
         has_left_child, has_right_child = self._has_children(i)
         if has_left_child and element < self._repr[i]:
@@ -227,7 +229,16 @@ class BinaryTree(Container):
             # replacement:
             # - predecessor: max of left subtree (rightmost child)
             # - successor: min of right subtree (leftmost child)
-            pass
+            if replacement_choice == 'predecessor':
+                predecessor, predecessor_index = self.max(left, return_index=True)
+                self._repr[i] = predecessor
+                self._repr[predecessor_index] = None
+                # what if the predecessor has children?
+            elif replacement_choice == 'successor':
+                successor, successor_index = self.min(right, return_index=True)
+                self._repr[i] = successor
+                self._repr[successor_index] = None
+                # what if the successor has children?
         elif has_left_child:
             self._repr[i] = self._repr[left]
             self._repr[left] = None
@@ -427,6 +438,14 @@ def test_binary_search_tree_delete():
     _complete_1 = BinaryTree(complete_1._repr)
     _complete_1.delete(4)
     assert _complete_1 == BinaryTree([None])
+    _is_bst_2 = BinaryTree(is_bst_2._repr)
+    _is_bst_2.delete(8, replacement_choice='predecessor')
+    assert _is_bst_2.is_binary_search_tree()
+    assert _is_bst_2 == BinaryTree([7, 3, 10, 1, 6, None, 14, None, None, 4, None, None, None, 13, None])
+    _is_bst_2 = BinaryTree(is_bst_2._repr)
+    _is_bst_2.delete(8, replacement_choice='successor')
+    assert _is_bst_2.is_binary_search_tree()
+    assert _is_bst_2 == BinaryTree([10, 3, 14, 1, 6, 13, None, None, None, 4, 7, None, None, None, None])
     return True
 
 
