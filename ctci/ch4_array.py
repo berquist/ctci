@@ -335,6 +335,15 @@ is_bst_3 =      BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, No
 is_not_bst_3 =  BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None, None, None, None, None, 5])
 is_not2_bst_3 = BinaryTree([8, 3, 10, 1, 6, None, 14, None, None, 4, 7, None, None, 13, None, None, None, None, None, None, None, 5])
 
+bst_big = BinaryTree([
+    8,
+    3, 10,
+    1, 6, None, 14,
+    None, None, 4, 7, None, None, 13, 19,
+    None, None, None, None, None, None, None, None, None, None, None, None, 12, None, 15, 20,
+    None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, 11, None, None, None, None, None, None, None,
+])
+
 
 def test_binary_tree_size():
     tests = [
@@ -424,8 +433,10 @@ def test_binary_tree_subtree():
     _u = t.subtree(2)
     assert _u == u
     _v = is_bst_2.subtree(1)
+    assert _v.is_binary_search_tree()
     assert _v == v
     _w = is_bst_2.subtree(2)
+    assert _w.is_binary_search_tree()
     assert _w == w
     return True
 
@@ -464,6 +475,7 @@ def test_is_binary_search_tree():
         (is_bst_3, True),
         (is_not_bst_3, False),
         (is_not2_bst_3, False),
+        (bst_big, True),
     ]
     for (tree, outcome) in tests:
         assert tree.is_binary_search_tree() == outcome
