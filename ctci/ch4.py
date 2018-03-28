@@ -208,7 +208,7 @@ def test_binary_tree_insert_complete():
 
 def is_binary_search_tree(node):
     """Return True if the given binary tree is actually a binary search
-    tree (BST), otherwise return False.
+    tree (BST), otherwise return False. (4.5)
     """
     # base case: empty nodes are BSTs
     if node is None:
@@ -224,6 +224,7 @@ def is_binary_search_tree(node):
 
 
 def test_is_binary_search_tree():
+    """Test for 4.5"""
     assert is_binary_search_tree(bst_small_1)
     assert is_binary_search_tree(bst_small_2)
     assert is_binary_search_tree(is_bst)

@@ -250,6 +250,7 @@ class BinaryTree(Container):
         return
 
     def is_binary_search_tree(self, i=0):
+        """Implementation for 4.5"""
         # base case: going past the length of the array means we
         # haven't failed, so must be a BST
         if i >= len(self):
@@ -461,6 +462,7 @@ def test_binary_search_tree_delete():
 
 
 def test_is_binary_search_tree():
+    """Test for 4.5"""
     tests = [
         (complete_1, True),
         (complete_2, True),
