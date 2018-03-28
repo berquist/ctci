@@ -88,6 +88,7 @@ def ch1_2_3(s1, s2):
 
 
 def ch1_3_1(s):
+    """This is almost certainly not what they're looking for."""
     return s.rstrip().replace(' ', '%20')
 
 
@@ -345,18 +346,23 @@ def ch1_9_1(parent, rotated):
     return False
 
 
-if __name__ == '__main__':
+def test_1_1():
     s1 = 'abcddaasdfh'
     s2 = 'abcdefgh'
-    # assert not ch1_1_1(s1)
-    # assert not ch1_1_2(s1)
-    # assert not ch1_1_3(s1)
-    # assert not ch1_1_4(s1)
-    # assert ch1_1_1(s2)
-    # assert ch1_1_2(s2)
-    # assert ch1_1_3(s2)
-    # assert ch1_1_4(s2)
+    assert not ch1_1_1(s1)
+    assert not ch1_1_2(s1)
+    assert not ch1_1_3(s1)
+    assert not ch1_1_4(s1)
+    assert ch1_1_1(s2)
+    assert ch1_1_2(s2)
+    assert ch1_1_3(s2)
+    assert ch1_1_4(s2)
+    return True
 
+
+def test_1_2():
+    s1 = 'abcddaasdfh'
+    s2 = 'abcdefgh'
     assert not ch1_2_1(s1, s2)
     assert ch1_2_1(s1, s1)
     assert ch1_2_1(s2, s2[::-1])
@@ -369,6 +375,23 @@ if __name__ == '__main__':
     assert ch1_2_3(s1, s1)
     assert ch1_2_3(s2, s2[::-1])
 
+    return True
+
+
+def test_1_4():
+    test_cases = [
+        ('Tact Coa', True),
+        ('tactcoapapa', True),
+        ('tactcoapapad', False),
+    ]
+    for test_case, outcome in test_cases:
+        # assert ch1_4_1(test_case) == outcome
+        assert ch1_4_2(test_case) == outcome
+        assert ch1_4_3(test_case) == outcome
+    return True
+
+
+def test_1_5():
     tests = [
         ('pale', 'ple', True),
         ('pales', 'pale', True),
@@ -384,21 +407,17 @@ if __name__ == '__main__':
     # %timeit ch1_5_2(s1, s2)
     # Answer key solution is slower.
     # %timeit ch1_5_3(s1, s2)
+    return True
 
-    test_cases = [
-        ('Tact Coa', True),
-        ('tactcoapapa', True),
-        ('tactcoapapad', False),
-    ]
-    for test_case, outcome in test_cases:
-        # assert ch1_4_1(test_case) == outcome
-        assert ch1_4_2(test_case) == outcome
-        assert ch1_4_3(test_case) == outcome
 
+def test_1_6():
     s = 'aabcccccaaa'
     ns = 'a2b1c5a3'
     assert ch1_6_1(s) == ns
+    return True
 
+
+def test_1_7():
     mat = np.array([[1, 2, 3],
                     [4, 5, 6],
                     [7, 8, 9]])
@@ -407,7 +426,10 @@ if __name__ == '__main__':
                       [3, 6, 9]])
     ch1_7_1(mat)
     assert np.all(mat == mat_t)
+    return True
 
+
+def test_1_8():
     impls = [
         ch1_8_1,
         # ch1_8_2,
@@ -427,9 +449,13 @@ if __name__ == '__main__':
         impl(a)
         # print(a)
         assert np.all(a == b)
+    return True
 
+
+def test_1_9():
     s1 = 'waterbottle'
     s2 = 'erbottlewat'
     s3 = 'erbottlewaf'
     assert ch1_9_1(s1, s2)
     assert not ch1_9_1(s1, s3)
+    return True

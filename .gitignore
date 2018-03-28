@@ -1,3 +1,6 @@
+*.html
+
+# Python
 .cache/
 .coverage
 .pytest_cache/
