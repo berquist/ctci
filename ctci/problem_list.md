@@ -3,6 +3,16 @@ Check mark signifies tested
 # TODO
 
 - [ ] 1.7
+- [ ] 2.1
+- [ ] 2.2
+- [ ] 2.3
+- [ ] 2.4
+- [ ] 2.5
+- [ ] 2.6
+- [ ] 2.7
+- [ ] 2.8
+- [ ] 3.1
+- [ ] 3.6
 
 # Completed
 
@@ -14,3 +24,7 @@ Check mark signifies tested
 - [x] 1.6
 - [x] 1.8
 - [x] 1.9
+- [x] 3.2
+- [x] 3.3
+- [x] 3.4
+- [x] 3.5

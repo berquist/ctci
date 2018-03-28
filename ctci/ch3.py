@@ -90,6 +90,7 @@ class Queue(object):
 
 
 class StackMin(Stack):
+    """Implementation for 3.2"""
 
     def push(self, item):
         node = StackNode(item)
@@ -112,6 +113,7 @@ class StackMin(Stack):
 
 
 class SetOfStacks(object):
+    """Implementation for 3.3"""
 
     def __init__(self, thresh):
         if thresh < 1:
@@ -160,7 +162,7 @@ class SetOfStacks(object):
 
 
 class MyQueue(object):
-    """Implement a queue using a pair of stacks."""
+    """Implement a queue using a pair of stacks (3.4)."""
 
     def __init__(self):
         self.spush = Stack()
@@ -192,6 +194,7 @@ class MyQueue(object):
 
 
 def test_stackmin():
+    """Test for 3.2"""
     stack = StackMin()
     # from bottom to top
     pairs = [
@@ -212,6 +215,7 @@ def test_stackmin():
 
 
 def test_setofstacks():
+    """Test for 3.3"""
     # from itertools import cycle
     thresh = 3
     threshl = list(range(1, 1 + thresh))
@@ -248,6 +252,7 @@ def test_setofstacks():
 
 
 def test_myqueue():
+    """Test for 3.4"""
     q = Queue()
     mq = MyQueue()
     l = [4, 3, 2, 1]
@@ -286,6 +291,7 @@ def test_myqueue():
 
 
 def sort_stack(stack):
+    """Implementation for 3.5"""
     if stack.is_empty():
         raise Exception
     if len(stack) == 1:
@@ -302,6 +308,7 @@ def sort_stack(stack):
 
 
 def test_sort_stack():
+    """Test for 3.5"""
     elements = [6, 2, 12, 3, 10]
     sorted_elements = sorted(elements)
     stack = Stack()
