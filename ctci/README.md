@@ -1,8 +1,10 @@
+# Problem list
+
 * Check mark signifies tested.
 * "array" signifies array-backed structure.
 * "object" signifies class/object/node/pointer-backed structure.
 
-# TODO
+## TODO
 
 - [ ] 1.7
 - [ ] 2.1
@@ -48,7 +50,7 @@
 - [ ] 10.10
 - [ ] 10.11
 
-# Completed
+## Completed
 
 - [x] 1.1
 - [x] 1.2
