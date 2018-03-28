@@ -270,7 +270,7 @@ def test_insertion4_sort():
 
 def sorted_matrix_search(mat, element):
     """return the matrix tuple (i, j) of the element's location in the
-    matrix; if not found, return None
+    matrix; if not found, return None (10.9)
     """
     # scan along the shortest dimension which presumably has the
     # longest stride -> future optimization
@@ -298,6 +298,7 @@ def sorted_matrix_search(mat, element):
 
 
 def test_sorted_matrix_search():
+    """Test for 10.9"""
     mat1 = [[1, 2, 3],
             [4, 5, 6],
             [7, 8, 9]]
