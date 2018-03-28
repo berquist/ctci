@@ -452,6 +452,82 @@ def test_merge_sort():
     return True
 
 
+def binary_search(l, x, low=None, high=None):
+    """Perform binary search on a sorted list iteratively."""
+    ln = len(l)
+    if ln == 0:
+        return None
+    if low is None:
+        low = 0
+    if high is None:
+        high = ln - 1
+    if low > high:
+        raise Exception
+
+    mid = (low + high) // 2
+    y = l[mid]
+    while y != x:
+        if l[mid] < x:
+            low = mid + 1
+        if l[mid] > x:
+            high = mid - 1
+        mid = (low + high) // 2
+        y = l[mid]
+    return mid
+
+
+def binary_search_recursive(l, x, low=None, high=None):
+    """Perform binary search on a sorted list recursively."""
+    ln = len(l)
+    if ln == 0:
+        return None
+    if low is None:
+        low = 0
+    if high is None:
+        high = ln - 1
+    if low > high:
+        raise Exception
+
+    mid = (low + high) // 2
+
+    if l[mid] < x:
+        return binary_search_recursive(l, x, mid + 1, high)
+    if l[mid] > x:
+        return binary_search_recursive(l, x, low, mid - 1)
+    # Both failed comparisons: must be equal.
+    return mid
+
+
+def test_binary_search():
+    le = []
+    l0 = [0]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    tests = [
+        (le, 5, None),
+        (l0, 0, 0),
+        (l1_ref, -2, 0),
+        (l1_ref, 9, 6),
+        (l1_ref, 6, 3),
+    ]
+    for (l, x, outcome) in tests:
+        assert binary_search(l, x) == outcome
+    return True
+
+def test_binary_search_recursive():
+    le = []
+    l0 = [0]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    tests = [
+        (le, 5, None),
+        (l0, 0, 0),
+        (l1_ref, -2, 0),
+        (l1_ref, 9, 6),
+        (l1_ref, 6, 3),
+    ]
+    for (l, x, outcome) in tests:
+        assert binary_search_recursive(l, x) == outcome
+    return True
+
 
 if __name__ == '__main__':
     test_bubble_sort()
