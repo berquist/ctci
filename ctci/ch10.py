@@ -464,16 +464,15 @@ def binary_search(l, x, low=None, high=None):
     if low > high:
         raise Exception
 
-    mid = (low + high) // 2
-    y = l[mid]
-    while y != x:
+    while low <= high:
+        mid = (low + high) // 2
         if l[mid] < x:
             low = mid + 1
-        if l[mid] > x:
+        elif l[mid] > x:
             high = mid - 1
-        mid = (low + high) // 2
-        y = l[mid]
-    return mid
+        else:
+            return mid
+    return None
 
 
 def binary_search_recursive(l, x, low=None, high=None):
