@@ -1,9 +1,19 @@
 class SNode(object):
+    """A node in a singly-linked list."""
 
     def __init__(self, data=None):
 
         self.data = data
         self.next = None
+
+    def __bool__(self):
+        return self.data is not None
+
+    def __str__(self):
+        if self.next is None:
+            return 'SNode({}).X'.format(self.data)
+        else:
+            return 'SNode({}).{}'.format(self.data, str(self.next))
 
     def __len__(self):
         # for constant-time len, should keep track of it as we
@@ -33,7 +43,6 @@ class SNode(object):
         """Append the given node to this linked list in-place."""
         if not self.data:
             self.data = node.data
-            self.next = SNode()
         elif not self.next:
             self.next = node
         else:
@@ -44,25 +53,30 @@ class SNode(object):
         """Remove the node containing the first match to the given data
         in-place. Always keep a null node at the end.
         """
-        if not self.next:
-            if self.data == data:
-                self.data = None
-            else:
-                # don't need to do anything, this is the null node
-                pass
-        else:
-            if self.data == data:
-                # shift all data upward; need to remove the last node
-                # with no data? no, this is handled below
+        if self.data == data:
+            if self.next:
                 self.data = self.next.data
                 self.next.shift()
-            if self.next.data == data:
-                if self.next.next:
-                    self.next = self.next.next
-                else:
-                    self.next = None
             else:
+                self.data = None
+        else:
+            if self.next:
                 self.next.delete_inplace(data)
+            else:
+                pass
+        self.tidy()
+        return
+
+    def tidy(self):
+        """Remove None nodes from the list."""
+        if self.next is not None and self.next.data is None:
+            if self.next.next is not None:
+                self.next = self.next.next
+                self.tidy()
+            else:
+                self.next = None
+        elif self.next is not None:
+            self.next.tidy()
         return
 
     def shift(self):
@@ -75,9 +89,6 @@ class SNode(object):
         else:
             self.data = None
 
-    # def delete(self, data):
-    #     """Remove the node containing the first match to the given data."""
-    #     pass
 
 
 class SLinkedList(object):
@@ -194,6 +205,63 @@ def test_slinkedlist_iter():
     return True
 
 
+def test_snode_tidy():
+    # [2, None] -> [2]
+    head = SNode(2)
+    head.next = SNode()
+    assert head.data == 2
+    assert head.next is not None
+    assert head.next.data is None
+    assert head.next.next is None
+    head.tidy()
+    assert head.data == 2
+    assert head.next is None
+    # [2, None, 4] -> [2, 4]
+    head.next = SNode()
+    head.next.next = SNode(4)
+    assert head.data == 2
+    assert head.next.data == None
+    assert head.next.next.data == 4
+    assert head.next.next.next == None
+    head.tidy()
+    assert head.data == 2
+    assert head.next.data == 4
+    assert head.next.next == None
+    # [2, None, None, None, 4] -> [2, 4]
+    head = SNode(2)
+    head.next = SNode(None)
+    head.next.next = SNode(None)
+    head.next.next.next = SNode(None)
+    head.next.next.next.next = SNode(4)
+    head.tidy()
+    assert head.data == 2
+    assert head.next.data == 4
+    assert head.next.next == None
+    return True
+
+
+def test_snode_shift():
+    values = [2, 4]
+    head = SNode()
+    for value in values:
+        node = SNode(value)
+        head.append(node)
+    assert len(head) == len(values)
+    head.next.data = None
+    head.shift()
+    # shift() doesn't tidy()
+    assert head.data is None
+    assert head.next is not None
+    assert head.next.data is None
+    assert head.next.next is None
+    # Can't delete the current object, so the empty linked list
+    # contains a single node with no data and no next.
+    head.tidy()
+    assert head.data is None
+    assert head.next is None
+    return True
+
+
 def test_snode_delete_inplace():
     values = [2, 4, 8, 9, 10]
     head = SNode()
@@ -210,21 +278,20 @@ def test_snode_delete_inplace():
     return True
 
 
-# def test_snode_delete_head_inplace():
-#     values = [2, 4, 8, 9, 10]
-#     head = SNode()
-#     for value in values:
-#         node = SNode(value)
-#         head.append(node)
-#     head.delete_inplace(values[0])
-#     # print(len(head), len(values))
-#     assert len(head) == len(values) - 1
-#     assert head.data == values[1]
-#     assert head.next.data == values[2]
-#     assert head.next.next.data == values[3]
-#     assert head.next.next.next.data == values[4]
-#     assert head.next.next.next.next is None
-#     return True
+def test_snode_delete_head_inplace():
+    values = [2, 4, 8, 9, 10]
+    head = SNode()
+    for value in values:
+        node = SNode(value)
+        head.append(node)
+    head.delete_inplace(values[0])
+    assert len(head) == len(values) - 1
+    assert head.data == values[1]
+    assert head.next.data == values[2]
+    assert head.next.next.data == values[3]
+    assert head.next.next.next.data == values[4]
+    assert head.next.next.next.next is None
+    return True
 
 
 # def test_slinkedlist_delete_head()
@@ -235,5 +302,8 @@ if __name__ == '__main__':
     test_slinkedlist_append()
     test_snode_iter()
     test_slinkedlist_iter()
-    # test_snode_delete_inplace()
-    # test_snode_delete_head_inplace()
+    test_snode_tidy()
+    test_snode_shift()
+    test_snode_delete_inplace()
+    test_snode_delete_head_inplace()
+    # test_slinkedlist_delete_head()
