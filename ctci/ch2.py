@@ -9,6 +9,13 @@ class SNode(object):
     def __bool__(self):
         return self.data is not None
 
+    def eq_data(self, other_node):
+        """Another node is equal to this one if it contains the same data but
+        isn't the same node.
+        """
+        return (self.data == other_node.data) \
+            and self != other_node
+
     def __str__(self):
         if self.next is None:
             return 'SNode({}).X'.format(self.data)
@@ -355,6 +362,16 @@ def test_remove_duplicates():
 #     return
 
 
+def test_snode_eq_data():
+    values = [10, 9, 9, 9, 10, 8, 4, 2, 2, 2]    
+    head = SNode()
+    for value in values:
+        head.append(SNode(value))
+    assert head.next.eq_data(head.next.next)
+    assert not head.next.eq_data(head.next)
+    return True
+
+
 if __name__ == '__main__':
     test_snode_append()
     test_slinkedlist_append()
@@ -366,4 +383,4 @@ if __name__ == '__main__':
     test_snode_delete_head_inplace()
     # test_slinkedlist_delete_head()
     test_remove_duplicates()
-    
+    test_snode_eq_data()
