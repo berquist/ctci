@@ -89,9 +89,21 @@ class SNode(object):
         else:
             self.data = None
 
+    def sort(self):
+        """'In-place' sort."""
+        items = sorted([x for x in self])
+        self.data = None
+        self.next = None
+        for item in items:
+            self.append(SNode(item))
+        return
+
 
 
 class SLinkedList(object):
+    """This singly-linked list is a slight convenience wrapper for
+    SNode.
+    """
 
     def __init__(self, head=None):
         self.head = head
@@ -297,6 +309,52 @@ def test_snode_delete_head_inplace():
 # def test_slinkedlist_delete_head()
 
 
+def remove_duplicates(node):
+    """Implementation for 2.1 (with buffer)"""
+    buf = set()
+    if node.data is None:
+        return
+    current_node = node
+    while current_node is not None:
+        buf.add(current_node.data)
+        if current_node.next is not None:
+            # if current_node.next.data in buf:
+            #     current_node.next = current_node.next.next
+            while current_node.next is not None and current_node.next.data in buf:
+                current_node.next = current_node.next.next
+        current_node = current_node.next
+    return
+
+
+def test_remove_duplicates():
+    """Test for 2.1"""
+    values = [10, 9, 9, 9, 10, 8, 4, 2, 2, 2]
+    ref = [10, 9, 8, 4, 2]
+    head = SNode()
+    for value in values:
+        head.append(SNode(value))
+    remove_duplicates(head)
+    ret = [data for data in head]
+    assert ret == ref
+    return True
+
+
+# Can't do this: the resulting list shouldn't necessarily be sorted.
+#
+# def remove_duplicates_nobuffer(node):
+#     """Implementation for 2.1"""
+#     node.sort()
+#     current_node = node
+#     while current_node is not None:
+#         if current_node.next is not None:
+#             # look ahead: if the next node is a match...
+#             if current_node.data == current_node.next.data:
+#                 # ...replace the next node with _its_ next node
+#                 current_node.next = current_node.next.next
+#         current_node = current_node.next
+#     return
+
+
 if __name__ == '__main__':
     test_snode_append()
     test_slinkedlist_append()
@@ -307,3 +365,5 @@ if __name__ == '__main__':
     test_snode_delete_inplace()
     test_snode_delete_head_inplace()
     # test_slinkedlist_delete_head()
+    test_remove_duplicates()
+    
