@@ -409,7 +409,7 @@ def test_snode_eq():
 
 
 def test_snode_eq_data():
-    values = [10, 9, 9, 9, 10, 8, 4, 2, 2, 2]    
+    values = [10, 9, 9, 9, 10, 8, 4, 2, 2, 2]
     head = SNode()
     for value in values:
         head.append(SNode(value))
@@ -430,19 +430,25 @@ def remove_duplicates_nobuffer(node):
         if current_node.next is not None:
             # start the inner node loop at 0
             inner_node = node
-            print('=' * 70)
-            print('current_node: {} '.format(current_node))
-            print('current_node.next: {} '.format(current_node.next))
-            print('start inner loop')
+            # print('=' * 70)
+            # print('current_node: {} '.format(current_node))
+            # print('current_node.next: {} '.format(current_node.next))
+            # print('start inner loop')
             while inner_node is not None and inner_node != current_node.next:
-                print('-' * 70)
-                print(inner_node)
-                print(current_node)
+                # print('-' * 70)
+                # print(inner_node)
+                # print(current_node)
                 # look at the next element i+1;
                 # if i+1 occurs anywhere in [0..i], remove i+1
                 while current_node.next is not None and current_node.next.eq_data(inner_node):
                     current_node.next = current_node.next.next
                 inner_node = inner_node.next
+        # make sure we didn't miss the current node
+        inner_node = node
+        while inner_node is not None and inner_node != current_node:
+            if current_node.eq_data(inner_node):
+                current_node.shift()
+            inner_node = inner_node.next
         current_node = current_node.next
     return
 
@@ -451,6 +457,14 @@ def test_remove_duplicates_nobuffer():
     """Test for 2.1"""
     tests = [
         [
+            [],
+            [],
+        ],
+        [
+            [10],
+            [10],
+        ],
+        [
             [10, 9, 10],
             [10, 9],
         ],
@@ -458,10 +472,14 @@ def test_remove_duplicates_nobuffer():
             [10, 9, 9, 9, 10, 8],
             [10, 9, 8],
         ],
-        # [
-        #     [10, 9, 9, 9, 10, 8, 4, 2, 2, 2],
-        #     [10, 9, 8, 4, 2],
-        # ],
+        [
+            [10, 9, 9, 9, 10, 8, 4, 2, 2, 2],
+            [10, 9, 8, 4, 2],
+        ],
+        [
+            list([10 for _ in range(100)]),
+            [10],
+        ],
     ]
     for values, ref in tests:
         head = SNode()
@@ -469,8 +487,6 @@ def test_remove_duplicates_nobuffer():
             head.append(SNode(value))
         remove_duplicates_nobuffer(head)
         ret = [data for data in head]
-        print(ref)
-        print(ret)
         assert ret == ref
     return True
 
