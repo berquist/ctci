@@ -1,3 +1,5 @@
+## 8.3
+
 def magic_index_bf(arr):
     """8.3, brute force"""
     for i in range(len(arr)):
@@ -38,6 +40,25 @@ def magic_index_sorted(arr, bot=None, top=None):
     return mid
 
 
+def magic_index_sorted_nonunique(arr, bot=None, top=None):
+    if bot is None:
+        bot = 0
+    if top is None:
+        top = len(arr) - 1
+    if bot > top:
+        return None
+    mid = (top + bot) // 2
+    if arr[mid] == mid:
+        return mid
+    lindex = min(mid - 1, arr[mid])
+    lret = magic_index_sorted_nonunique(arr, bot, lindex)
+    if lret:
+        return lret
+    rindex = max(mid + 1, arr[mid])
+    rret = magic_index_sorted_nonunique(arr, rindex, top)
+    return rret
+
+
 def test_magic_index_bf():
     tests = [
         ([1, 2, 3, 3], 3),
@@ -68,7 +89,17 @@ def test_magic_index_sorted():
     return True
 
 
+def test_magic_index_sorted_nonunique():
+    tests = [
+        ([-10, -5, 2, 2, 2, 3, 4, 7, 9, 12, 13], 2),
+    ]
+    for arr, outcome in tests:
+        assert magic_index_sorted_nonunique(arr) == outcome
+    return True
+
+
 if __name__ == '__main__':
     test_magic_index_bf()
     test_magic_index_unsorted()
     test_magic_index_sorted()
+    test_magic_index_sorted_nonunique()
