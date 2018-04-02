@@ -50,7 +50,7 @@ The above runs in O(N) time, where N is the length of the commit log. However, b
 
 
 def find_worst_commits_log(first, last):
-    return _find_worst_commits_log(first, last, [])
+    return _find_worst_commits_log(first, last, set())
 
 
 def _find_worst_commits_log(first, last, worst_commits):
@@ -60,17 +60,17 @@ def _find_worst_commits_log(first, last, worst_commits):
     is_decrease_left = worse_commit(first, mid)
     if is_decrease_left:
         if (mid - first) == 1:
-            worst_commits.append(mid)
-        return _find_worst_commits_log(first, mid - 1)
+            worst_commits.add(mid)
+        worst_commits.update(_find_worst_commits_log(first, mid, worst_commits))
     is_decrease_right = worse_commit(mid, last)
     if is_decrease_right:
         if (last - mid) == 1:
-            worst_commits.append(last)
-        return _find_worse_commits_log(mid + 1, last)
+            worst_commits.add(last)
+        worst_commits.update(_find_worst_commits_log(mid + 1, last, worst_commits))
     return worst_commits
 
 
 def test_find_worst_commits_log():
-    ref = [3, 6]
+    ref = {3, 6}
     assert find_worst_commits_log(1, 6) == ref
     return True
