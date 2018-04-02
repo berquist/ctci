@@ -9,6 +9,26 @@ class SNode(object):
     def __bool__(self):
         return self.data is not None
 
+    def __eq__(self, other_node):
+        """Another node is equal to this one if it is exactly the same: both
+        its data and next are identical.
+        """
+        if hasattr(other_node, 'data'):
+            if self.data is None or other_node.data is None:
+                data = self.data is other_node.data
+            else:
+                data = self.data == other_node.data
+        else:
+            return False
+        if hasattr(other_node, 'next'):
+            if self.next is None or other_node.next is None:
+                next = self.next is other_node.next
+            else:
+                next = self.next == other_node.next
+        else:
+            return False
+        return data and next
+
     def eq_data(self, other_node):
         """Another node is equal to this one if it contains the same data but
         isn't the same node.
@@ -362,12 +382,37 @@ def test_remove_duplicates():
 #     return
 
 
+def test_snode_eq():
+    # base case
+    n0 = SNode()
+    assert n0 == SNode()
+    # simple cases
+    n1 = SNode(3)
+    n2 = SNode(3)
+    n3 = SNode(4)
+    assert id(n1) != id(n2)
+    assert n1 is not n2
+    assert n1 == n2
+    assert id(n1) != id(n3)
+    assert n1 is not n3
+    assert n1 != n3
+    # sublevels
+    n1.append(SNode(4))
+    n1.append(SNode(5))
+    n2.append(SNode(4))
+    n2.append(SNode(5))
+    assert id(n1) != id(n2)
+    assert n1 is not n2
+    assert n1 == n2
+    assert n1.next == n2.next
+    return True
+
+
 def test_snode_eq_data():
     values = [10, 9, 9, 9, 10, 8, 4, 2, 2, 2]    
     head = SNode()
     for value in values:
         head.append(SNode(value))
-    assert head.next.eq_data(head.next.next)
     assert not head.next.eq_data(head.next)
     return True
 
@@ -383,4 +428,5 @@ if __name__ == '__main__':
     test_snode_delete_head_inplace()
     # test_slinkedlist_delete_head()
     test_remove_duplicates()
+    test_snode_eq()
     test_snode_eq_data()
