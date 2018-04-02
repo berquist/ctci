@@ -414,6 +414,64 @@ def test_snode_eq_data():
     for value in values:
         head.append(SNode(value))
     assert not head.next.eq_data(head.next)
+    assert head.next.eq_data(head.next.next)
+    assert head.next.eq_data(head.next.next.next)
+    assert head.next.next.next.eq_data(head.next)
+    return True
+
+
+def remove_duplicates_nobuffer(node):
+    """Implementation for 2.1 (without buffer)"""
+    if node.data is None:
+        return
+    current_node = node
+    # for each element in the list with index i
+    while current_node is not None:
+        if current_node.next is not None:
+            # start the inner node loop at 0
+            inner_node = node
+            print('=' * 70)
+            print('current_node: {} '.format(current_node))
+            print('current_node.next: {} '.format(current_node.next))
+            print('start inner loop')
+            while inner_node is not None and inner_node != current_node.next:
+                print('-' * 70)
+                print(inner_node)
+                print(current_node)
+                # look at the next element i+1;
+                # if i+1 occurs anywhere in [0..i], remove i+1
+                while current_node.next is not None and current_node.next.eq_data(inner_node):
+                    current_node.next = current_node.next.next
+                inner_node = inner_node.next
+        current_node = current_node.next
+    return
+
+
+def test_remove_duplicates_nobuffer():
+    """Test for 2.1"""
+    tests = [
+        [
+            [10, 9, 10],
+            [10, 9],
+        ],
+        [
+            [10, 9, 9, 9, 10, 8],
+            [10, 9, 8],
+        ],
+        # [
+        #     [10, 9, 9, 9, 10, 8, 4, 2, 2, 2],
+        #     [10, 9, 8, 4, 2],
+        # ],
+    ]
+    for values, ref in tests:
+        head = SNode()
+        for value in values:
+            head.append(SNode(value))
+        remove_duplicates_nobuffer(head)
+        ret = [data for data in head]
+        print(ref)
+        print(ret)
+        assert ret == ref
     return True
 
 
@@ -430,3 +488,4 @@ if __name__ == '__main__':
     test_remove_duplicates()
     test_snode_eq()
     test_snode_eq_data()
+    test_remove_duplicates_nobuffer()
