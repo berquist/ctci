@@ -1,12 +1,19 @@
 # Problem list
 
-* Check mark signifies tested.
+* Check mark signifies completed.
 * "array" signifies array-backed structure.
 * "object" signifies class/object/node/pointer-backed structure.
 
-## TODO
-
+- [x] 1.1
+- [x] 1.2
+- [x] 1.3 (not tested)
+- [x] 1.4
+- [x] 1.5
+- [x] 1.6
 - [ ] 1.7
+- [x] 1.8
+- [x] 1.9
+- [x] 2.1
 - [ ] 2.2
 - [ ] 2.3
 - [ ] 2.4
@@ -15,11 +22,16 @@
 - [ ] 2.7
 - [ ] 2.8
 - [ ] 3.1
+- [x] 3.2
+- [x] 3.3
+- [x] 3.4
+- [x] 3.5
 - [ ] 3.6
 - [ ] 4.1 (array)
 - [ ] 4.2 (array)
 - [ ] 4.3 (array)
 - [ ] 4.4 (array)
+- [x] 4.5 (array)
 - [ ] 4.6 (array)
 - [ ] 4.7 (array)
 - [ ] 4.8 (array)
@@ -31,6 +43,7 @@
 - [ ] 4.2 (object)
 - [ ] 4.3 (object)
 - [ ] 4.4 (object)
+- [x] 4.5 (object)
 - [ ] 4.6 (object)
 - [ ] 4.7 (object)
 - [ ] 4.8 (object)
@@ -60,6 +73,7 @@
 - [ ] 7.12
 - [ ] 8.1
 - [ ] 8.2
+- [x] 8.3
 - [ ] 8.4
 - [ ] 8.5
 - [ ] 8.6
@@ -79,25 +93,6 @@
 - [ ] 10.6
 - [ ] 10.7
 - [ ] 10.8
+- [x] 10.9
 - [ ] 10.10
 - [ ] 10.11
-
-## Completed
-
-- [x] 1.1
-- [x] 1.2
-- [ ] 1.3
-- [x] 1.4
-- [x] 1.5
-- [x] 1.6
-- [x] 1.8
-- [x] 1.9
-- [x] 2.1
-- [x] 3.2
-- [x] 3.3
-- [x] 3.4
-- [x] 3.5
-- [x] 4.5 (array)
-- [x] 4.5 (object)
-- [x] 8.3
-- [x] 10.9
