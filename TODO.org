@@ -1,0 +1,10 @@
+* TODO understand quicksort
+* TODO understand merge sort
+* TODO implement hash table using language array implementation
+* TODO familiar with one balanced binary tree (red/black, splay, AVL)
+* TODO graph in memory: objects and pointers, matrix, and adjacency list
+* TODO computational complexity and tradeoffs for DFS and BFS
+* TODO Dijkstra
+* TODO A*
+* TODO recursion and induction
+* TODO hash set vs. hash map vs. hash table vs. dictionary?
