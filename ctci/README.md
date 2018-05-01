@@ -51,6 +51,18 @@
 - [ ] 4.10 (object)
 - [ ] 4.11 (object)
 - [ ] 4.12 (object)
+- [ ] 4.1 (adjacency list)
+- [ ] 4.2 (adjacency list)
+- [ ] 4.3 (adjacency list)
+- [ ] 4.4 (adjacency list)
+- [ ] 4.5 (adjacency list)
+- [ ] 4.6 (adjacency list)
+- [ ] 4.7 (adjacency list)
+- [ ] 4.8 (adjacency list)
+- [ ] 4.9 (adjacency list)
+- [ ] 4.10 (adjacency list)
+- [ ] 4.11 (adjacency list)
+- [ ] 4.12 (adjacency list)
 - [ ] 5.1
 - [ ] 5.2
 - [ ] 5.3
