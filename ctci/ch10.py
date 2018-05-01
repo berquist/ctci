@@ -297,6 +297,32 @@ def sorted_matrix_search(mat, element):
     return None
 
 
+def sorted_matrix_proper_search(mat, element):
+    """return the matrix tuple (i, j) of the element's location in the
+    matrix; if not found, return None (10.9)
+    """
+    # scan along the shortest dimension which presumably has the
+    # longest stride -> future optimization
+    assert len(mat) > 0
+    assert len(mat[0]) > 0
+    m, n = len(mat), len(mat[0])
+    if mat[0][0] > element:
+        return None
+    if mat[m - 1][n - 1] < element:
+        return None
+    # this is really searching for the midpoint
+    for i in range(m):
+        if mat[i][0] == element:
+            return (i, 0)
+        elif mat[i][0] > element:
+            i = i - 1
+            break
+    j = binary_search(mat[i], element)
+    if j is None:
+        return None
+    return (i, j)
+
+
 def test_sorted_matrix_search():
     """Test for 10.9"""
     mat1 = [[1, 2, 3],
@@ -319,6 +345,27 @@ def test_sorted_matrix_search():
     return True
 
 
+def test_sorted_matrix_proper_search():
+    """Test for 10.9"""
+    mat1 = [[1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9]]
+    # mat1t = [[1, 4, 7],
+    #          [2, 5, 8],
+    #          [3, 6, 9]]
+    assert sorted_matrix_proper_search(mat1, 0) == None
+    assert sorted_matrix_proper_search(mat1, 1) == (0, 0)
+    assert sorted_matrix_proper_search(mat1, 2) == (0, 1)
+    assert sorted_matrix_proper_search(mat1, 3) == (0, 2)
+    assert sorted_matrix_proper_search(mat1, 4) == (1, 0)
+    assert sorted_matrix_proper_search(mat1, 5) == (1, 1)
+    assert sorted_matrix_proper_search(mat1, 6) == (1, 2)
+    assert sorted_matrix_proper_search(mat1, 7) == (2, 0)
+    assert sorted_matrix_proper_search(mat1, 8) == (2, 1)
+    assert sorted_matrix_proper_search(mat1, 9) == (2, 2)
+    assert sorted_matrix_proper_search(mat1, 10) == None
+    return True
+
 def quick_sort(l, left, right):
     """Runtime: O(N*log(N)) average, O(N^2) worst case. Memory: O(log(N)).
 
@@ -330,7 +377,7 @@ def quick_sort(l, left, right):
 
     If we repeatedly partition the array (and its sub-arrays) around
     an element, the array will eventually become sorted. However, as
-    the partitioned element is not guaranteed to be the media (or
+    the partitioned element is not guaranteed to be the median (or
     anywhere near the median), our sorting could be very slow. This is
     the reason for the O(N^2) worst case runtime.
     """
@@ -462,7 +509,7 @@ def binary_search(l, x, low=None, high=None):
     if high is None:
         high = ln - 1
     if low > high:
-        raise Exception
+        return None
 
     while low <= high:
         mid = (low + high) // 2
@@ -485,7 +532,7 @@ def binary_search_recursive(l, x, low=None, high=None):
     if high is None:
         high = ln - 1
     if low > high:
-        raise Exception
+        return None
 
     mid = (low + high) // 2
 
@@ -495,6 +542,34 @@ def binary_search_recursive(l, x, low=None, high=None):
         return binary_search_recursive(l, x, low, mid - 1)
     # Both failed comparisons: must be equal.
     return mid
+
+
+def binary_search_closest(l, x, low=None, high=None):
+    """Use iterative binary search to find the (value, index) that is
+    closest to the desired value.
+
+    If the desired value exists, this is normal binary search.
+    """
+    ln = len(l)
+    if ln == 0:
+        return (None, None)
+    if low is None:
+        low = 0
+    if high is None:
+        high = ln - 1
+    if low > high:
+        return (None, None)
+
+    while low <= high:
+        mid = (low + high) // 2
+        if l[mid] < x:
+            low = mid + 1
+        elif l[mid] > x:
+            high = mid - 1
+        else:
+            return (l[mid], mid)
+
+    return (l[mid], mid)
 
 
 def test_binary_search():
@@ -507,6 +582,7 @@ def test_binary_search():
         (l1_ref, -2, 0),
         (l1_ref, 9, 6),
         (l1_ref, 6, 3),
+        (l1_ref, 2, None),
     ]
     for (l, x, outcome) in tests:
         assert binary_search(l, x) == outcome
@@ -522,9 +598,27 @@ def test_binary_search_recursive():
         (l1_ref, -2, 0),
         (l1_ref, 9, 6),
         (l1_ref, 6, 3),
+        (l1_ref, 2, None),
     ]
     for (l, x, outcome) in tests:
         assert binary_search_recursive(l, x) == outcome
+    return True
+
+
+def test_binary_search_recursive():
+    le = []
+    l0 = [0]
+    l1_ref = [-2, -1, 5, 6, 7, 8, 9]
+    tests = [
+        (le, 5, (None, None)),
+        (l0, 0, (0, 0)),
+        (l1_ref, -2, (-2, 0)),
+        (l1_ref, 9, (9, 6)),
+        (l1_ref, 6, (6, 3)),
+        (l1_ref, 2, (None, None)),
+    ]
+    for (l, x, outcome) in tests:
+        assert binary_search_closest(l, x) == outcome
     return True
 
 
@@ -540,3 +634,6 @@ if __name__ == '__main__':
     test_sorted_matrix_search()
     test_quick_sort()
     test_merge_sort()
+    test_binary_search()
+    test_binary_search_recursive()
+    test_binary_search_closest()
