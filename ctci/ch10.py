@@ -605,7 +605,7 @@ def test_binary_search_recursive():
     return True
 
 
-def test_binary_search_recursive():
+def test_binary_search_closest():
     le = []
     l0 = [0]
     l1_ref = [-2, -1, 5, 6, 7, 8, 9]
@@ -615,7 +615,8 @@ def test_binary_search_recursive():
         (l1_ref, -2, (-2, 0)),
         (l1_ref, 9, (9, 6)),
         (l1_ref, 6, (6, 3)),
-        (l1_ref, 2, (None, None)),
+        # -1 is equidistant but not hit because 5 is touched first
+        (l1_ref, 2, (5, 2)),
     ]
     for (l, x, outcome) in tests:
         assert binary_search_closest(l, x) == outcome
