@@ -1,5 +1,7 @@
 import math
 
+from collections import namedtuple
+
 import numpy as np
 
 from ch3 import Queue
@@ -461,47 +463,142 @@ def test_adjacency_list():
     return True
 
 
-class Graph(object):
+# this is the minimum spanning tree example from Wikipedia
+mst_base_mat = [
+    [0, 3, 0, 6, 0, 0, 0, 0, 0, 9],
+    [3, 0, 2, 4, 0, 0, 0, 0, 9, 9],
+    [0, 2, 0, 2, 9, 0, 0, 0, 8, 0],
+    [6, 4, 2, 0, 9, 0, 0, 0, 0, 0],
+    [0, 0, 9, 9, 0, 4, 5, 0, 7, 0],
+    [0, 0, 0, 0, 4, 0, 1, 4, 0, 0],
+    [0, 0, 0, 0, 5, 1, 0, 3, 9, 0],
+    [0, 0, 0, 0, 0, 4, 3, 0, 10, 18],
+    [0, 9, 8, 0, 7, 0, 9, 10, 0, 8],
+    [9, 9, 0, 0, 0, 0, 0, 18, 8, 0],
+]
 
-    def __init__(self, nodes=None):
+mst_base_list = {
+}
 
-        if nodes is None:
-            self.nodes = []
-        else:
-            assert isinstance(nodes, (set, list, tuple, np.ndarray, ))
-            self.nodes = nodes
+mst_base_edges = [
+    (0, 1, 3),
+    (0, 3, 6),
+    (0, 9, 9),
+    (1, 0, 3),
+    (1, 2, 2),
+    (1, 3, 4),
+    (1, 8, 9),
+    (1, 9, 9),
+    (2, 1, 2),
+    (2, 3, 2),
+    (2, 4, 9),
+    (2, 8, 8),
+    (3, 0, 6),
+    (3, 1, 4),
+    (3, 2, 2),
+    (3, 4, 9),
+    (4, 2, 9),
+    (4, 3, 9),
+    (4, 5, 4),
+    (4, 6, 5),
+    (4, 8, 7),
+    (5, 4, 4),
+    (5, 6, 1),
+    (5, 7, 4),
+    (6, 4, 5),
+    (6, 5, 1),
+    (6, 7, 3),
+    (6, 8, 9),
+    (7, 5, 4),
+    (7, 6, 3),
+    (7, 8, 10),
+    (7, 9, 18),
+    (8, 1, 9),
+    (8, 2, 8),
+    (8, 4, 7),
+    (8, 6, 9),
+    (8, 7, 10),
+    (8, 9, 8),
+    (9, 0, 9),
+    (9, 1, 9),
+    (9, 7, 18),
+    (9, 8, 8),
+]
+
+Edge = namedtuple('Edge', ['vertices', 'weight'])
+
+# mst_result = {
+#     Edge({0, 1}, 3),
+#     Edge({1, 2}, 2),
+#     Edge({2, 3}, 2),
+#     Edge({2, 8}, 8),
+#     Edge({8, 9}, 8),
+#     Edge({8, 4}, 7),
+#     Edge({4, 5}, 4),
+#     Edge({5, 6}, 1),
+#     Edge({6, 7}, 3),
+# }
+
+def boruvkas_algorithm():
+    """
+     Input: A graph G whose edges have distinct weights
+     Initialize a forest F to be a set of one-vertex trees, one for each vertex of the graph.
+     While F has more than one component:
+       Find the connected components of F and label each vertex of G by its component
+       Initialize the cheapest edge for each component to "None"
+       For each edge uv of G:
+         If u and v have different component labels:
+           If uv is cheaper than the cheapest edge for the component of u:
+             Set uv as the cheapest edge for the component of u
+           If uv is cheaper than the cheapest edge for the component of v:
+             Set uv as the cheapest edge for the component of v
+        For each component whose cheapest edge is not "None":
+          Add its cheapest edge to F
+      Output: F is the minimum spanning forest of G.
+    """
+    # return msf
+
+# class Graph(object):
+
+#     def __init__(self, nodes=None):
+
+#         if nodes is None:
+#             self.nodes = []
+#         else:
+#             assert isinstance(nodes, (set, list, tuple, np.ndarray, ))
+#             self.nodes = nodes
 
 
-def adjacency_list_to_matrix(graph):
-    assert isinstance(graph, Graph)
-    dim = len(graph.nodes)
-    adjmat = np.zeros(shape=(dim, dim), dtype=int)
-    for node in graph.nodes:
-        # assume it's an int, otherwise will need to map string to a
-        # unique id
-        idx_from = node.name
-        for (idex_to, weight) in node.children:
-            adjmat[idx_from][idx_to] = weight
-    return adjmat
+# def adjacency_list_to_matrix(graph):
+#     assert isinstance(graph, Graph)
+#     dim = len(graph.nodes)
+#     adjmat = np.zeros(shape=(dim, dim), dtype=int)
+#     for node in graph.nodes:
+#         # assume it's an int, otherwise will need to map string to a
+#         # unique id
+#         idx_from = node.name
+#         for (idex_to, weight) in node.children:
+#             adjmat[idx_from][idx_to] = weight
+#     return adjmat
 
 
-def adjacency_matrix_to_list(adjmat, data=None):
-    if data is not None:
-        assert isinstance(data, (set, list, tuple, np.ndarray, ))
-    assert isinstance(adjmat, (list, tuple, np.ndarray, ))
-    dim = len(adjmat)
-    assert dim > 0
-    assert len(adjmat[0]) == dim
-    nodes = []
-    for idx_from in range(dim):
-        children
-        if data is not None:
-            element = data[idx_from]
-        else:
-            element = None
-        node = Node(data=element, name=idx_from, children=children)
-        nodes.append(node)
-    return Graph(nodes)
+# def adjacency_matrix_to_list(adjmat, data=None):
+#     if data is not None:
+#         assert isinstance(data, (set, list, tuple, np.ndarray, ))
+#     assert isinstance(adjmat, (list, tuple, np.ndarray, ))
+#     dim = len(adjmat)
+#     assert dim > 0
+#     assert len(adjmat[0]) == dim
+#     nodes = []
+#     for idx_from in range(dim):
+#         children
+#         if data is not None:
+#             element = data[idx_from]
+#         else:
+#             element = None
+#         node = Node(data=element, name=idx_from, children=children)
+#         nodes.append(node)
+#     return Graph(nodes)
 
 
 # def test_adjacency_list_to_matrix():
