@@ -345,8 +345,6 @@ def remove_duplicates(node):
     while current_node is not None:
         buf.add(current_node.data)
         if current_node.next is not None:
-            # if current_node.next.data in buf:
-            #     current_node.next = current_node.next.next
             while current_node.next is not None and current_node.next.data in buf:
                 current_node.next = current_node.next.next
         current_node = current_node.next
@@ -364,22 +362,6 @@ def test_remove_duplicates():
     ret = [data for data in head]
     assert ret == ref
     return True
-
-
-# Can't do this: the resulting list shouldn't necessarily be sorted.
-#
-# def remove_duplicates_nobuffer(node):
-#     """Implementation for 2.1"""
-#     node.sort()
-#     current_node = node
-#     while current_node is not None:
-#         if current_node.next is not None:
-#             # look ahead: if the next node is a match...
-#             if current_node.data == current_node.next.data:
-#                 # ...replace the next node with _its_ next node
-#                 current_node.next = current_node.next.next
-#         current_node = current_node.next
-#     return
 
 
 def test_snode_eq():
@@ -430,14 +412,7 @@ def remove_duplicates_nobuffer(node):
         if current_node.next is not None:
             # start the inner node loop at 0
             inner_node = node
-            # print('=' * 70)
-            # print('current_node: {} '.format(current_node))
-            # print('current_node.next: {} '.format(current_node.next))
-            # print('start inner loop')
             while inner_node is not None and inner_node != current_node.next:
-                # print('-' * 70)
-                # print(inner_node)
-                # print(current_node)
                 # look at the next element i+1;
                 # if i+1 occurs anywhere in [0..i], remove i+1
                 while current_node.next is not None and current_node.next.eq_data(inner_node):
