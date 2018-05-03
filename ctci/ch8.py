@@ -34,8 +34,7 @@ def triple_step(n):
     = n. It is done top down, as it is easiest for n to dictate the
     largest possible value of z rather than starting from x.
 
-    This is currently not correct because it doesn't account for
-    permutations within each solution.
+    There may be permutations within each solution; count those too.
     """
     if n < 1:
         return 0
@@ -48,19 +47,18 @@ def triple_step(n):
             # only roots where all 3 coefficients are geq 0 are
             # admissable
             if x >= 0:
-                # print(x, y, z)
-                # val = int(x + (2 * y) + (3 * z))
-                # assert val == n
-                counter += 1
+                val = int(x + (2 * y) + (3 * z))
+                assert val == n
+                counter += nperm(x, y, z)
     return counter
 
 
 def test_triple_step():
-    assert triple_step(5) == 5
-    assert triple_step(10) == 14
+    assert triple_step(5) == 13
+    assert triple_step(10) == 274
     nsteps = list(range(11))
     rets = [triple_step(n) for n in nsteps]
-    refs = [0, 1, 2, 3, 4, 5, 7, 8, 10, 12, 14]
+    refs = [0, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
     assert rets == refs
     return True
 
