@@ -1,3 +1,8 @@
+"""ch4.py: Implementation fo binary (search) trees and heaps using
+objects and pointers.
+
+"""
+
 import math
 
 from collections import namedtuple
@@ -5,7 +10,7 @@ from collections import namedtuple
 import numpy as np
 
 from ch3 import Queue
-from ch4_array import Container
+from ch4_common import Container
 
 
 class _Node(object):
