@@ -1,3 +1,69 @@
+from math import factorial
+
+
+## 8.1
+
+def nperm(x, y, z):
+    n = factorial(x + y + z)
+    d = factorial(x) * factorial(y) * factorial(z)
+    return int(n / d)
+
+
+def test_nperm():
+    tests = [
+        [(0, 0, 2), 1],
+        [(1, 1, 1), 6],
+        [(3, 0, 1), 4],
+        [(0, 3, 0), 1],
+        [(2, 2, 0), 6],
+        [(4, 1, 0), 5],
+    ]
+    for test, outcome in tests:
+        assert nperm(*test) == outcome
+    return True
+
+
+def triple_step(n):
+    """8.1, iterative
+
+    A child is running up a staircase with n steps and can hop either
+    1 step, 2 steps, or 3 steps at a time. Implement a method to count
+    how many possible ways the child can run up the stairs.
+
+    Strategy: find all nonnegative solutions {x, y, z} for x + 2y + 3z
+    = n. It is done top down, as it is easiest for n to dictate the
+    largest possible value of z rather than starting from x.
+
+    This is currently not correct because it doesn't account for
+    permutations within each solution.
+    """
+    if n < 1:
+        return 0
+    counter = 0
+    max_z = n // 3
+    for z in range(max_z, -1, -1):
+        rz = n - (3 * z)
+        for y in range(rz, -1, -1):
+            x = rz - (2 * y)
+            # only roots where all 3 coefficients are geq 0 are
+            # admissable
+            if x >= 0:
+                # print(x, y, z)
+                # val = int(x + (2 * y) + (3 * z))
+                # assert val == n
+                counter += 1
+    return counter
+
+
+def test_triple_step():
+    assert triple_step(5) == 5
+    assert triple_step(10) == 14
+    nsteps = list(range(11))
+    rets = [triple_step(n) for n in nsteps]
+    refs = [0, 1, 2, 3, 4, 5, 7, 8, 10, 12, 14]
+    assert rets == refs
+    return True
+
 ## 8.3
 
 def magic_index_bf(arr):
