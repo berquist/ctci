@@ -1,3 +1,5 @@
+import functools
+
 from math import factorial
 
 
@@ -61,6 +63,79 @@ def test_triple_step():
     refs = [0, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
     assert rets == refs
     return True
+
+
+def triple_step_recursive(n):
+    """8.1, recursive.
+
+    In all the recursive approaches, it is easiest to have ts(0) ->
+    1.
+    """
+    if n < 0:
+        return 0
+    elif n == 0:
+        return 1
+    else:
+        return triple_step_recursive(n - 1) \
+            + triple_step_recursive(n - 2) \
+            + triple_step_recursive(n - 3)
+
+
+def test_triple_step_recursive():
+    assert triple_step_recursive(5) == 13
+    assert triple_step_recursive(10) == 274
+    nsteps = list(range(11))
+    rets = [triple_step_recursive(n) for n in nsteps]
+    refs = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
+    assert rets == refs
+    return True
+
+
+def triple_step_recursive_memo(n, cache=dict()):
+    if n < 0:
+        return 0
+    elif n == 0:
+        return 1
+    elif n in cache:
+        return cache[n]
+    else:
+        cache[n] = triple_step_recursive_memo(n - 1, cache) \
+                   + triple_step_recursive_memo(n - 2, cache) \
+                   + triple_step_recursive_memo(n - 3, cache)
+        return cache[n]
+
+
+def test_triple_step_recursive_memo():
+    assert triple_step_recursive_memo(5) == 13
+    assert triple_step_recursive_memo(10) == 274
+    nsteps = list(range(11))
+    rets = [triple_step_recursive_memo(n) for n in nsteps]
+    refs = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
+    assert rets == refs
+    return True
+
+
+@functools.lru_cache(maxsize=None)
+def triple_step_recursive_memo_py(n):
+    if n < 0:
+        return 0
+    elif n == 0:
+        return 1
+    else:
+        return triple_step_recursive_memo_py(n - 1) \
+            + triple_step_recursive_memo_py(n - 2) \
+            + triple_step_recursive_memo_py(n - 3)
+
+
+def test_triple_step_recursive_memo_py():
+    assert triple_step_recursive_memo_py(5) == 13
+    assert triple_step_recursive_memo_py(10) == 274
+    nsteps = list(range(11))
+    rets = [triple_step_recursive_memo_py(n) for n in nsteps]
+    refs = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
+    assert rets == refs
+    return True
+
 
 ## 8.3
 
