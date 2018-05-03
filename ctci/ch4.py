@@ -29,6 +29,7 @@ class _Node(object):
 
 
 class Node(_Node):
+    """An object-oriented n-ary node."""
 
     def __init__(self, data=None, name=None, children=None):
 
@@ -45,6 +46,7 @@ class Node(_Node):
 
 
 class BinaryNode(_Node):
+    """An object-oriented binary node."""
 
     def __init__(self, data=None):
 
@@ -67,7 +69,7 @@ class BinaryNode(_Node):
         tree is not a binary search tree.
         """
         if self.data is None:
-            # TypeError?
+            # TODO TypeError?
             raise Exception
         _min = self.data
         if self.left is not None:
@@ -81,7 +83,7 @@ class BinaryNode(_Node):
         is not a binary search tree.
         """
         if self.data is None:
-            # TypeError?
+            # TODO TypeError?
             raise Exception
         _max = self.data
         if self.left is not None:
@@ -102,6 +104,8 @@ class BinaryNode(_Node):
             self.right = type(self)(element)
         else:
             assert (self.left is not None) and (self.right is not None)
+            # Commented out lines are unnecessary calculations but are
+            # left for completeness.            
             # lsize = self.left.size()
             rsize = self.right.size()
             # loglsize = math.log2(lsize + 1)
@@ -238,12 +242,6 @@ def test_is_binary_search_tree():
     assert not is_binary_search_tree(is_not_bst)
     return True
 
-
-# class Tree(object):
-
-#     def __init__(self):
-
-#         self.root = None
 
 class MinHeap(BinaryNode):
 
