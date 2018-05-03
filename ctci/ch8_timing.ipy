@@ -1,0 +1,81 @@
+import pickle
+import timeit
+
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+
+from ch8 import *
+
+
+def getargs():
+    import argparse
+    parser = argparse.ArgumentParser()
+    arg = parser.add_argument
+    arg('action', choices=('save', 'plot'))
+    args = parser.parse_args()
+    return args
+
+
+if __name__ == '__main__':
+
+    args = getargs()
+
+    max_n = 20
+    npoints = list(range(max_n + 1))
+
+    funcs = {
+        'triple_step_recursive': 'recursive_naive',
+        'triple_step_recursive_memo': 'recursive_memo',
+        'triple_step_recursive_memo_py': 'recursive_memo_py',
+        'triple_step': 'iterative',
+    }
+
+    if args.action == 'save':
+
+        results = {label: [] for label in funcs.values()}
+
+        # for funcname, label in funcs.items():
+        #     for point in npoints:
+        #         call = '{}({})'.format(funcname, point)
+        #         print(call)
+
+        for point in npoints:
+            print(point)
+            r_recursive_naive = %timeit -o triple_step_recursive(point)
+            r_recursive_memo = %timeit -o triple_step_recursive_memo(point)
+            r_recursive_memo_py = %timeit -o triple_step_recursive_memo_py(point)
+            r_iterative = %timeit -o triple_step(point)
+            results['recursive_naive'].append(r_recursive_naive)
+            results['recursive_memo'].append(r_recursive_memo)
+            results['recursive_memo_py'].append(r_recursive_memo_py)
+            results['iterative'].append(r_iterative)
+
+        with open('ch8_timing.pickle', 'wb') as fh:
+            pickle.dump(results, fh)
+
+    if args.action == 'plot':
+
+        with open('ch8_timing.pickle', 'rb') as fh:
+            results = pickle.load(fh)
+
+        fig, ax = plt.subplots()
+
+        for label in results:
+            ax.errorbar(
+                npoints,
+                [x.average for x in results[label]],
+                yerr=[x.stdev for x in results[label]],
+                label=label,
+                linestyle='-',
+                marker='o',
+            )
+
+        ax.set_xlabel(r'$n$')
+        ax.set_ylabel('time (s)')
+        ax.legend(loc='best', fancybox=True, framealpha=0.50)
+
+        fig.savefig('ch8_timing.pdf', bbox_inches='tight')
+
+        averages = {label: [x.average for x in results[label]]
+                    for label in results}
