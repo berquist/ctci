@@ -3,8 +3,17 @@ from collections import namedtuple
 from ch4 import Queue
 from ch4_common import Container
 
+"""There are multiple ways to represent directed acyclic graphs (DAG):
+- adjacency matrix
+- adjacency list
+with variations of each, in particular regarding how weights are handled.
+"""
+
 
 class AdjacencyMatrix(Container):
+    """Represent a DAG as a matrix. Matrix elements signify both
+    connectivity and weight.
+    """
 
     def __init__(self, edges=None):
 
@@ -26,6 +35,7 @@ class AdjacencyMatrix(Container):
             self._form_adjacency_matrix(is_undirected=False)
 
     def _form_adjacency_matrix(self, is_undirected=False):
+        """Form the adjacency matrix from a list of edges."""
         if self.edges is None:
             raise Exception
         for (start, end, weight) in self.edges:
@@ -78,7 +88,7 @@ def test_adjacency_matrix():
     return True
 
 
-def is_path(start, end, graph):
+def is_path_matrix(start, end, graph):
     """Problem 4.1: Is there a path between the given start and end nodes
     of a directed graph?
 
@@ -96,8 +106,11 @@ def is_path(start, end, graph):
         next_node = queue.remove()
         if next_node == end:
             return True
+        # graph[next_node] -> list of connectivities/weights to all other nodes
+        # i -> counter for node id
+        # n -> connectivity/weight from next_node to i
         neighbors = [i for (i, n) in zip(range(graphlen), graph[next_node])
-                     if n == 1]
+                     if n >= 1]
         for neighbor in neighbors:
             if not marked[neighbor]:
                 marked[neighbor] = True
@@ -105,7 +118,7 @@ def is_path(start, end, graph):
     return False
 
 
-def test_is_path():
+def test_is_path_matrix():
     edges = [
         (0, 1, 1),
         (1, 2, 1),
@@ -117,16 +130,14 @@ def test_is_path():
         (6, 5, 1),
     ]
     graph = AdjacencyMatrix(edges)
-    assert is_path(0, 0, graph)
-    assert is_path(0, 1, graph)
-    assert is_path(5, 6, graph)
-    assert is_path(6, 4, graph)
-    assert not is_path(6, 3, graph)
-    assert not is_path(6, 0, graph)
-    assert not is_path(0, 6, graph)
+    assert is_path_matrix(0, 0, graph)
+    assert is_path_matrix(0, 1, graph)
+    assert is_path_matrix(5, 6, graph)
+    assert is_path_matrix(6, 4, graph)
+    assert not is_path_matrix(6, 3, graph)
+    assert not is_path_matrix(6, 0, graph)
+    assert not is_path_matrix(0, 6, graph)
     return True
-
-
 
 
 class AdjacencyList(Container):
@@ -177,6 +188,55 @@ def test_adjacency_list():
     al_ref._repr = l
     al = AdjacencyList(edges)
     assert al == al_ref
+    return True
+
+
+def is_path_list(start, end, graph):
+    """Problem 4.1: Is there a path between the given start and end nodes
+    of a directed graph?
+
+    Implemented using breadth-first search on a graph implemented as
+    an adjacency list.
+    """
+    if start == end:
+        return True
+    queue = Queue()
+    graphlen = len(graph)
+    marked = [False for _ in range(graphlen)]
+    queue.add(start)
+    while not queue.is_empty():
+        next_node = queue.remove()
+        if next_node == end:
+            return True
+        # graph[next_node] -> sparse list of (node id, weight)
+        # connected to next_node
+        neighbors = [n for (n, _) in graph[next_node]]
+        for neighbor in neighbors:
+            if not marked[neighbor]:
+                marked[neighbor] = True
+                queue.add(neighbor)
+    return False
+
+
+def test_is_path_list():
+    edges = [
+        (0, 1, 1),
+        (1, 2, 1),
+        (2, 0, 1),
+        (2, 3, 1),
+        (3, 2, 1),
+        (4, 6, 1),
+        (5, 4, 1),
+        (6, 5, 1),
+    ]
+    graph = AdjacencyList(edges)
+    assert is_path_list(0, 0, graph)
+    assert is_path_list(0, 1, graph)
+    assert is_path_list(5, 6, graph)
+    assert is_path_list(6, 4, graph)
+    assert not is_path_list(6, 3, graph)
+    assert not is_path_list(6, 0, graph)
+    assert not is_path_list(0, 6, graph)
     return True
 
 
@@ -411,5 +471,6 @@ def boruvkas_algorithm():
 
 if __name__ == '__main__':
     test_adjacency_matrix()
-    test_is_path()
+    test_is_path_matrix()
     test_adjacency_list()
+    test_is_path_list()
