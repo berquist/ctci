@@ -99,12 +99,11 @@ def test_adjacency_matrix():
     return True
 
 
-def is_path_matrix(start, end, graph):
+def is_path(start, end, graph):
     """Problem 4.1: Is there a path between the given start and end nodes
     of a directed graph?
 
-    Implemented using breadth-first search on a graph implemented as
-    an adjacency matrix.
+    Implemented using breadth-first search.
     """
     if start == end:
         return True
@@ -137,13 +136,13 @@ def test_is_path_matrix():
         (6, 5, 1),
     ]
     graph = AdjacencyMatrix(edges)
-    assert is_path_matrix(0, 0, graph)
-    assert is_path_matrix(0, 1, graph)
-    assert is_path_matrix(5, 6, graph)
-    assert is_path_matrix(6, 4, graph)
-    assert not is_path_matrix(6, 3, graph)
-    assert not is_path_matrix(6, 0, graph)
-    assert not is_path_matrix(0, 6, graph)
+    assert is_path(0, 0, graph)
+    assert is_path(0, 1, graph)
+    assert is_path(5, 6, graph)
+    assert is_path(6, 4, graph)
+    assert not is_path(6, 3, graph)
+    assert not is_path(6, 0, graph)
+    assert not is_path(0, 6, graph)
     return True
 
 
@@ -294,31 +293,6 @@ def test_adjacency_list():
     return True
 
 
-def is_path_list(start, end, graph):
-    """Problem 4.1: Is there a path between the given start and end nodes
-    of a directed graph?
-
-    Implemented using breadth-first search on a graph implemented as
-    an adjacency list.
-    """
-    if start == end:
-        return True
-    queue = Queue()
-    graphlen = len(graph)
-    marked = [False for _ in range(graphlen)]
-    queue.add(start)
-    while not queue.is_empty():
-        next_node = queue.remove()
-        if next_node == end:
-            return True
-        neighbors = graph.neighbors(next_node)
-        for neighbor in neighbors:
-            if not marked[neighbor]:
-                marked[neighbor] = True
-                queue.add(neighbor)
-    return False
-
-
 def test_is_path_list():
     edges = [
         (0, 1, 1),
@@ -331,13 +305,13 @@ def test_is_path_list():
         (6, 5, 1),
     ]
     graph = AdjacencyList(edges)
-    assert is_path_list(0, 0, graph)
-    assert is_path_list(0, 1, graph)
-    assert is_path_list(5, 6, graph)
-    assert is_path_list(6, 4, graph)
-    assert not is_path_list(6, 3, graph)
-    assert not is_path_list(6, 0, graph)
-    assert not is_path_list(0, 6, graph)
+    assert is_path(0, 0, graph)
+    assert is_path(0, 1, graph)
+    assert is_path(5, 6, graph)
+    assert is_path(6, 4, graph)
+    assert not is_path(6, 3, graph)
+    assert not is_path(6, 0, graph)
+    assert not is_path(0, 6, graph)
     return True
 
 
