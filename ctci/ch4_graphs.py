@@ -52,6 +52,13 @@ class AdjacencyMatrix(Container):
 
     # todo __setitem__
 
+    def neighbors(self, u):
+        # i -> counter for node id
+        # n -> connectivity/weight from u to i
+        # self[u] -> list of connectivities/weights from u to all other nodes
+        return [i for (i, n) in zip(range(len(self)), self[u])
+                if n >= 1]
+
 def test_adjacency_matrix():
     # pg 107, 1
     edges = [
@@ -110,11 +117,7 @@ def is_path_matrix(start, end, graph):
         next_node = queue.remove()
         if next_node == end:
             return True
-        # graph[next_node] -> list of connectivities/weights to all other nodes
-        # i -> counter for node id
-        # n -> connectivity/weight from next_node to i
-        neighbors = [i for (i, n) in zip(range(graphlen), graph[next_node])
-                     if n >= 1]
+        neighbors = graph.neighbors(next_node)
         for neighbor in neighbors:
             if not marked[neighbor]:
                 marked[neighbor] = True
@@ -185,8 +188,7 @@ def dijkstras_algorithm_matrix(graph, source):
         # Node with the least distance will be selected first
         u = min_distance(Q, dist)
         Q.remove(u)
-        neighbors = [i for (i, n) in zip(range(graphlen), graph[u])
-                     if n >= 1]
+        neighbors = graph.neighbors(u)
         for v in neighbors:
             # alt = dist[u] + length(u, v)
             # TODO Does this handle direction properly?
@@ -259,6 +261,10 @@ class AdjacencyList(Container):
             self._repr[end].add((start, weight))
         return
 
+    def neighbors(self, u):
+        # self[u] -> sparse list of (node id, weight) connected to u
+        return [n for (n, _) in self[u]]
+
 
 def test_adjacency_list():
     # pg 106, 1
@@ -305,9 +311,7 @@ def is_path_list(start, end, graph):
         next_node = queue.remove()
         if next_node == end:
             return True
-        # graph[next_node] -> sparse list of (node id, weight)
-        # connected to next_node
-        neighbors = [n for (n, _) in graph[next_node]]
+        neighbors = graph.neighbors(next_node)
         for neighbor in neighbors:
             if not marked[neighbor]:
                 marked[neighbor] = True
