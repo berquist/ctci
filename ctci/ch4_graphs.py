@@ -1,17 +1,21 @@
-from collections import namedtuple
-
-from ch4 import Queue
-from ch4_common import Container
-
-"""There are multiple ways to represent directed acyclic graphs (DAG):
+"""There are two ways to represent (un)directed (a)cyclic graphs:
 - adjacency matrix
 - adjacency list
 with variations of each, in particular regarding how weights are handled.
 """
 
+from random import choice
+from collections import namedtuple
+
+import numpy as np
+
+from ch4 import Queue
+from ch4_common import Container
+
+
 
 class AdjacencyMatrix(Container):
-    """Represent a DAG as a matrix. Matrix elements signify both
+    """Represent a graph as a matrix. Matrix elements signify both
     connectivity and weight.
     """
 
@@ -137,6 +141,99 @@ def test_is_path_matrix():
     assert not is_path_matrix(6, 3, graph)
     assert not is_path_matrix(6, 0, graph)
     assert not is_path_matrix(0, 6, graph)
+    return True
+
+
+def min_distance(set_of_vertex_indices, distances):
+    min_index = choice(tuple(set_of_vertex_indices))
+    min_distance = distances[min_index]
+    for i in set_of_vertex_indices:
+        distance = distances[i]
+        if distance < min_distance:
+            min_distance = distance
+            min_index = i
+    return min_index
+
+
+def test_min_distance():
+    set_of_vertex_indices = {4, 2, 7, 5}
+    distances = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    min_index = min_distance(set_of_vertex_indices, distances)
+    assert min_index == 2
+    return True
+
+
+def dijkstras_algorithm_matrix(graph, source):
+    """This is the original version that does not use a minimum priority
+    queue.
+    """
+    graphlen = len(graph)
+    vertices = list(range(graphlen))
+    Q = set()
+    dist = dict()
+    prev = dict()
+    # Initalization
+    for v in vertices:
+        # Unknown distance from source to v
+        dist[v] = np.inf
+        # Previous node in optimal path from source
+        prev[v] = None
+        # All nodes initially in Q (unvisited nodes)
+        Q.add(v)
+    dist[source] = 0
+    while Q:
+        # Node with the least distance will be selected first
+        u = min_distance(Q, dist)
+        Q.remove(u)
+        neighbors = [i for (i, n) in zip(range(graphlen), graph[u])
+                     if n >= 1]
+        for v in neighbors:
+            # alt = dist[u] + length(u, v)
+            # TODO Does this handle direction properly?
+            alt = dist[u] + graph[u][v]
+            # A shorter path to v has been found
+            if alt < dist[v]:
+                dist[v] = alt
+                prev[v] = u
+    return dist, prev
+
+
+def test_dijkstras_algorithm_matrix():
+    # example taken from https://youtu.be/pVfj6mxhdMw
+    edges = [
+        (0, 1, 6),
+        (0, 3, 1),
+        (1, 0, 6),
+        (1, 2, 5),
+        (1, 3, 2),
+        (1, 4, 2),
+        (2, 1, 5),
+        (3, 0, 1),
+        (3, 1, 2),
+        (3, 4, 1),
+        (4, 1, 2),
+        (4, 2, 5),
+        (4, 3, 1),
+    ]
+    graph = AdjacencyMatrix(edges)
+    print(graph)
+    dist, prev = dijkstras_algorithm_matrix(graph, 0)
+    print(dist)
+    print(prev)
+    assert dist == {
+        0: 0,
+        1: 3,
+        2: 7,
+        3: 1,
+        4: 2,
+    }
+    assert prev == {
+        0: None,
+        1: 3,
+        2: 4,
+        3: 0,
+        4: 3,
+    }
     return True
 
 
@@ -472,5 +569,7 @@ def boruvkas_algorithm():
 if __name__ == '__main__':
     test_adjacency_matrix()
     test_is_path_matrix()
+    test_min_distance()
+    test_dijkstras_algorithm_matrix()
     test_adjacency_list()
     test_is_path_list()
