@@ -9,20 +9,23 @@
  */
 void ch12_11(size_t nr, size_t nc) {
     const size_t nelem = nr * nc;
-    double * arr = malloc(nelem * sizeof(size_t));
+    /* The trick is that we allocate memory for pointers to 1D
+     * arrays. See
+     * https://stackoverflow.com/questions/13105056/allocate-contiguous-memory. */
+    double (*arr)[nc] = calloc(nr, sizeof(*arr));
     if (arr != NULL) {
         /* initialize */
         for (size_t i = 0; i < nr; i++) {
             for (size_t j = 0; j < nc; j++) {
                 size_t idx = (i * nc) + j;
-                arr[idx] = idx;
+                arr[i][j] = idx;
             }
         }
         /* print */
         for (size_t i = 0; i < nr; i++) {
             for (size_t j = 0; j < nc; j++) {
                 size_t idx = (i * nc) + j;
-                printf("arr[%i] = %lf\n", idx, arr[idx]);
+                printf("arr[%d][%d] = %lf\n", i, j, arr[i][j]);
             }
         }
         free(arr);
