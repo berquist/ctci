@@ -110,7 +110,7 @@
 - [ ] 10.9
 - [ ] 10.10
 - [ ] 10.11
-- [x] 12.1
+- [x] 12.1 TODO Suppose we didn't have the number of lines in the file. Is there a way we could do this without first counting the number of lines?
 - [ ] 12.2
 - [ ] 12.3
 - [ ] 12.4
