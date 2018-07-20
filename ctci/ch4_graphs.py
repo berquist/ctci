@@ -31,7 +31,7 @@ class AdjacencyMatrix(Container):
             # number of elements, because there may be duplicates
             tmp1 = set(x[0] for x in edges)
             tmp2 = set(x[1] for x in edges)
-            dim = len(tmp1.union(tmp2))
+            dim = max(tmp1.union(tmp2)) + 1
             # create placeholders
             self._repr = []
             for _ in range(dim):
