@@ -3,6 +3,8 @@ ctci/ch8_timing.pickle
 
 *.html
 
+build/
+
 # Python
 .cache/
 .coverage
