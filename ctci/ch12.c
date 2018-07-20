@@ -19,6 +19,7 @@ int ch12_1(size_t k) {
     while (fgets(buf, BUFSIZ, fp) != NULL) {
         counter++;
     }
+    /* printf("%d", counter); */
     rewind(fp);
     assert(k < counter);
     const size_t diff = counter - k;
