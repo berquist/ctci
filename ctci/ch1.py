@@ -16,9 +16,7 @@ def make_frequencies(s):
 
 
 def ch1_1_1(s):
-    ss = set()
-    for c in s:
-        ss.add(c)
+    ss = set(s)
     if len(ss) < len(s):
         return False
     return True
@@ -35,11 +33,10 @@ def ch1_1_2(s):
 
 
 def ch1_1_3(s):
-    ss = sorted(s)
-    lss = len(ss)
-    if lss == 1:
+    if len(s) == 1:
         return True
-    for i in range(1, lss):
+    ss = sorted(s)
+    for i in range(1, len(ss)):
         if ss[i] == ss[i - 1]:
             return False
     return True
@@ -47,7 +44,6 @@ def ch1_1_3(s):
 
 def ch1_1_4(s):
     """This is a direct translation from the answer on page 193."""
-
     checker = 0
     ls = len(s)
     for i in range(ls):
