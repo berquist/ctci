@@ -455,3 +455,14 @@ def test_1_9():
     assert ch1_9_1(s1, s2)
     assert not ch1_9_1(s1, s3)
     return True
+
+
+def test_frequencies():
+    test_cases = [
+        ('', dict()),
+        ('Tact Coa', {'T': 1, 'a': 2, 'c': 1, 't': 1, 'C': 1, 'o': 1, ' ': 1}),
+        ('tactcoapapa', {'t': 2, 'a': 4, 'c': 2, 'o': 1, 'p': 2}),
+    ]
+    for test_case, outcome in test_cases:
+        assert make_frequencies(test_case) == outcome
+    return True
