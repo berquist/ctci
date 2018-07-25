@@ -1,7 +1,4 @@
-import pytest
-
-
-class Solution(object):
+class Solution:
     """Given an array and a value, remove all instances of that value
     in-place and return the new length.
 
@@ -11,7 +8,7 @@ class Solution(object):
     The order of elements can be changed. It doesn't matter what you
     leave beyond the new length.
     """
-    def removeElement(self, nums, val):
+    def _removeElement(self, nums, val):
         """
         :type nums: List[int]
         :type val: int
@@ -31,11 +28,28 @@ class Solution(object):
                 nl = self.removeElement(nums, val)
         return nl
 
+    def removeElement(self, nums, val):
+        if not nums:
+            return 0
+        i = 0
+        while i != len(nums):
+            if nums[i] == val:
+                nums.pop(i)
+            else:
+                i += 1
+        return len(nums)
 
-@pytest.mark.skip()
+
 def test_removeElement():
+
     nums, val = [3, 2, 2, 3], 3
     nl = Solution().removeElement(nums, val)
     assert nums == [2, 2]
     assert nl == 2
+
+    nums, val = [0, 1, 2, 2, 3, 0, 4, 2], 2
+    nl = Solution().removeElement(nums, val)
+    assert nums == [0, 1, 3, 0, 4]
+    assert nl == 5
+
     return True
