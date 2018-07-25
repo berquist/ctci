@@ -83,6 +83,12 @@ def ch1_2_3(s1, s2):
     return True
 
 
+def ch1_2_4(s1, s2):
+    f1 = make_frequencies(s1)
+    f2 = make_frequencies(s2)
+    return f1 == f2
+
+
 def ch1_3_1(s):
     """This is almost certainly not what they're looking for."""
     return s.rstrip().replace(' ', '%20')
@@ -359,17 +365,26 @@ def test_1_1():
 def test_1_2():
     s1 = 'abcddaasdfh'
     s2 = 'abcdefgh'
+    s3 = 'abcddassdfh'
     assert not ch1_2_1(s1, s2)
     assert ch1_2_1(s1, s1)
     assert ch1_2_1(s2, s2[::-1])
+    assert not ch1_2_1(s1, s3)
 
     assert not ch1_2_2(s1, s2)
     assert ch1_2_2(s1, s1)
     assert ch1_2_2(s2, s2[::-1])
+    assert not ch1_2_2(s1, s3)
 
     assert not ch1_2_3(s1, s2)
     assert ch1_2_3(s1, s1)
     assert ch1_2_3(s2, s2[::-1])
+    assert not ch1_2_3(s1, s3)
+
+    assert not ch1_2_4(s1, s2)
+    assert ch1_2_4(s1, s1)
+    assert ch1_2_4(s2, s2[::-1])
+    assert not ch1_2_4(s1, s3)
 
     return True
 
