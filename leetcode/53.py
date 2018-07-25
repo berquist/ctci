@@ -7,7 +7,7 @@ class Solution:
     solution using the divide and conquer approach, which is more
     subtle.
     """
-    def maxSubArray(self, nums):
+    def maxSubArray_naive(self, nums):
         """
         :type nums: List[int]
         :rtype: int
@@ -31,6 +31,23 @@ class Solution:
                 print(s, sum(s))
         return largest_sum
 
+    def maxSubArray(self, nums):
+        i, j = 0, 1
+        largest_sum = nums[i]
+        while i < len(nums):
+            current_sum = sum(nums[i:j])
+            if current_sum > largest_sum:
+                largest_sum = current_sum
+            if current_sum < 0:
+                i = j
+                j = i + 1
+            else:
+                j += 1
+            if j == len(nums) + 1:
+                i += 1
+                j = i + 1
+        return largest_sum
+
 
 def test_maxSubArray():
 
@@ -42,6 +59,7 @@ def test_maxSubArray():
     ]
 
     for nums, answer in test_cases:
+        # assert Solution().maxSubArray_naive(nums) == answer
         assert Solution().maxSubArray(nums) == answer
 
     return True
