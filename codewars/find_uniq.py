@@ -1,7 +1,12 @@
 # https://www.codewars.com/kata/585d7d5adb20cf33cb000235/train/python
 
 def find_uniq(arr):
-    frequencies = {i: arr.count(i) for i in arr}
+    frequencies = dict()
+    for i in arr:
+        if i in frequencies:
+            frequencies[i] += 1
+        else:
+            frequencies[i] = 1
     return [x for x in frequencies if frequencies[x] == 1][0]
 
 
