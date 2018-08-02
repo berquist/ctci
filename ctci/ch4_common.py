@@ -1,12 +1,14 @@
-"""ch4_common.py: common daa structures needed for binary (search)
-trees, heaps, and graphs.
-
+"""Common data structures needed for binary (search) trees, heaps, and
+graphs.
 """
 
 import math
 
 
 class Container(object):
+    """A base container that data structures for binary (search) trees,
+    heaps, and graphs can be built on top of.
+    """
 
     def __init__(self, data=None):
 
@@ -37,3 +39,13 @@ class Container(object):
 
     def _index_parent(self, i):
         return math.floor((i - 1) / 2)
+
+
+def test_container():
+    empty = Container()
+    assert empty._repr == []
+    assert str(empty) == "[]"
+    assert len(empty) == 0
+    assert empty.count() == 0
+    empty2 = Container()
+    assert empty == empty2
