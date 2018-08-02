@@ -9,8 +9,6 @@ from collections import namedtuple
 
 import numpy as np
 
-import pytest
-
 from ch4 import Queue
 from ch4_common import Container
 
@@ -44,14 +42,13 @@ class AdjacencyMatrix(Container):
     def _form_adjacency_matrix(self, is_undirected):
         """Form the adjacency matrix from a list of edges."""
         if self.edges is None:
-            raise Exception
+            raise SyntaxError
         for (start, end, weight) in self.edges:
             self._repr[start][end] = weight
             if is_undirected:
                 self._repr[end][start] = weight
         # todo
         self._len = len(self._repr[0])
-        return
 
     # todo __setitem__
 
@@ -67,7 +64,7 @@ def test_adjacency_matrix():
     blank = AdjacencyMatrix()
     try:
         blank._form_adjacency_matrix(False)
-    except:
+    except SyntaxError:
         pass
     # pg 107, 1
     edges = [
@@ -344,7 +341,7 @@ class AdjacencyList(Container):
 
     def _form_adjacency_list(self, is_undirected):
         if self.edges is None:
-            raise Exception
+            raise SyntaxError
         for (start, end, weight) in self.edges:
             if start not in self._repr:
                 self._repr[start] = set()
@@ -353,7 +350,6 @@ class AdjacencyList(Container):
                 self._repr[end] = set()
             if is_undirected:
                 self._repr[end].add((start, weight))
-        return
 
     def neighbors(self, u):
         # self[u] -> sparse list of (node id, weight) connected to u
@@ -364,7 +360,7 @@ def test_adjacency_list():
     blank = AdjacencyList()
     try:
         blank._form_adjacency_list(False)
-    except:
+    except SyntaxError:
         pass
     # pg 106, 1
     edges = [
