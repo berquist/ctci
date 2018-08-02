@@ -1,7 +1,7 @@
 .PHONY: test
 test:
 	# pytest -v ./*.py
-	find . -type f -name "*.py" -exec pytest -v '{}' +
+	find . -type f -name "*.py" -exec pytest -v --cov=ctci --cov-report=html --cov-report=term '{}' +
 
 .PHONY: clean
 clean:
