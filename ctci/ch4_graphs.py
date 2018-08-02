@@ -19,11 +19,12 @@ class AdjacencyMatrix(Container):
     connectivity and weight.
     """
 
-    def __init__(self, edges=None):
+    def __init__(self, edges=None, is_undirected=False):
 
         self.edges = edges
         self._repr = []
         self._len = 0
+        self.is_undirected = is_undirected
 
         # edges must be a list of pairs
         if edges is not None:
@@ -36,16 +37,16 @@ class AdjacencyMatrix(Container):
             self._repr = []
             for _ in range(dim):
                 self._repr.append([0 for _ in range(dim)])
-            self._form_adjacency_matrix(is_undirected=False)
+            self._form_adjacency_matrix(self.is_undirected)
 
-    def _form_adjacency_matrix(self, is_undirected=False):
+    def _form_adjacency_matrix(self, is_undirected):
         """Form the adjacency matrix from a list of edges."""
         if self.edges is None:
             raise Exception
         for (start, end, weight) in self.edges:
             self._repr[start][end] = weight
-        if is_undirected:
-            self._repr[end][start] = weight
+            if is_undirected:
+                self._repr[end][start] = weight
         # todo
         self._len = len(self._repr[0])
         return
@@ -186,12 +187,16 @@ def dijkstras_algorithm_matrix(graph, source):
     while Q:
         # Node with the least distance will be selected first
         u = min_distance(Q, dist)
+        # print(f'looking at {u}')
         Q.remove(u)
         neighbors = graph.neighbors(u)
+        # print(f'with neighbors {neighbors}')
         for v in neighbors:
+            # print(f'looking at neighbor {v}')
             # alt = dist[u] + length(u, v)
             # TODO Does this handle direction properly?
             alt = dist[u] + graph[u][v]
+            # print(f'alternate path: {alt}')
             # A shorter path to v has been found
             if alt < dist[v]:
                 dist[v] = alt
@@ -217,10 +222,10 @@ def test_dijkstras_algorithm_matrix():
         (4, 3, 1),
     ]
     graph = AdjacencyMatrix(edges)
-    print(graph)
+    # print(graph)
     dist, prev = dijkstras_algorithm_matrix(graph, 0)
-    print(dist)
-    print(prev)
+    # print(dist)
+    # print(prev)
     assert dist == {
         0: 0,
         1: 3,
@@ -234,6 +239,57 @@ def test_dijkstras_algorithm_matrix():
         2: 4,
         3: 0,
         4: 3,
+    }
+
+    edges = [
+        # ('a', 'e', 1),
+        # ('a', 'b', 3),
+        # ('b', 'e', 4),
+        # ('b', 'c', 5),
+        # ('c', 'e', 6),
+        # ('c', 'd', 2),
+        # ('e', 'd', 7),
+        (0, 4, 1),
+        (0, 1, 3),
+        (1, 4, 4),
+        (1, 2, 5),
+        (2, 4, 6),
+        (2, 3, 2),
+        (4, 3, 7),
+    ]
+    graph_undirected = AdjacencyMatrix(edges, True)
+    print(np.array(graph_undirected))
+    graph_directed = AdjacencyMatrix(edges, False)
+    print(np.array(graph_directed))
+    dist_undirected, prev_undirected = dijkstras_algorithm_matrix(graph_undirected, 0)
+    dist_directed, prev_directed = dijkstras_algorithm_matrix(graph_directed, 0)
+    assert dist_undirected == {
+        0: 0,
+        1: 3,
+        2: 7,
+        3: 8,
+        4: 1,
+    }
+    assert dist_directed == {
+        0: 0,
+        1: 3,
+        2: 8,
+        3: 8,
+        4: 1,
+    }
+    assert prev_undirected == {
+        0: None,
+        1: 0,
+        2: 4,
+        3: 4,
+        4: 0,
+    }
+    assert prev_directed == {
+        0: None,
+        1: 0,
+        2: 1,
+        3: 4,
+        4: 0,
     }
     return True
 
