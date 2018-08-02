@@ -22,12 +22,13 @@ class AdjacencyMatrix(Container):
     def __init__(self, edges=None, is_undirected=False):
 
         self.edges = edges
-        self._repr = []
-        self._len = 0
         self.is_undirected = is_undirected
 
+        self._repr = []
+        self._len = 0
+
         # edges must be a list of pairs
-        if edges is not None:
+        if self.edges is not None:
             # figure out the dimensionality; can't just count total
             # number of elements, because there may be duplicates
             tmp1 = set(x[0] for x in edges)
@@ -61,6 +62,12 @@ class AdjacencyMatrix(Container):
         # self[u] -> list of connectivities/weights from u to all other nodes
         return [i for (i, n) in zip(range(len(self)), self[u])
                 if n >= 1]
+
+    def distance(self, u, v):
+        """Find the distance between vertices with labels u and v."""
+        # TODO Does this handle direction properly?
+        # alt = dist[u] + graph[u][v]
+        return self._repr[u][v]
 
 
 def test_adjacency_matrix():
@@ -230,8 +237,7 @@ def dijkstras_algorithm_matrix(graph, source):
         Q.remove(u)
         neighbors = graph.neighbors(u)
         for v in neighbors:
-            # TODO Does this handle direction properly?
-            alt = dist[u] + graph[u][v]
+            alt = dist[u] + graph.distance(u, v)
             # A shorter path to v has been found
             if alt < dist[v]:
                 dist[v] = alt
@@ -332,11 +338,13 @@ def test_dijkstras_algorithm_matrix():
 class AdjacencyList(Container):
 
     def __init__(self, edges=None, is_undirected=False):
+
         self.edges = edges
-        self._repr = dict()
         self.is_undirected = is_undirected
+
+        self._repr = dict()
         # edges must be a list of pairs
-        if edges is not None:
+        if self.edges is not None:
             self._form_adjacency_list(is_undirected=self.is_undirected)
 
     def __getitem__(self, index, alt=None):
@@ -360,6 +368,14 @@ class AdjacencyList(Container):
     def neighbors(self, u):
         # self[u] -> sparse list of (node id, weight) connected to u
         return [n for (n, _) in self[u]]
+
+    def distance(self, u, v):
+        """Find the distance between vertices with labels u and v."""
+        dist = [node[1] for node in list(self[u])
+                if node[0] == v]
+        assert len(dist) == 1
+        dist = dist[0]
+        return dist
 
 
 def test_adjacency_list():
@@ -668,14 +684,7 @@ def dijkstras_algorithm_list(graph, source):
         Q.remove(u)
         neighbors = graph.neighbors(u)
         for v in neighbors:
-            # alt = dist[u] + length(u, v)
-            # TODO Does this handle direction properly?
-            # alt = dist[u] + graph[u][v]
-            v_dist = [node[1] for node in list(graph[u])
-                      if node[0] == v]
-            assert len(v_dist) == 1
-            v_dist = v_dist[0]
-            alt = dist[u] + v_dist
+            alt = dist[u] + graph.distance(u, v)
             # A shorter path to v has been found
             if alt < dist[v]:
                 dist[v] = alt
