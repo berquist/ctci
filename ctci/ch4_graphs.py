@@ -40,6 +40,8 @@ class AdjacencyMatrix(Container):
                 self._repr.append([0 for _ in range(dim)])
             self._form_adjacency_matrix(self.is_undirected)
 
+    # todo __setitem__
+
     def _form_adjacency_matrix(self, is_undirected):
         """Form the adjacency matrix from a list of edges."""
         if self.edges is None:
@@ -50,8 +52,6 @@ class AdjacencyMatrix(Container):
                 self._repr[end][start] = weight
         # todo
         self._len = len(self._repr[0])
-
-    # todo __setitem__
 
     def vertices(self):
         return list(range(len(self)))
@@ -73,7 +73,7 @@ class AdjacencyMatrix(Container):
 def test_adjacency_matrix():
     blank = AdjacencyMatrix()
     try:
-        blank._form_adjacency_matrix(False)
+        blank._form_adjacency_matrix(False)  # pylint: disable=protected-access
     except SyntaxError:
         pass
     # pg 107, 1
@@ -88,7 +88,7 @@ def test_adjacency_matrix():
               [1, 0, 0, 0],
               [0, 0, 1, 0]]
     am_ref = AdjacencyMatrix()
-    am_ref._repr = matrix
+    am_ref._repr = matrix # pylint: disable=protected-access
     am = AdjacencyMatrix(edges)
     assert am == am_ref
     # pg 107, 2
@@ -109,7 +109,7 @@ def test_adjacency_matrix():
               [0, 0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0, 0]]
     am_ref = AdjacencyMatrix()
-    am_ref._repr = matrix
+    am_ref._repr = matrix # pylint: disable=protected-access
     am = AdjacencyMatrix(edges)
     assert am == am_ref
     return True
@@ -350,6 +350,8 @@ class AdjacencyList(Container):
     def __getitem__(self, index, alt=None):
         return self._repr.get(index, alt)
 
+    # todo __setitem__
+
     def _form_adjacency_list(self, is_undirected):
         if self.edges is None:
             raise SyntaxError
@@ -381,7 +383,7 @@ class AdjacencyList(Container):
 def test_adjacency_list():
     blank = AdjacencyList()
     try:
-        blank._form_adjacency_list(False)
+        blank._form_adjacency_list(False)  # pylint: disable=protected-access
     except SyntaxError:
         pass
     # pg 106, 1
@@ -405,7 +407,7 @@ def test_adjacency_list():
         6: {(5, 1)},
     }
     al_ref = AdjacencyList()
-    al_ref._repr = l
+    al_ref._repr = l  # pylint: disable=protected-access
     al = AdjacencyList(edges)
     assert al == al_ref
     return True
