@@ -52,6 +52,9 @@ class AdjacencyMatrix(Container):
 
     # todo __setitem__
 
+    def vertices(self):
+        return list(range(len(self)))
+
     def neighbors(self, u):
         # i -> counter for node id
         # n -> connectivity/weight from u to i
@@ -208,7 +211,7 @@ def dijkstras_algorithm_matrix(graph, source):
     """This is the original version that does not use a minimum priority
     queue.
     """
-    vertices = list(range(len(graph)))
+    vertices = graph.vertices()
     Q = set()
     dist = dict()
     prev = dict()
@@ -350,6 +353,9 @@ class AdjacencyList(Container):
                 self._repr[end] = set()
             if is_undirected:
                 self._repr[end].add((start, weight))
+
+    def vertices(self):
+        return list(self._repr.keys())
 
     def neighbors(self, u):
         # self[u] -> sparse list of (node id, weight) connected to u
@@ -643,7 +649,7 @@ def dijkstras_algorithm_list(graph, source):
     """This is the original version that does not use a minimum priority
     queue.
     """
-    vertices = list(graph._repr.keys())
+    vertices = graph.vertices()
     Q = set()
     dist = dict()
     prev = dict()
