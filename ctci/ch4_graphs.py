@@ -9,6 +9,8 @@ from collections import namedtuple
 
 import numpy as np
 
+import pytest
+
 from ch4 import Queue
 from ch4_common import Container
 
@@ -147,10 +149,17 @@ def test_is_path_matrix():
     return True
 
 
-def min_distance(set_of_vertex_indices, distances):
-    min_index = choice(tuple(set_of_vertex_indices))
+def min_distance(vertices, distances):
+    """Given a collection of indices corresponding to (neighboring)
+    vertices, and an indexable collection of distances to all
+    vertices, return the index into the distance collection that
+    matches the shortest distance.
+    """
+    # Randomly choose a starting point. Not sure if this matters or if
+    # it can be tuple(vertices)[0].
+    min_index = choice(tuple(vertices))
     min_distance = distances[min_index]
-    for i in set_of_vertex_indices:
+    for i in vertices:
         distance = distances[i]
         if distance < min_distance:
             min_distance = distance
@@ -159,10 +168,36 @@ def min_distance(set_of_vertex_indices, distances):
 
 
 def test_min_distance():
-    set_of_vertex_indices = {4, 2, 7, 5}
-    distances = [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    min_index = min_distance(set_of_vertex_indices, distances)
-    assert min_index == 2
+    test_cases = [
+        (
+            {4, 2, 7, 5},
+            [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            (2, ),
+        ),
+        (
+            {4, 2, 7, 5},
+            [9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+            (7, ),
+        ),
+        (
+            {2, 3},
+            {0: 0, 1: 3, 2: 8, 3: 8, 4: 1},
+            (2, 3),
+        ),
+        (
+            {2, 3},
+            {0: 0, 1: 3, 2: 7, 3: 8, 4: 1},
+            (2, ),
+        ),
+        # Should work with string labels as well.
+        (
+            {'b', 'c'},
+            {'a': 0, 'b': 3, 'c': 7, 'd': 8, 'e': 1},
+            ('b', ),
+        ),
+    ]
+    for vertices, distances, min_index in test_cases:
+        assert min_distance(vertices, distances) in min_index
     return True
 
 
@@ -170,8 +205,7 @@ def dijkstras_algorithm_matrix(graph, source):
     """This is the original version that does not use a minimum priority
     queue.
     """
-    graphlen = len(graph)
-    vertices = list(range(graphlen))
+    vertices = list(range(len(graph)))
     Q = set()
     dist = dict()
     prev = dict()
@@ -187,16 +221,11 @@ def dijkstras_algorithm_matrix(graph, source):
     while Q:
         # Node with the least distance will be selected first
         u = min_distance(Q, dist)
-        # print(f'looking at {u}')
         Q.remove(u)
         neighbors = graph.neighbors(u)
-        # print(f'with neighbors {neighbors}')
         for v in neighbors:
-            # print(f'looking at neighbor {v}')
-            # alt = dist[u] + length(u, v)
             # TODO Does this handle direction properly?
             alt = dist[u] + graph[u][v]
-            # print(f'alternate path: {alt}')
             # A shorter path to v has been found
             if alt < dist[v]:
                 dist[v] = alt
@@ -258,9 +287,9 @@ def test_dijkstras_algorithm_matrix():
         (4, 3, 7),
     ]
     graph_undirected = AdjacencyMatrix(edges, True)
-    print(np.array(graph_undirected))
+    # print(np.array(graph_undirected))
     graph_directed = AdjacencyMatrix(edges, False)
-    print(np.array(graph_directed))
+    # print(np.array(graph_directed))
     dist_undirected, prev_undirected = dijkstras_algorithm_matrix(graph_undirected, 0)
     dist_directed, prev_directed = dijkstras_algorithm_matrix(graph_directed, 0)
     assert dist_undirected == {
@@ -296,12 +325,16 @@ def test_dijkstras_algorithm_matrix():
 
 class AdjacencyList(Container):
 
-    def __init__(self, edges=None):
+    def __init__(self, edges=None, is_undirected=False):
         self.edges = edges
         self._repr = dict()
+        self.is_undirected = is_undirected
         # edges must be a list of pairs
         if edges is not None:
-            self._form_adjacency_list(is_undirected=False)
+            self._form_adjacency_list(is_undirected=self.is_undirected)
+
+    def __getitem__(self, index, alt=None):
+        return self._repr.get(index, alt)
 
     def _form_adjacency_list(self, is_undirected=False):
         if self.edges is None:
@@ -310,10 +343,10 @@ class AdjacencyList(Container):
             if start not in self._repr:
                 self._repr[start] = set()
             self._repr[start].add((end, weight))
-        if is_undirected:
             if end not in self._repr:
                 self._repr[end] = set()
-            self._repr[end].add((start, weight))
+            if is_undirected:
+                self._repr[end].add((start, weight))
         return
 
     def neighbors(self, u):
@@ -599,6 +632,157 @@ def boruvkas_algorithm():
 #     ]
 #     return True
 
+def dijkstras_algorithm_list(graph, source):
+    """This is the original version that does not use a minimum priority
+    queue.
+    """
+    vertices = list(graph._repr.keys())
+    Q = set()
+    dist = dict()
+    prev = dict()
+    # Initalization
+    for v in vertices:
+        # Unknown distance from source to v
+        dist[v] = np.inf
+        # Previous node in optimal path from source
+        prev[v] = None
+        # All nodes initially in Q (unvisited nodes)
+        Q.add(v)
+    dist[source] = 0
+    while Q:
+        # Node with the least distance will be selected first
+        u = min_distance(Q, dist)
+        Q.remove(u)
+        neighbors = graph.neighbors(u)
+        for v in neighbors:
+            # alt = dist[u] + length(u, v)
+            # TODO Does this handle direction properly?
+            # alt = dist[u] + graph[u][v]
+            v_dist = [node[1] for node in list(graph[u])
+                      if node[0] == v]
+            assert len(v_dist) == 1
+            v_dist = v_dist[0]
+            alt = dist[u] + v_dist
+            # A shorter path to v has been found
+            if alt < dist[v]:
+                dist[v] = alt
+                prev[v] = u
+    return dist, prev
+
+
+EDGES_CLAY_BIG = [
+    ('A', 'J', 91),
+    ('A', 'H', 86),
+    ('A', 'B', 38),
+    ('A', 'N', 37),
+    ('A', 'L', 100),
+    ('A', 'V', 64),
+    ('A', 'S', 84),
+    ('A', 'M', 9),
+    ('A', 'W', 54),
+    ('A', 'K', 46),
+    ('B', 'J', 27),
+    ('B', 'V', 93),
+    ('B', 'H', 40),
+    ('B', 'G', 49),
+    ('B', 'F', 94),
+    ('B', 'N', 95),
+    ('B', 'C', 45),
+    ('B', 'Z', 42),
+    ('B', 'L', 15),
+    ('C', 'Q', 14),
+    ('C', 'W', 10),
+    ('C', 'L', 87),
+    ('C', 'R', 77),
+    ('C', 'N', 92),
+    ('C', 'S', 79),
+    ('C', 'T', 3),
+    ('C', 'D', 60),
+    ('C', 'J', 43),
+    ('D', 'P', 26),
+    ('D', 'W', 12),
+    ('D', 'K', 21),
+    ('D', 'Q', 5),
+    ('D', 'V', 75),
+    ('D', 'T', 59),
+    ('D', 'J', 2),
+    ('D', 'R', 11),
+    ('F', 'J', 63),
+    ('F', 'X', 72),
+    ('F', 'L', 88),
+    ('F', 'G', 51),
+    ('F', 'V', 61),
+    ('F', 'P', 39),
+    ('F', 'M', 69),
+    ('F', 'W', 65),
+    ('G', 'N', 76),
+    ('G', 'X', 13),
+    ('G', 'Z', 56),
+    ('G', 'H', 82),
+    ('G', 'Q', 32),
+    ('G', 'W', 20),
+    ('G', 'V', 18),
+    ('H', 'Z', 74),
+    ('H', 'P', 85),
+    ('H', 'L', 62),
+    ('H', 'M', 44),
+    ('H', 'K', 25),
+    ('H', 'J', 98),
+    ('H', 'R', 19),
+    ('J', 'V', 31),
+    ('J', 'M', 50),
+    ('J', 'S', 57),
+    ('J', 'Q', 17),
+    ('J', 'T', 22),
+    ('J', 'P', 68),
+    ('K', 'T', 67),
+    ('K', 'L', 81),
+    ('K', 'M', 55),
+    ('K', 'P', 52),
+    ('K', 'S', 83),
+    ('K', 'X', 41),
+    ('L', 'R', 36),
+    ('L', 'N', 30),
+    ('L', 'T', 53),
+    ('L', 'S', 23),
+    ('L', 'Q', 66),
+    ('M', 'S', 6),
+    ('M', 'Q', 29),
+    ('M', 'N', 71),
+    ('M', 'R', 8),
+    ('M', 'T', 96),
+    ('N', 'T', 16),
+    ('N', 'R', 78),
+    ('N', 'Q', 73),
+    ('N', 'V', 24),
+    ('P', 'Z', 28),
+    ('P', 'W', 48),
+    ('P', 'Q', 7),
+    ('P', 'T', 47),
+    ('Q', 'W', 99),
+    ('Q', 'S', 1),
+    ('Q', 'Z', 89),
+    ('R', 'V', 70),
+    ('R', 'X', 35),
+    ('R', 'S', 33),
+    ('S', 'T', 34),
+    ('S', 'X', 90),
+    ('T', 'X', 4),
+    ('T', 'W', 58),
+    ('V', 'X', 80),
+    ('W', 'Z', 97),
+]
+
+
+def test_dijkstras_algorithm_list():
+    graph_d = AdjacencyList(EDGES_CLAY_BIG, False)
+    graph_u = AdjacencyList(EDGES_CLAY_BIG, True)
+    dist_d, prev_d = dijkstras_algorithm_list(graph_d, 'M')
+    dist_u, prev_u = dijkstras_algorithm_list(graph_u, 'M')
+    assert dist_d['T'] == 40
+    assert dist_u['T'] == 24
+    return True
+
 
 if __name__ == '__main__':
     test_adjacency_matrix()
@@ -607,3 +791,4 @@ if __name__ == '__main__':
     test_dijkstras_algorithm_matrix()
     test_adjacency_list()
     test_is_path_list()
+    test_dijkstras_algorithm_list()
