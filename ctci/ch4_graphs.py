@@ -62,7 +62,13 @@ class AdjacencyMatrix(Container):
         return [i for (i, n) in zip(range(len(self)), self[u])
                 if n >= 1]
 
+
 def test_adjacency_matrix():
+    blank = AdjacencyMatrix()
+    try:
+        blank._form_adjacency_matrix(False)
+    except:
+        pass
     # pg 107, 1
     edges = [
         (0, 1, 1),
@@ -336,7 +342,7 @@ class AdjacencyList(Container):
     def __getitem__(self, index, alt=None):
         return self._repr.get(index, alt)
 
-    def _form_adjacency_list(self, is_undirected=False):
+    def _form_adjacency_list(self, is_undirected):
         if self.edges is None:
             raise Exception
         for (start, end, weight) in self.edges:
@@ -355,6 +361,11 @@ class AdjacencyList(Container):
 
 
 def test_adjacency_list():
+    blank = AdjacencyList()
+    try:
+        blank._form_adjacency_list(False)
+    except:
+        pass
     # pg 106, 1
     edges = [
         (0, 1, 1),
@@ -784,7 +795,7 @@ def test_dijkstras_algorithm_list():
     return True
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     test_adjacency_matrix()
     test_is_path_matrix()
     test_min_distance()
