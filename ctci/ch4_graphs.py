@@ -214,7 +214,7 @@ def test_min_distance():
     return True
 
 
-def dijkstras_algorithm_matrix(graph, source):
+def dijkstras_algorithm(graph, source):
     """This is the original version that does not use a minimum priority
     queue.
     """
@@ -264,7 +264,7 @@ def test_dijkstras_algorithm_matrix():
     ]
     graph = AdjacencyMatrix(edges)
     # print(graph)
-    dist, prev = dijkstras_algorithm_matrix(graph, 0)
+    dist, prev = dijkstras_algorithm(graph, 0)
     # print(dist)
     # print(prev)
     assert dist == {
@@ -302,8 +302,8 @@ def test_dijkstras_algorithm_matrix():
     # print(np.array(graph_undirected))
     graph_directed = AdjacencyMatrix(edges, False)
     # print(np.array(graph_directed))
-    dist_undirected, prev_undirected = dijkstras_algorithm_matrix(graph_undirected, 0)
-    dist_directed, prev_directed = dijkstras_algorithm_matrix(graph_directed, 0)
+    dist_undirected, prev_undirected = dijkstras_algorithm(graph_undirected, 0)
+    dist_directed, prev_directed = dijkstras_algorithm(graph_directed, 0)
     assert dist_undirected == {
         0: 0,
         1: 3,
@@ -661,37 +661,6 @@ def boruvkas_algorithm():
 #     ]
 #     return True
 
-def dijkstras_algorithm_list(graph, source):
-    """This is the original version that does not use a minimum priority
-    queue.
-    """
-    vertices = graph.vertices()
-    Q = set()
-    dist = dict()
-    prev = dict()
-    # Initalization
-    for v in vertices:
-        # Unknown distance from source to v
-        dist[v] = np.inf
-        # Previous node in optimal path from source
-        prev[v] = None
-        # All nodes initially in Q (unvisited nodes)
-        Q.add(v)
-    dist[source] = 0
-    while Q:
-        # Node with the least distance will be selected first
-        u = min_distance(Q, dist)
-        Q.remove(u)
-        neighbors = graph.neighbors(u)
-        for v in neighbors:
-            alt = dist[u] + graph.distance(u, v)
-            # A shorter path to v has been found
-            if alt < dist[v]:
-                dist[v] = alt
-                prev[v] = u
-    return dist, prev
-
-
 EDGES_CLAY_BIG = [
     ('A', 'J', 91),
     ('A', 'H', 86),
@@ -799,8 +768,8 @@ EDGES_CLAY_BIG = [
 def test_dijkstras_algorithm_list():
     graph_d = AdjacencyList(EDGES_CLAY_BIG, False)
     graph_u = AdjacencyList(EDGES_CLAY_BIG, True)
-    dist_d, prev_d = dijkstras_algorithm_list(graph_d, 'M')
-    dist_u, prev_u = dijkstras_algorithm_list(graph_u, 'M')
+    dist_d, prev_d = dijkstras_algorithm(graph_d, 'M')
+    dist_u, prev_u = dijkstras_algorithm(graph_u, 'M')
     assert dist_d['T'] == 40
     assert dist_u['T'] == 24
     return True
