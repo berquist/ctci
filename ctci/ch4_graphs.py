@@ -171,7 +171,7 @@ def min_distance(vertices, distances):
     # Randomly choose a starting point. Not sure if this matters or if
     # it can be tuple(vertices)[0].
     min_index = choice(tuple(vertices))
-    min_distance = distances[min_index]
+    min_distance = distances[min_index] # pylint: disable=redefined-outer-name
     for i in vertices:
         distance = distances[i]
         if distance < min_distance:
@@ -214,6 +214,7 @@ def test_min_distance():
     return True
 
 
+# pylint: disable=invalid-name
 def dijkstras_algorithm(graph, source):
     """This is the original version that does not use a minimum priority
     queue.
@@ -436,7 +437,7 @@ def test_is_path_list():
 
 
 # this is the minimum spanning tree example from Wikipedia
-mst_base_mat = [
+MST_BASE_MAT = [
     [0, 3, 0, 6, 0, 0, 0, 0, 0, 9],
     [3, 0, 2, 4, 0, 0, 0, 0, 9, 9],
     [0, 2, 0, 2, 9, 0, 0, 0, 8, 0],
@@ -449,10 +450,10 @@ mst_base_mat = [
     [9, 9, 0, 0, 0, 0, 0, 18, 8, 0],
 ]
 
-mst_base_list = {
+MST_BASE_LIST = {
 }
 
-mst_base_edges = [
+MST_BASE_EDGES = [
     (0, 1, 3),
     (0, 3, 6),
     (0, 9, 9),
@@ -499,7 +500,7 @@ mst_base_edges = [
 
 Edge = namedtuple('Edge', ['vertices', 'weight'])
 
-# mst_result = {
+# MST_RESULT = {
 #     Edge({0, 1}, 3),
 #     Edge({1, 2}, 2),
 #     Edge({2, 3}, 2),
