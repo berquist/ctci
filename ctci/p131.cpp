@@ -1,6 +1,7 @@
 #include <functional>
 
 #include <gtest/gtest.h>
+#include <benchmark/benchmark.h>
 
 /**
  * Book solution from page 131.
@@ -119,3 +120,37 @@ TEST(test_fib, fib6) {
     EXPECT_EQ(fib6(1), 1);
     EXPECT_EQ(fib6(20), F20);
 }
+
+static void BM_fib1(benchmark::State &state) {
+    for (auto _ : state)
+        fib1(20);
+}
+static void BM_fib2_nolambda(benchmark::State &state) {
+    for (auto _ : state)
+        fib2_nolambda(20);
+}
+static void BM_fib2(benchmark::State &state) {
+    for (auto _ : state)
+        fib2(20);
+}
+static void BM_fib3(benchmark::State &state) {
+    for (auto _ : state)
+        fib3(20);
+}
+static void BM_fib5(benchmark::State &state) {
+    for (auto _ : state)
+        fib5(20);
+}
+static void BM_fib6(benchmark::State &state) {
+    for (auto _ : state)
+        fib6(20);
+}
+
+BENCHMARK(BM_fib1);
+BENCHMARK(BM_fib2_nolambda);
+BENCHMARK(BM_fib2);
+BENCHMARK(BM_fib3);
+BENCHMARK(BM_fib5);
+BENCHMARK(BM_fib6);
+
+BENCHMARK_MAIN();

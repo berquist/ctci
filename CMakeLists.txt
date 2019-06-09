@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.11)
 project(ctci C CXX)
 
+set(CMAKE_MODULE_PATH
+    ${CMAKE_MODULE_PATH}
+    ${CMAKE_SOURCE_DIR}/cmake
+    )
+
 set(CMAKE_CXX_STANDARD 17)
 
 enable_testing()
+
 find_package(GTest REQUIRED)
+
+find_package(GoogleBenchmark REQUIRED)
+include_directories(${benchmark_INCLUDE_DIRS})
 
 set(SRC_C
     ctci/ch12.c
@@ -35,6 +44,6 @@ foreach(srcfilename ${SRC_C} ${SRC_CXX})
     string(REPLACE "." "_" replaced ${replaced})
     # message(STATUS "${srcfilename} -> ${replaced}")
     add_executable("${replaced}.x" ${srcfilename})
-    target_link_libraries("${replaced}.x" ${GTEST_BOTH_LIBRARIES})
+    target_link_libraries("${replaced}.x" ${GTEST_BOTH_LIBRARIES} ${benchmark_LIBRARIES})
     add_test("${replaced}" "${replaced}.x")
 endforeach()
