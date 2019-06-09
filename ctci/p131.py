@@ -12,6 +12,7 @@ def fib2(n):
     cache = dict()
     cache[0] = 0
     cache[1] = 1
+
     def _fib(n):
         if n in cache:
             return cache[n]
@@ -25,6 +26,7 @@ def fib3(n):
     cache = dict()
     cache[0] = 0
     cache[1] = 1
+
     def _fib(n):
         if n not in cache:
             cache[n] = _fib(n - 1) + _fib(n - 2)

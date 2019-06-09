@@ -13,6 +13,7 @@ set(SRC_C
 set(SRC_CXX
     ctci/ch1.cpp
     ctci/ch12.cpp
+    ctci/p131.cpp
     )
 
 # add_executable(ctci_c.x ${SRC_C})
