@@ -1,6 +1,3 @@
-import pytest
-
-
 class Solution:
     """Given a string containing just the characters '(', ')', '{', '}',
     '[' and ']', determine if the input string is valid.
@@ -15,20 +12,35 @@ class Solution:
         """
         if len(s) % 2 == 1:
             return False
+        seen = [s[0]]
         m = {')': '(', ']': '[', '}': '{'}
-        for i in range(1, len(s), 2):
-            print(s[i - 1], s[i])
-            if s[i - 1] != m.get(s[i]):
-                return False
+        for c in s[1:]:
+            # If we're looking at a left, push it onto the stack. If we're
+            # looking at a right, pop from the stack.  If they don't match,
+            # fail.
+            if c in m.values():
+                seen.append(c)
+            else:
+                right = c
+                if seen:
+                    left = seen.pop()
+                    if m[right] != left:
+                        return False
+                else:
+                    return False    
+        # If any are left on the stack, something didn't match.
+        if seen:
+            return False
         return True
 
 
-@pytest.mark.skip()
-def test_isValid():
-    assert Solution().isValid("[") == False
-    assert Solution().isValid("()") == True
-    assert Solution().isValid("()[]{}") == True
-    assert Solution().isValid("(]") == False
-    assert Solution().isValid("([)]") == False
-    assert Solution().isValid("([])") == True
-    return True
+def test_isValid() -> None:
+    sln = Solution()
+    assert sln.isValid("[") == False
+    assert sln.isValid("()") == True
+    assert sln.isValid("()[]{}") == True
+    assert sln.isValid("(]") == False
+    assert sln.isValid("([)]") == False
+    assert sln.isValid("([])") == True
+    assert sln.isValid("((") == False
+    assert sln.isValid("(){}}{") == False
