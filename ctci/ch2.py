@@ -255,13 +255,13 @@ def test_snode_tidy():
     head.next = SNode()
     head.next.next = SNode(4)
     assert head.data == 2
-    assert head.next.data == None
+    assert head.next.data is None
     assert head.next.next.data == 4
-    assert head.next.next.next == None
+    assert head.next.next.next is None
     head.tidy()
     assert head.data == 2
     assert head.next.data == 4
-    assert head.next.next == None
+    assert head.next.next is None
     # [2, None, None, None, 4] -> [2, 4]
     head = SNode(2)
     head.next = SNode(None)
@@ -271,7 +271,7 @@ def test_snode_tidy():
     head.tidy()
     assert head.data == 2
     assert head.next.data == 4
-    assert head.next.next == None
+    assert head.next.next is None
 
 
 def test_snode_shift():

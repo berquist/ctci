@@ -392,7 +392,7 @@ def test_adjacency_list():
         (5, 4, 1),
         (6, 5, 1),
     ]
-    l = {
+    repr = {
         0: {(1, 1)},
         1: {(2, 1)},
         2: {(0, 1), (3, 1)},
@@ -402,7 +402,7 @@ def test_adjacency_list():
         6: {(5, 1)},
     }
     al_ref = AdjacencyList()
-    al_ref._repr = l  # pylint: disable=protected-access
+    al_ref._repr = repr  # pylint: disable=protected-access
     al = AdjacencyList(edges)
     assert al == al_ref
 

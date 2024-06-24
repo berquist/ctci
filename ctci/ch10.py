@@ -1,4 +1,4 @@
-def bubble_sort(l):
+def bubble_sort(lst):
     """Runtime: O(N^2) average and worst case. Memory: O(1).
 
     We start at the beginning of the array and swap the first two
@@ -7,19 +7,19 @@ def bubble_sort(l):
     until it is sorted. In doing so, the smaller items slowly "bubble"
     up to the beginning of the list.
     """
-    ln = len(l)
+    ln = len(lst)
     if ln == 1:
         return
     is_sorted = False
     while not is_sorted:
         # bubble pass
         for i in range(1, ln):
-            if l[i - 1] > l[i]:
-                l[i - 1], l[i] = l[i], l[i - 1]
+            if lst[i - 1] > lst[i]:
+                lst[i - 1], lst[i] = lst[i], lst[i - 1]
         # check pass
         pass_is_sorted = True
         for i in range(1, ln):
-            if l[i - 1] > l[i]:
+            if lst[i - 1] > lst[i]:
                 pass_is_sorted = False
                 break
         if pass_is_sorted:
@@ -42,7 +42,7 @@ def test_bubble_sort():
     assert l3 == l3_ref
 
 
-def selection_sort(l):
+def selection_sort(lst):
     """Runtime: O(N^2) average and worst case. Memory: O(1).
 
     Selection sort is the child's algorithm: simple, but
@@ -51,19 +51,19 @@ def selection_sort(l):
     find the second smallest and move it, again doing a linear
     scan. Continue doing this until all the elements are in place.
     """
-    ln = len(l)
+    ln = len(lst)
     if ln == 1:
         return
     for i in range(ln):
         # find the smallest element
-        _min = l[i]
+        _min = lst[i]
         k = i
         for j in range(k, ln):
-            if l[j] < _min:
+            if lst[j] < _min:
                 k = j
         # swap
         if k > i:
-            l[i], l[k] = l[k], l[i]
+            lst[i], lst[k] = lst[k], lst[i]
     return
 
 
@@ -82,12 +82,12 @@ def test_selection_sort():
     assert l3 == l3_ref
 
 
-def insertion_new_sort(l):
-    if len(l) == 1:
-        return ln
+def insertion_new_sort(lst):
+    if len(lst) == 1:
+        return lst
     nl = []
-    while len(l) > 0:
-        element = l.pop()
+    while len(lst) > 0:
+        element = lst.pop()
         lnl = len(nl)
         for i, sorted_element in enumerate(nl):
             if element < sorted_element:
@@ -109,16 +109,16 @@ def test_insertion_new_sort():
     assert nl2 == l2_ref
 
 
-def insertion_sort(l):
-    ln = len(l)
+def insertion_sort(lst):
+    ln = len(lst)
     if ln == 1:
         return
     for i in range(1, ln):
-        element = l[i]
+        element = lst[i]
         for j in range(i):
-            sorted_element = l[j]
+            sorted_element = lst[j]
             if element < sorted_element:
-                l.insert(j, l.pop(i))
+                lst.insert(j, lst.pop(i))
                 break
     return
 
@@ -138,19 +138,19 @@ def test_insertion_sort():
     assert l3 == l3_ref
 
 
-def insert(l, element, index):
-    _len = len(l)
+def insert(lst, element, index):
+    _len = len(lst)
     assert index <= _len
     if index == _len:
-        l.append(element)
+        lst.append(element)
     else:
         # strategy: grow the list by appending its own last element,
         # shuffle everything up from index to the end (by iterating
         # backwards), then assign at the index
-        l.append(l[-1])
+        lst.append(lst[-1])
         for i in range(_len, index, -1):
-            l[i] = l[i - 1]
-        l[index] = element
+            lst[i] = lst[i - 1]
+        lst[index] = element
     return
 
 
@@ -174,14 +174,14 @@ def test_insert():
     return
 
 
-def insertion2_sort(l):
-    ln = len(l)
+def insertion2_sort(lst):
+    ln = len(lst)
     if ln == 1:
         return
     for i in range(1, ln):
         for j in range(i):
-            if l[i] < l[j]:
-                insert(l, l.pop(i), j)
+            if lst[i] < lst[j]:
+                insert(lst, lst.pop(i), j)
                 break
     return
 
@@ -201,15 +201,15 @@ def test_insertion2_sort():
     assert l3 == l3_ref
 
 
-def insertion3_sort(l):
+def insertion3_sort(lst):
     """The first piece of pseudocode from Wikipedia"""
-    if len(l) == 1:
+    if len(lst) == 1:
         return
     i = 1
-    while i < len(l):
+    while i < len(lst):
         j = i
-        while j > 0 and l[j - 1] > l[j]:
-            l[j], l[j - 1] = l[j - 1], l[j]
+        while j > 0 and lst[j - 1] > lst[j]:
+            lst[j], lst[j - 1] = lst[j - 1], lst[j]
             j = j - 1
         i = i + 1
     return
@@ -230,18 +230,18 @@ def test_insertion3_sort():
     assert l3 == l3_ref
 
 
-def insertion4_sort(l):
+def insertion4_sort(lst):
     """The second piece of pseudocode from Wikipedia"""
-    if len(l) == 1:
+    if len(lst) == 1:
         return
     i = 1
-    while i < len(l):
-        x = l[i]
+    while i < len(lst):
+        x = lst[i]
         j = i - 1
-        while j >= 0 and l[j] > x:
-            l[j + 1] = l[j]
+        while j >= 0 and lst[j] > x:
+            lst[j + 1] = lst[j]
             j = j - 1
-        l[j + 1] = x
+        lst[j + 1] = x
         i = i + 1
     return
 
@@ -358,7 +358,7 @@ def test_sorted_matrix_proper_search():
     assert sorted_matrix_proper_search(mat1, 10) is None
 
 
-def quick_sort(l, left, right):
+def quick_sort(lst, left, right):
     """Runtime: O(N*log(N)) average, O(N^2) worst case. Memory: O(log(N)).
 
     In quick sort, we pick a random element and partition the array,
@@ -373,28 +373,28 @@ def quick_sort(l, left, right):
     anywhere near the median), our sorting could be very slow. This is
     the reason for the O(N^2) worst case runtime.
     """
-    index = partition(l, left, right)
+    index = partition(lst, left, right)
     # sort left half
     if left < (index - 1):
-        quick_sort(l, left, index - 1)
+        quick_sort(lst, left, index - 1)
     # sort right half
     if index < right:
-        quick_sort(l, index, right)
+        quick_sort(lst, index, right)
     return
 
 
-def partition(l, left, right):
-    pivot = l[(left + right) // 2]
+def partition(lst, left: int, right: int) -> int:
+    pivot = lst[(left + right) // 2]
     while left <= right:
         # find element on the left that should be on the right
-        while l[left] < pivot:
+        while lst[left] < pivot:
             left += 1
         # find element on the right that should be on the left
-        while l[right] > pivot:
+        while lst[right] > pivot:
             right -= 1
         # swap elements and move left/right indices
         if left <= right:
-            l[left], l[right] = l[right], l[left]
+            lst[left], lst[right] = lst[right], lst[left]
             left += 1
             right -= 1
     return left
@@ -415,7 +415,7 @@ def test_quick_sort():
     assert l3 == l3_ref
 
 
-def merge_sort(l):
+def merge_sort(lst) -> None:
     """Runtime: O(N*log(N)) average and worst case. Memory: Depends.
 
     Merge sort divides the array in half, sorts each of those halves,
@@ -431,24 +431,22 @@ def merge_sort(l):
     smaller element from each half into the array. At the end, we copy
     any remaining elements into the target array.
     """
-    helper = ['' for _ in range(len(l))]
-    _merge_sort(l, helper, 0, len(l) - 1)
-    return
+    helper = ['' for _ in range(len(lst))]
+    _merge_sort(lst, helper, 0, len(lst) - 1)
 
 
-def _merge_sort(l, helper, low, high):
+def _merge_sort(lst, helper, low: int, high: int) -> None:
     if low < high:
         middle = (low + high) // 2
-        _merge_sort(l, helper, low, middle)
-        _merge_sort(l, helper, middle + 1, high)
-        merge(l, helper, low, middle, high)
-    return
+        _merge_sort(lst, helper, low, middle)
+        _merge_sort(lst, helper, middle + 1, high)
+        merge(lst, helper, low, middle, high)
 
 
-def merge(l, helper, low, middle, high):
+def merge(lst, helper, low: int, middle: int, high: int) -> None:
     # copy both halves into a helper array
     for i in range(low, high + 1):
-        helper[i] = l[i]
+        helper[i] = lst[i]
 
     helper_left = low
     helper_right = middle + 1
@@ -459,10 +457,10 @@ def merge(l, helper, low, middle, high):
     # original array.
     while (helper_left <= middle) and (helper_right <= high):
         if helper[helper_left] <= helper[helper_right]:
-            l[current] = helper[helper_left]
+            lst[current] = helper[helper_left]
             helper_left += 1
         else:
-            l[current] = helper[helper_right]
+            lst[current] = helper[helper_right]
             helper_right += 1
         current += 1
 
@@ -470,8 +468,7 @@ def merge(l, helper, low, middle, high):
     # array
     remaining = middle - helper_left
     for i in range(remaining + 1):
-        l[current + i] = helper[helper_left + i]
-    return
+        lst[current + i] = helper[helper_left + i]
 
 
 def test_merge_sort():
@@ -489,9 +486,9 @@ def test_merge_sort():
     assert l3 == l3_ref
 
 
-def binary_search(l, x, low=None, high=None):
+def binary_search(lst, x, low=None, high=None):
     """Perform binary search on a sorted list iteratively."""
-    ln = len(l)
+    ln = len(lst)
     if ln == 0:
         return None
     if low is None:
@@ -503,18 +500,18 @@ def binary_search(l, x, low=None, high=None):
 
     while low <= high:
         mid = (low + high) // 2
-        if l[mid] < x:
+        if lst[mid] < x:
             low = mid + 1
-        elif l[mid] > x:
+        elif lst[mid] > x:
             high = mid - 1
         else:
             return mid
     return None
 
 
-def binary_search_recursive(l, x, low=None, high=None):
+def binary_search_recursive(lst, x, low=None, high=None):
     """Perform binary search on a sorted list recursively."""
-    ln = len(l)
+    ln = len(lst)
     if ln == 0:
         return None
     if low is None:
@@ -526,21 +523,21 @@ def binary_search_recursive(l, x, low=None, high=None):
 
     mid = (low + high) // 2
 
-    if l[mid] < x:
-        return binary_search_recursive(l, x, mid + 1, high)
-    if l[mid] > x:
-        return binary_search_recursive(l, x, low, mid - 1)
+    if lst[mid] < x:
+        return binary_search_recursive(lst, x, mid + 1, high)
+    if lst[mid] > x:
+        return binary_search_recursive(lst, x, low, mid - 1)
     # Both failed comparisons: must be equal.
     return mid
 
 
-def binary_search_closest(l, x, low=None, high=None):
+def binary_search_closest(lst, x, low=None, high=None):
     """Use iterative binary search to find the (value, index) that is
     closest to the desired value.
 
     If the desired value exists, this is normal binary search.
     """
-    ln = len(l)
+    ln = len(lst)
     if ln == 0:
         return (None, None)
     if low is None:
@@ -552,14 +549,14 @@ def binary_search_closest(l, x, low=None, high=None):
 
     while low <= high:
         mid = (low + high) // 2
-        if l[mid] < x:
+        if lst[mid] < x:
             low = mid + 1
-        elif l[mid] > x:
+        elif lst[mid] > x:
             high = mid - 1
         else:
-            return (l[mid], mid)
+            return (lst[mid], mid)
 
-    return (l[mid], mid)
+    return (lst[mid], mid)
 
 
 def test_binary_search():
@@ -574,8 +571,8 @@ def test_binary_search():
         (l1_ref, 6, 3),
         (l1_ref, 2, None),
     ]
-    for (l, x, outcome) in tests:
-        assert binary_search(l, x) == outcome
+    for (lst, x, outcome) in tests:
+        assert binary_search(lst, x) == outcome
 
 
 def test_binary_search_recursive():
@@ -590,8 +587,8 @@ def test_binary_search_recursive():
         (l1_ref, 6, 3),
         (l1_ref, 2, None),
     ]
-    for (l, x, outcome) in tests:
-        assert binary_search_recursive(l, x) == outcome
+    for (lst, x, outcome) in tests:
+        assert binary_search_recursive(lst, x) == outcome
 
 
 def test_binary_search_closest():
@@ -607,5 +604,5 @@ def test_binary_search_closest():
         # -1 is equidistant but not hit because 5 is touched first
         (l1_ref, 2, (5, 2)),
     ]
-    for (l, x, outcome) in tests:
-        assert binary_search_closest(l, x) == outcome
+    for (lst, x, outcome) in tests:
+        assert binary_search_closest(lst, x) == outcome

@@ -5,10 +5,10 @@
 #
 # no duplicates, can include zero
 
-def sum_to_zero(l):
+def sum_to_zero(lst):
     positive = set()
     negative = set()
-    for i in l:
+    for i in lst:
         if i < 0:
             negative.add(i)
         else:

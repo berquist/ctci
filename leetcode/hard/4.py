@@ -11,13 +11,13 @@ class Solution:
         :type nums2: List[int]
         :rtype: float
         """
-        def median(l):
-            is_even = (len(l) % 2) == 0
-            i = len(l) // 2
+        def median(lst):
+            is_even = (len(lst) % 2) == 0
+            i = len(lst) // 2
             if not is_even:
-                return l[i]
+                return lst[i]
             else:
-                return (l[i - 1] + l[i]) / 2
+                return (lst[i - 1] + lst[i]) / 2
         m1 = median(nums1)
         m2 = median(nums2)
         return (m1 + m2) / 2

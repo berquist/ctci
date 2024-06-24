@@ -2,7 +2,7 @@
 n = 35
 
 def s1(n):
-    l = []
+    lst = []
     for a in range(1, 1 + n):
         for b in range(1, 1 + n):
             for c in range(1, 1 + n):
@@ -10,11 +10,11 @@ def s1(n):
                     if ((a ** 3) + (b ** 3)) == ((c ** 3) + (d ** 3)):
                         t = (a, b, c, d)
                         # print(t)
-                        l.append(t)
-    return l
+                        lst.append(t)
+    return lst
 
 def s2(n):
-    l = []
+    lst = []
     for a in range(1, 1 + n):
         for b in range(1, 1 + n):
             for c in range(1, 1 + n):
@@ -22,9 +22,9 @@ def s2(n):
                     if ((a ** 3) + (b ** 3)) == ((c ** 3) + (d ** 3)):
                         t = (a, b, c, d)
                         # print(t)
-                        l.append(t)
+                        lst.append(t)
                         break
-    return l
+    return lst
 
 # def s3(n):
 #     l = []

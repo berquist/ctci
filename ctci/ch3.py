@@ -253,8 +253,8 @@ def test_myqueue():
     """Test for 3.4"""
     q = Queue()
     mq = MyQueue()
-    l = [4, 3, 2, 1]
-    for item in l:
+    lst = [4, 3, 2, 1]
+    for item in lst:
         q.add(item)
         mq.add(item)
     assert not mq.spush.is_empty()
