@@ -4,14 +4,12 @@
 with variations of each, in particular regarding how weights are handled.
 """
 
-from random import choice
 from collections import namedtuple
+from random import choice
 
 import numpy as np
-
-from ch4 import Queue
+from ch3 import Queue
 from ch4_common import Container
-
 
 
 class AdjacencyMatrix(Container):
@@ -31,8 +29,8 @@ class AdjacencyMatrix(Container):
         if self.edges is not None:
             # figure out the dimensionality; can't just count total
             # number of elements, because there may be duplicates
-            tmp1 = set(x[0] for x in edges)
-            tmp2 = set(x[1] for x in edges)
+            tmp1 = {x[0] for x in edges}
+            tmp2 = {x[1] for x in edges}
             dim = max(tmp1.union(tmp2)) + 1
             # create placeholders
             self._repr = []

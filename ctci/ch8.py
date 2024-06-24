@@ -1,7 +1,5 @@
 import functools
-
 from math import factorial
-
 
 ## 8.1
 

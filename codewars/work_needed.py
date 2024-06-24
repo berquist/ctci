@@ -1,5 +1,5 @@
 def work_needed(project_minutes, freelancers):
-    hours, minutes = [sum(x) for x in zip(*freelancers)]
+    hours, minutes = (sum(x) for x in zip(*freelancers))
     # Shuffle excess minutes into hours
     extra_hours = minutes // 60
     hours += extra_hours

@@ -2,7 +2,7 @@ class Solution:
     """Given an integer array nums, find the contiguous subarray
     (containing at least one number) which has the largest sum and
     return its sum.
-   
+
     If you have figured out the O(n) solution, try coding another
     solution using the divide and conquer approach, which is more
     subtle.
@@ -62,7 +62,7 @@ class Solution:
             cur_tot = max(0, cur_tot + nums[i])
             if cur_tot > max_so_far:
                 max_so_far = cur_tot
-        
+
         return max_so_far
 
 

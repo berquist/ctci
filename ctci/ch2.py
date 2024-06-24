@@ -1,4 +1,4 @@
-class SNode(object):
+class SNode:
     """A node in a singly-linked list."""
 
     def __init__(self, data=None):
@@ -38,9 +38,9 @@ class SNode(object):
 
     def __str__(self):
         if self.next is None:
-            return 'SNode({}).X'.format(self.data)
+            return f'SNode({self.data}).X'
         else:
-            return 'SNode({}).{}'.format(self.data, str(self.next))
+            return f'SNode({self.data}).{str(self.next)}'
 
     def __len__(self):
         # for constant-time len, should keep track of it as we
@@ -127,7 +127,7 @@ class SNode(object):
 
 
 
-class SLinkedList(object):
+class SLinkedList:
     """This singly-linked list is a slight convenience wrapper for
     SNode.
     """

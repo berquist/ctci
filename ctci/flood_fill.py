@@ -1,6 +1,5 @@
 from ch3 import Queue
 
-
 '''Notes from mock interview.
 
 n x m rectangle
@@ -148,7 +147,6 @@ def check_representation(grid, flood_fill_method=flood_fill_recursive):
     m = len(grid[0])
     if m == 0:
         raise Exception
-    shape = (n, m)
     # 1. check for C2 symmetry
     for i in range(n):
         for j in range(m):

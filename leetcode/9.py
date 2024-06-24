@@ -58,28 +58,28 @@ class Solution:
 
 
 def test_isPalindrome_extra():
-    assert Solution().isPalindrome_extra(11) == True
-    assert Solution().isPalindrome_extra(12) == False
-    assert Solution().isPalindrome_extra(12321) == True
-    assert Solution().isPalindrome_extra(-2147483648) == False
-    assert Solution().isPalindrome_extra(0) == True
-    assert Solution().isPalindrome_extra(-2147447412) == False
+    assert Solution().isPalindrome_extra(11)
+    assert not Solution().isPalindrome_extra(12)
+    assert Solution().isPalindrome_extra(12321)
+    assert not Solution().isPalindrome_extra(-2147483648)
+    assert Solution().isPalindrome_extra(0)
+    assert not Solution().isPalindrome_extra(-2147447412)
 
 
 def test_isPalindrome():
-    assert Solution().isPalindrome(11) == True
-    assert Solution().isPalindrome(12) == False
-    assert Solution().isPalindrome(12321) == True
-    assert Solution().isPalindrome(-2147483648) == False
-    assert Solution().isPalindrome(0) == True
-    assert Solution().isPalindrome(-2147447412) == False
+    assert Solution().isPalindrome(11)
+    assert not Solution().isPalindrome(12)
+    assert Solution().isPalindrome(12321)
+    assert not Solution().isPalindrome(-2147483648)
+    assert Solution().isPalindrome(0)
+    assert not Solution().isPalindrome(-2147447412)
 
 
 @pytest.mark.skip()
 def test_isPalindrome_solution():
-    assert Solution().isPalindrome_solution(11) == True
-    assert Solution().isPalindrome_solution(12) == False
-    assert Solution().isPalindrome_solution(12321) == True
-    assert Solution().isPalindrome_solution(-2147483648) == False
-    assert Solution().isPalindrome_solution(0) == True
-    assert Solution().isPalindrome_solution(-2147447412) == False
+    assert Solution().isPalindrome_solution(11)
+    assert not Solution().isPalindrome_solution(12)
+    assert Solution().isPalindrome_solution(12321)
+    assert not Solution().isPalindrome_solution(-2147483648)
+    assert Solution().isPalindrome_solution(0)
+    assert not Solution().isPalindrome_solution(-2147447412)

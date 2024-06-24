@@ -1,4 +1,4 @@
-class Solution(object):
+class Solution:
     @staticmethod
     def strStr(haystack, needle):
         """

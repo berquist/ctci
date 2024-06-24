@@ -324,7 +324,7 @@ def test_sorted_matrix_search():
     # mat1t = [[1, 4, 7],
     #          [2, 5, 8],
     #          [3, 6, 9]]
-    assert sorted_matrix_search(mat1, 0) == None
+    assert sorted_matrix_search(mat1, 0) is None
     assert sorted_matrix_search(mat1, 1) == (0, 0)
     assert sorted_matrix_search(mat1, 2) == (0, 1)
     assert sorted_matrix_search(mat1, 3) == (0, 2)
@@ -334,7 +334,7 @@ def test_sorted_matrix_search():
     assert sorted_matrix_search(mat1, 7) == (2, 0)
     assert sorted_matrix_search(mat1, 8) == (2, 1)
     assert sorted_matrix_search(mat1, 9) == (2, 2)
-    assert sorted_matrix_search(mat1, 10) == None
+    assert sorted_matrix_search(mat1, 10) is None
 
 
 def test_sorted_matrix_proper_search():
@@ -345,7 +345,7 @@ def test_sorted_matrix_proper_search():
     # mat1t = [[1, 4, 7],
     #          [2, 5, 8],
     #          [3, 6, 9]]
-    assert sorted_matrix_proper_search(mat1, 0) == None
+    assert sorted_matrix_proper_search(mat1, 0) is None
     assert sorted_matrix_proper_search(mat1, 1) == (0, 0)
     assert sorted_matrix_proper_search(mat1, 2) == (0, 1)
     assert sorted_matrix_proper_search(mat1, 3) == (0, 2)
@@ -355,7 +355,7 @@ def test_sorted_matrix_proper_search():
     assert sorted_matrix_proper_search(mat1, 7) == (2, 0)
     assert sorted_matrix_proper_search(mat1, 8) == (2, 1)
     assert sorted_matrix_proper_search(mat1, 9) == (2, 2)
-    assert sorted_matrix_proper_search(mat1, 10) == None
+    assert sorted_matrix_proper_search(mat1, 10) is None
 
 
 def quick_sort(l, left, right):

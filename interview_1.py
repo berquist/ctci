@@ -42,6 +42,7 @@ def test_sum_to_zero():
 # change.npennies returns 2
 
 from collections import namedtuple
+
 Change = namedtuple('Change', ['npennies', 'nnickels', 'ndimes', 'nquarters'])
 def change_to_coins(change):
     npennies = 0

@@ -27,7 +27,7 @@ class Solution:
                     if m[right] != left:
                         return False
                 else:
-                    return False    
+                    return False
         # If any are left on the stack, something didn't match.
         if seen:
             return False
@@ -36,11 +36,11 @@ class Solution:
 
 def test_isValid() -> None:
     sln = Solution()
-    assert sln.isValid("[") == False
-    assert sln.isValid("()") == True
-    assert sln.isValid("()[]{}") == True
-    assert sln.isValid("(]") == False
-    assert sln.isValid("([)]") == False
-    assert sln.isValid("([])") == True
-    assert sln.isValid("((") == False
-    assert sln.isValid("(){}}{") == False
+    assert not sln.isValid("[")
+    assert sln.isValid("()")
+    assert sln.isValid("()[]{}")
+    assert not sln.isValid("(]")
+    assert not sln.isValid("([)]")
+    assert sln.isValid("([])")
+    assert not sln.isValid("((")
+    assert not sln.isValid("(){}}{")

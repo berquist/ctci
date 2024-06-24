@@ -1,5 +1,6 @@
 from math import floor, inf
 
+
 class Solution:
     """Given a non-negative integer x, compute and return the square root of
     x.

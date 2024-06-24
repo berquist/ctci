@@ -1,6 +1,3 @@
-from __future__ import division
-
-
 # n = 1000
 n = 35
 

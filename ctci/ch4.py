@@ -5,13 +5,8 @@ objects and pointers.
 
 import math
 
-import numpy as np
 
-from ch3 import Queue
-from ch4_common import Container
-
-
-class _Node(object):
+class _Node:
 
     def __init__(self, data=None):
         self.data = data
@@ -103,7 +98,7 @@ class BinaryNode(_Node):
         else:
             assert (self.left is not None) and (self.right is not None)
             # Commented out lines are unnecessary calculations but are
-            # left for completeness.            
+            # left for completeness.
             # lsize = self.left.size()
             rsize = self.right.size()
             # loglsize = math.log2(lsize + 1)

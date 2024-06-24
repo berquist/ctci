@@ -279,7 +279,7 @@ def ch1_6_1(s):
             count = 0
         count += 1
     pairs.append((curr, count))
-    ns = ''.join(['{}{}'.format(c, str(count)) for (c, count) in pairs])
+    ns = ''.join([f'{c}{str(count)}' for (c, count) in pairs])
     if len(ns) > ls:
         return s
     return ns
@@ -323,8 +323,8 @@ def ch1_8_1(mat):
     """zero_matrix"""
     nr, nc = mat.shape
     zero_index_pairs = find_zero_indices(mat)
-    zrows = set([pair[0] for pair in zero_index_pairs])
-    zcols = set([pair[1] for pair in zero_index_pairs])
+    zrows = {pair[0] for pair in zero_index_pairs}
+    zcols = {pair[1] for pair in zero_index_pairs}
     for ir in zrows:
         for ic in range(nc):
             mat[ir, ic] = 0

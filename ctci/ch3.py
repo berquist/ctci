@@ -1,11 +1,11 @@
-class StackNode(object):
+class StackNode:
 
     def __init__(self, data):
         self.data = data
         self.next = None
 
 
-class Stack(object):
+class Stack:
 
 
     def __init__(self):
@@ -39,14 +39,14 @@ class Stack(object):
         return self.top is None
 
 
-class QueueNode(object):
+class QueueNode:
 
     def __init__(self, data):
         self.data = data
         self.next = None
 
 
-class Queue(object):
+class Queue:
 
     def __init__(self):
         self.first = None
@@ -112,7 +112,7 @@ class StackMin(Stack):
         return self.top.min
 
 
-class SetOfStacks(object):
+class SetOfStacks:
     """Implementation for 3.3"""
 
     def __init__(self, thresh):
@@ -161,7 +161,7 @@ class SetOfStacks(object):
             raise
 
 
-class MyQueue(object):
+class MyQueue:
     """Implement a queue using a pair of stacks (3.4)."""
 
     def __init__(self):

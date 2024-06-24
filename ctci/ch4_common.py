@@ -5,7 +5,7 @@ graphs.
 import math
 
 
-class Container(object):
+class Container:
     """A base container that data structures for binary (search) trees,
     heaps, and graphs can be built on top of.
     """

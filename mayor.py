@@ -22,7 +22,7 @@ function knows(i, j) -> boolean
 
 
 def mayor(pairs, n):
-    left = set([pair[0] for pair in pairs])
+    left = {pair[0] for pair in pairs}
     people = set(range(n))
     candidates = people.copy()
     candidates = people.difference(left)

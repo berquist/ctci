@@ -3,8 +3,6 @@ using arrays.
 
 """
 
-import operator
-import random
 
 from ch3 import Queue
 from ch4_common import Container
