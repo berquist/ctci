@@ -58,5 +58,3 @@ def test_merge():
         nums1 = test_case.nums1.copy()
         Solution().merge(nums1, test_case.m, test_case.nums2, test_case.n)
         assert nums1 == test_case.res
-
-    return True

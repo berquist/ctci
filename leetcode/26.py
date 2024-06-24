@@ -40,5 +40,3 @@ def test_removeDuplicates():
     length = Solution().removeDuplicates(nums)
     assert length == 5
     assert nums == [0, 1, 2, 3, 4]
-
-    return True

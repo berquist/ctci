@@ -55,4 +55,3 @@ def test_countAndSay():
     assert Solution().countAndSay(4) == "1211"
     assert Solution().countAndSay(5) == "111221"
     assert Solution().countAndSay(6) == "312211"
-    return True

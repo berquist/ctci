@@ -133,7 +133,3 @@ def test_mayor():
         (3, 4),
     ]
     assert list(mayor(pairs, 5)) == []
-    return
-
-if __name__ == '__main__':
-    test_mayor()

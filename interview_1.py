@@ -20,10 +20,11 @@ def sum_to_zero(l):
             num_pairs += 1
     return num_pairs
 
+
 def test_sum_to_zero():
     assert sum_to_zero([0, 1, 2, 3, 4, 5]) == 0
     assert sum_to_zero([-2, 20, -1, 1, 2]) == 2
-    return True
+
 
 # Problem 2
 #
@@ -64,8 +65,3 @@ def change_to_coins(change):
 
 def test_change_to_coins():
     assert change_to_coins(77) == Change(2, 0, 0, 3)
-    return True
-
-
-if __name__ == '__main__':
-    test_change_to_coins()

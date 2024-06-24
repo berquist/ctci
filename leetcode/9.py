@@ -64,7 +64,6 @@ def test_isPalindrome_extra():
     assert Solution().isPalindrome_extra(-2147483648) == False
     assert Solution().isPalindrome_extra(0) == True
     assert Solution().isPalindrome_extra(-2147447412) == False
-    return True
 
 
 def test_isPalindrome():
@@ -74,7 +73,6 @@ def test_isPalindrome():
     assert Solution().isPalindrome(-2147483648) == False
     assert Solution().isPalindrome(0) == True
     assert Solution().isPalindrome(-2147447412) == False
-    return True
 
 
 @pytest.mark.skip()
@@ -85,4 +83,3 @@ def test_isPalindrome_solution():
     assert Solution().isPalindrome_solution(-2147483648) == False
     assert Solution().isPalindrome_solution(0) == True
     assert Solution().isPalindrome_solution(-2147447412) == False
-    return True

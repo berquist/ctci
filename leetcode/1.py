@@ -41,16 +41,13 @@ class Solution(object):
 def test_twoSum():
     assert Solution().twoSum([2, 7, 11, 15], 9) == [0, 1]
     assert Solution().twoSum([3, 2, 4], 6) == [1, 2]
-    return True
 
 
 def test_twoSum2():
     assert Solution().twoSum2([2, 7, 11, 15], 9) == [0, 1]
     assert Solution().twoSum2([3, 2, 4], 6) == [1, 2]
-    return True
 
 
 def test_twoSum3():
     assert Solution().twoSum3([2, 7, 11, 15], 9) == [0, 1]
     assert Solution().twoSum3([3, 2, 4], 6) == [1, 2]
-    return True

@@ -80,5 +80,3 @@ def test_maxSubArray():
         # assert Solution().maxSubArray_naive(nums) == answer
         # assert Solution().maxSubArray_less_naive(nums) == answer
         assert Solution().maxSubArray(nums) == answer
-
-    return True

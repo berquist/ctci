@@ -19,9 +19,8 @@ def worse_commit(commit1, commit2):
 
 
 def test_worse_commit():
-    assert worse_commit(1, 2) == False
-    assert worse_commit(2, 3) == True
-    return True
+    assert not worse_commit(1, 2)
+    assert worse_commit(2, 3)
 
 
 def find_worst_commits(first, last):
@@ -39,7 +38,6 @@ def find_worst_commits(first, last):
 def test_find_worst_commits():
     ref = [3, 6]
     assert find_worst_commits(1, 6) == ref
-    return True
 
 
 """
@@ -73,4 +71,3 @@ def _find_worst_commits_log(first, last, worst_commits):
 def test_find_worst_commits_log():
     ref = {3, 6}
     assert find_worst_commits_log(1, 6) == ref
-    return True

@@ -40,4 +40,3 @@ def test_romanToInt():
     # 1000, 100, 1000, 10, 100, 5, 1
     assert Solution().romanToInt('MCMXCVI') == 1996
     assert Solution().romanToInt('DCXXI') == 621
-    return True

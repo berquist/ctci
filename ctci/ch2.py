@@ -199,7 +199,6 @@ def test_snode_append():
     assert len(head) == len(values)
     assert head.data == values[0]
     assert head.next.data == values[1]
-    return True
 
 
 def test_slinkedlist_append():
@@ -208,7 +207,6 @@ def test_slinkedlist_append():
     for value in values:
         ll.append(value)
     assert len(ll) == len(values)
-    return True
 
 
 def test_snode_iter():
@@ -226,7 +224,6 @@ def test_snode_iter():
     # __getitem__
     for i in range(len(values)):
         assert head[i] == values[i]
-    return True
 
 
 def test_slinkedlist_iter():
@@ -241,7 +238,6 @@ def test_slinkedlist_iter():
     # __getitem__
     for i in range(len(values)):
         assert ll[i] == values[i]
-    return True
 
 
 def test_snode_tidy():
@@ -276,7 +272,6 @@ def test_snode_tidy():
     assert head.data == 2
     assert head.next.data == 4
     assert head.next.next == None
-    return True
 
 
 def test_snode_shift():
@@ -298,7 +293,6 @@ def test_snode_shift():
     head.tidy()
     assert head.data is None
     assert head.next is None
-    return True
 
 
 def test_snode_delete_inplace():
@@ -314,7 +308,6 @@ def test_snode_delete_inplace():
     assert head.next.next.data == values[3]
     assert head.next.next.next.data == values[4]
     assert head.next.next.next.next is None
-    return True
 
 
 def test_snode_delete_head_inplace():
@@ -330,7 +323,6 @@ def test_snode_delete_head_inplace():
     assert head.next.next.data == values[3]
     assert head.next.next.next.data == values[4]
     assert head.next.next.next.next is None
-    return True
 
 
 # def test_slinkedlist_delete_head()
@@ -361,7 +353,6 @@ def test_remove_duplicates():
     remove_duplicates(head)
     ret = [data for data in head]
     assert ret == ref
-    return True
 
 
 def test_snode_eq():
@@ -387,7 +378,6 @@ def test_snode_eq():
     assert n1 is not n2
     assert n1 == n2
     assert n1.next == n2.next
-    return True
 
 
 def test_snode_eq_data():
@@ -399,7 +389,6 @@ def test_snode_eq_data():
     assert head.next.eq_data(head.next.next)
     assert head.next.eq_data(head.next.next.next)
     assert head.next.next.next.eq_data(head.next)
-    return True
 
 
 def remove_duplicates_nobuffer(node):
@@ -463,20 +452,3 @@ def test_remove_duplicates_nobuffer():
         remove_duplicates_nobuffer(head)
         ret = [data for data in head]
         assert ret == ref
-    return True
-
-
-if __name__ == '__main__':
-    test_snode_append()
-    test_slinkedlist_append()
-    test_snode_iter()
-    test_slinkedlist_iter()
-    test_snode_tidy()
-    test_snode_shift()
-    test_snode_delete_inplace()
-    test_snode_delete_head_inplace()
-    # test_slinkedlist_delete_head()
-    test_remove_duplicates()
-    test_snode_eq()
-    test_snode_eq_data()
-    test_remove_duplicates_nobuffer()

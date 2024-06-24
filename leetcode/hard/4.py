@@ -30,4 +30,3 @@ def test_findMedianSortedArrays():
     ]
     for nums1, nums2, result in test_cases:
         assert abs(Solution().findMedianSortedArrays(nums1, nums2) - result) < 1.0e-13
-    return True

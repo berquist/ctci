@@ -167,7 +167,6 @@ def test_binary_tree_size():
     ]
     for (tree, outcome) in tests:
         assert tree.size() == outcome
-    return True
 
 
 def test_binary_tree_min():
@@ -179,7 +178,6 @@ def test_binary_tree_min():
     ]
     for (tree, outcome) in tests:
         assert tree.min() == outcome
-    return True
 
 
 def test_binary_tree_max():
@@ -191,7 +189,6 @@ def test_binary_tree_max():
     ]
     for (tree, outcome) in tests:
         assert tree.max() == outcome
-    return True
 
 
 binarynode_unfixed = BinaryNode(4)
@@ -212,7 +209,6 @@ def test_binary_tree_insert_complete():
     binarynode_unfixed.insert_complete(element)
     assert binarynode_unfixed.left.left.right is not None
     assert binarynode_unfixed.left.left.right.data == element
-    return True
 
 
 def is_binary_search_tree(node):
@@ -238,7 +234,6 @@ def test_is_binary_search_tree():
     assert is_binary_search_tree(bst_small_2)
     assert is_binary_search_tree(is_bst)
     assert not is_binary_search_tree(is_not_bst)
-    return True
 
 
 class MinHeap(BinaryNode):
@@ -287,14 +282,3 @@ minheap_fixed.right.right = MinHeap(7)
 # def test_minheap_insert():
 #     minheap_unfixed.insert(2)
 #     assert minheap_unfixed.data == 2
-#     return True
-
-
-
-if __name__ == '__main__':
-    test_binary_tree_size()
-    test_binary_tree_min()
-    test_binary_tree_max()
-    test_binary_tree_insert_complete()
-    test_is_binary_search_tree()
-    # test_minheap_insert()

@@ -211,7 +211,6 @@ def test_stackmin():
     for expected_item, expected_min in reversed(pairs):
         assert stack.min() == expected_min
         assert stack.pop() == expected_item
-    return True
 
 
 def test_setofstacks():
@@ -248,7 +247,6 @@ def test_setofstacks():
         if not setofstacks.stacks:
             newcounter = 0
         assert setofstacks.counter == newcounter
-    return True
 
 
 def test_myqueue():
@@ -287,7 +285,6 @@ def test_myqueue():
     assert q.remove() == mq.remove() == 6
     assert q.remove() == mq.remove() == 7
     assert q.remove() == mq.remove() == 8
-    return True
 
 
 def sort_stack(stack):
@@ -320,11 +317,3 @@ def test_sort_stack():
     for i in range(len(elements)):
         assert reference_stack.pop() == sorted_elements[i]
         assert sorted_stack.pop() == sorted_elements[i]
-    return True
-
-
-if __name__ == '__main__':
-    test_stackmin()
-    test_setofstacks()
-    test_myqueue()
-    test_sort_stack()

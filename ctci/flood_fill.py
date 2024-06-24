@@ -184,7 +184,6 @@ def test_index_in_array():
     assert index_in_array(good_2_1, (1, 0))
     assert not index_in_array(good_2_1, (0, 1))
     assert not index_in_array(good_2_1, (0, -1))
-    return True
 
 
 def test_check_representation():
@@ -213,9 +212,3 @@ def test_check_representation():
                     [1, 1, 0, 0, 1, 1],
                     [0, 0, 1, 1, 0, 0]]
         assert not check_representation(grid_bad, flood_fill_method)
-    return True
-
-
-if __name__ == '__main__':
-    test_index_in_array()
-    test_check_representation()

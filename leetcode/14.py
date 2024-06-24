@@ -24,4 +24,3 @@ class Solution:
 def test_longestCommonPrefix():
     assert Solution().longestCommonPrefix([]) == ""
     assert Solution().longestCommonPrefix(['car', 'card', 'carding']) == "car"
-    return True

@@ -22,7 +22,6 @@ def test_nperm():
     ]
     for test, outcome in tests:
         assert nperm(*test) == outcome
-    return True
 
 
 def triple_step(n):
@@ -62,7 +61,6 @@ def test_triple_step():
     rets = [triple_step(n) for n in nsteps]
     refs = [0, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
     assert rets == refs
-    return True
 
 
 def triple_step_recursive(n):
@@ -88,7 +86,6 @@ def test_triple_step_recursive():
     rets = [triple_step_recursive(n) for n in nsteps]
     refs = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
     assert rets == refs
-    return True
 
 
 def triple_step_recursive_memo(n, cache=dict()):
@@ -112,7 +109,6 @@ def test_triple_step_recursive_memo():
     rets = [triple_step_recursive_memo(n) for n in nsteps]
     refs = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
     assert rets == refs
-    return True
 
 
 @functools.lru_cache(maxsize=None)
@@ -134,7 +130,6 @@ def test_triple_step_recursive_memo_py():
     rets = [triple_step_recursive_memo_py(n) for n in nsteps]
     refs = [1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274]
     assert rets == refs
-    return True
 
 
 ## 8.3
@@ -206,7 +201,6 @@ def test_magic_index_bf():
     ]
     for arr, outcome in tests:
         assert magic_index_bf(arr) == outcome
-    return True
 
 
 def test_magic_index_unsorted():
@@ -216,7 +210,6 @@ def test_magic_index_unsorted():
     ]
     for arr, outcome in tests:
         assert magic_index_unsorted(arr) == outcome
-    return True
 
 
 def test_magic_index_sorted():
@@ -225,7 +218,6 @@ def test_magic_index_sorted():
     ]
     for arr, outcome in tests:
         assert magic_index_sorted(arr) == outcome
-    return True
 
 
 def test_magic_index_sorted_nonunique():
@@ -234,11 +226,3 @@ def test_magic_index_sorted_nonunique():
     ]
     for arr, outcome in tests:
         assert magic_index_sorted_nonunique(arr) == outcome
-    return True
-
-
-if __name__ == '__main__':
-    test_magic_index_bf()
-    test_magic_index_unsorted()
-    test_magic_index_sorted()
-    test_magic_index_sorted_nonunique()

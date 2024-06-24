@@ -23,4 +23,3 @@ def test_reverse():
     assert Solution().reverse(1534236469) == 0
     # not -8463847412
     assert Solution().reverse(-2147483648) == 0
-    return True

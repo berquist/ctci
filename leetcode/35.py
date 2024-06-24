@@ -28,4 +28,3 @@ def test_searchInsert():
     assert Solution().searchInsert([1, 3, 5, 6], 7) == 4
     assert Solution().searchInsert([1, 3, 5, 6], 0) == 0
     assert Solution().searchInsert([1, 3], 3) == 1
-    return True

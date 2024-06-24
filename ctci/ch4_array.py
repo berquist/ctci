@@ -307,7 +307,6 @@ def test_minheap_extract():
     assert heap._repr == data_ref
     heap_ref = MinHeap(data_ref)
     assert heap == heap_ref
-    return True
 
 
 def test_minheap_insert():
@@ -318,7 +317,6 @@ def test_minheap_insert():
     assert heap._repr == data_ref
     heap_ref = MinHeap(data_ref)
     assert heap == heap_ref
-    return True
 
 
 complete_1 = BinaryTree([4])
@@ -359,7 +357,6 @@ def test_binary_tree_size():
     ]
     for (tree, outcome) in tests:
         assert tree.size() == outcome
-    return True
 
 
 def test_binary_tree_min():
@@ -383,7 +380,6 @@ def test_binary_tree_min():
     ]
     for (tree, outcome) in tests:
         assert tree.min(return_index=True) == outcome
-    return True
 
 
 def test_binary_tree_max():
@@ -407,7 +403,6 @@ def test_binary_tree_max():
     ]
     for (tree, outcome) in tests:
         assert tree.max(return_index=True) == outcome
-    return True
 
 
 def test_binary_tree_insert():
@@ -420,7 +415,6 @@ def test_binary_tree_insert():
     _is_bst_3 = BinaryTree(is_bst_2._repr.copy())
     _is_bst_3.insert(5)
     assert _is_bst_3 == is_bst_3
-    return True
 
 
 t = BinaryTree([3, 1, 6, None, None, 4, 7, None, None, None, None, None, 5, None, None])
@@ -439,11 +433,10 @@ def test_binary_tree_subtree():
     _w = is_bst_2.subtree(2)
     assert _w.is_binary_search_tree()
     assert _w == w
-    return True
 
 
 # def test_binary_tree_replace_node_in_parent():
-#     return True
+#     pass
 
 
 def test_binary_search_tree_delete():
@@ -469,7 +462,6 @@ def test_binary_search_tree_delete():
     # print(_is_bst_2)
     # assert _is_bst_2.is_binary_search_tree()
     # assert _is_bst_2 == _is_bst_2_ref
-    return True
 
 
 def test_is_binary_search_tree():
@@ -492,7 +484,6 @@ def test_is_binary_search_tree():
     ]
     for (tree, outcome) in tests:
         assert tree.is_binary_search_tree() == outcome
-    return True
 
 
 def test_binary_tree_search_recursively():
@@ -525,7 +516,6 @@ def test_binary_tree_search_recursively():
     for value in tests:
         for (tree, outcome) in tests[value]:
             assert tree.search_recursively(value) == outcome
-    return True
 
 
 def test_binary_tree_search_iteratively():
@@ -558,19 +548,3 @@ def test_binary_tree_search_iteratively():
     for value in tests:
         for (tree, outcome) in tests[value]:
             assert tree.search_iteratively(value) == outcome
-    return True
-
-
-if __name__ == '__main__':
-    test_minheap_extract()
-    test_minheap_insert()
-    test_binary_tree_size()
-    test_binary_tree_min()
-    test_binary_tree_max()
-    test_binary_tree_insert()
-    test_binary_tree_subtree()
-    # test_binary_tree_replace_node_in_parent()
-    test_binary_search_tree_delete()
-    test_is_binary_search_tree()
-    test_binary_tree_search_recursively()
-    test_binary_tree_search_iteratively()

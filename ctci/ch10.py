@@ -40,7 +40,6 @@ def test_bubble_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     bubble_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def selection_sort(l):
@@ -81,7 +80,6 @@ def test_selection_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     selection_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def insertion_new_sort(l):
@@ -109,7 +107,6 @@ def test_insertion_new_sort():
     l2_ref = l2.copy()
     nl2 = insertion_new_sort(l2)
     assert nl2 == l2_ref
-    return True
 
 
 def insertion_sort(l):
@@ -139,7 +136,6 @@ def test_insertion_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     insertion_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def insert(l, element, index):
@@ -203,7 +199,6 @@ def test_insertion2_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     insertion2_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def insertion3_sort(l):
@@ -233,7 +228,6 @@ def test_insertion3_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     insertion3_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def insertion4_sort(l):
@@ -265,7 +259,6 @@ def test_insertion4_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     insertion4_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def sorted_matrix_search(mat, element):
@@ -342,7 +335,6 @@ def test_sorted_matrix_search():
     assert sorted_matrix_search(mat1, 8) == (2, 1)
     assert sorted_matrix_search(mat1, 9) == (2, 2)
     assert sorted_matrix_search(mat1, 10) == None
-    return True
 
 
 def test_sorted_matrix_proper_search():
@@ -364,7 +356,7 @@ def test_sorted_matrix_proper_search():
     assert sorted_matrix_proper_search(mat1, 8) == (2, 1)
     assert sorted_matrix_proper_search(mat1, 9) == (2, 2)
     assert sorted_matrix_proper_search(mat1, 10) == None
-    return True
+
 
 def quick_sort(l, left, right):
     """Runtime: O(N*log(N)) average, O(N^2) worst case. Memory: O(log(N)).
@@ -421,7 +413,6 @@ def test_quick_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     quick_sort(l3, 0, len(l3) - 1)
     assert l3 == l3_ref
-    return True
 
 
 def merge_sort(l):
@@ -496,7 +487,6 @@ def test_merge_sort():
     l3_ref = [1, 2, 4, 5, 8, 9]
     merge_sort(l3)
     assert l3 == l3_ref
-    return True
 
 
 def binary_search(l, x, low=None, high=None):
@@ -586,7 +576,7 @@ def test_binary_search():
     ]
     for (l, x, outcome) in tests:
         assert binary_search(l, x) == outcome
-    return True
+
 
 def test_binary_search_recursive():
     le = []
@@ -602,7 +592,6 @@ def test_binary_search_recursive():
     ]
     for (l, x, outcome) in tests:
         assert binary_search_recursive(l, x) == outcome
-    return True
 
 
 def test_binary_search_closest():
@@ -620,21 +609,3 @@ def test_binary_search_closest():
     ]
     for (l, x, outcome) in tests:
         assert binary_search_closest(l, x) == outcome
-    return True
-
-
-if __name__ == '__main__':
-    test_bubble_sort()
-    test_selection_sort()
-    test_insertion_new_sort()
-    test_insertion_sort()
-    test_insert()
-    test_insertion2_sort()
-    test_insertion3_sort()
-    test_insertion4_sort()
-    test_sorted_matrix_search()
-    test_quick_sort()
-    test_merge_sort()
-    test_binary_search()
-    test_binary_search_recursive()
-    test_binary_search_closest()

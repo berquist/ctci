@@ -112,7 +112,6 @@ def test_adjacency_matrix():
     am_ref._repr = matrix # pylint: disable=protected-access
     am = AdjacencyMatrix(edges)
     assert am == am_ref
-    return True
 
 
 def is_path(start, end, graph):
@@ -159,7 +158,6 @@ def test_is_path_matrix():
     assert not is_path(6, 3, graph)
     assert not is_path(6, 0, graph)
     assert not is_path(0, 6, graph)
-    return True
 
 
 def min_distance(vertices, distances):
@@ -211,7 +209,6 @@ def test_min_distance():
     ]
     for vertices, distances, min_index in test_cases:
         assert min_distance(vertices, distances) in min_index
-    return True
 
 
 # pylint: disable=invalid-name
@@ -333,7 +330,6 @@ def test_dijkstras_algorithm_matrix():
         3: 4,
         4: 0,
     }
-    return True
 
 
 class AdjacencyList(Container):
@@ -411,7 +407,6 @@ def test_adjacency_list():
     al_ref._repr = l  # pylint: disable=protected-access
     al = AdjacencyList(edges)
     assert al == al_ref
-    return True
 
 
 def test_is_path_list():
@@ -433,7 +428,6 @@ def test_is_path_list():
     assert not is_path(6, 3, graph)
     assert not is_path(6, 0, graph)
     assert not is_path(0, 6, graph)
-    return True
 
 
 # this is the minimum spanning tree example from Wikipedia
@@ -575,11 +569,11 @@ def boruvkas_algorithm():
 
 
 # def test_adjacency_list_to_matrix():
-#     return True
+#     pass
 
 
 # def test_adjacency_matrix_to_list():
-#     return True
+#     pass
 
 
 # def dfs(root):
@@ -638,7 +632,6 @@ def boruvkas_algorithm():
 #         start_node.children.append(end_node)
 #         graph.nodes.append(start_node)
 #     dfs(graph.nodes[0])
-#     return True
 
 
 # def test_graph_2():
@@ -662,7 +655,6 @@ def boruvkas_algorithm():
 #         (3, 2),
 #         (3, 4),
 #     ]
-#     return True
 
 EDGES_CLAY_BIG = [
     ('A', 'J', 91),
@@ -775,14 +767,3 @@ def test_dijkstras_algorithm_list():
     dist_u, prev_u = dijkstras_algorithm(graph_u, 'M')
     assert dist_d['T'] == 40
     assert dist_u['T'] == 24
-    return True
-
-
-if __name__ == '__main__': # pragma: no cover
-    test_adjacency_matrix()
-    test_is_path_matrix()
-    test_min_distance()
-    test_dijkstras_algorithm_matrix()
-    test_adjacency_list()
-    test_is_path_list()
-    test_dijkstras_algorithm_list()

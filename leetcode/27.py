@@ -51,5 +51,3 @@ def test_removeElement():
     nl = Solution().removeElement(nums, val)
     assert nums == [0, 1, 3, 0, 4]
     assert nl == 5
-
-    return True

@@ -359,7 +359,6 @@ def test_1_1():
     assert ch1_1_2(s2)
     assert ch1_1_3(s2)
     assert ch1_1_4(s2)
-    return True
 
 
 def test_1_2():
@@ -386,8 +385,6 @@ def test_1_2():
     assert ch1_2_4(s2, s2[::-1])
     assert not ch1_2_4(s1, s3)
 
-    return True
-
 
 def test_1_4():
     test_cases = [
@@ -399,7 +396,7 @@ def test_1_4():
         # assert ch1_4_1(test_case) == outcome
         assert ch1_4_2(test_case) == outcome
         assert ch1_4_3(test_case) == outcome
-    return True
+
 
 
 def test_1_5():
@@ -418,14 +415,12 @@ def test_1_5():
     # %timeit ch1_5_2(s1, s2)
     # Answer key solution is slower.
     # %timeit ch1_5_3(s1, s2)
-    return True
 
 
 def test_1_6():
     s = 'aabcccccaaa'
     ns = 'a2b1c5a3'
     assert ch1_6_1(s) == ns
-    return True
 
 
 def test_1_7():
@@ -437,7 +432,6 @@ def test_1_7():
                       [3, 6, 9]])
     ch1_7_1(mat)
     assert np.all(mat == mat_t)
-    return True
 
 
 def test_1_8():
@@ -460,7 +454,6 @@ def test_1_8():
         impl(a)
         # print(a)
         assert np.all(a == b)
-    return True
 
 
 def test_1_9():
@@ -469,7 +462,6 @@ def test_1_9():
     s3 = 'erbottlewaf'
     assert ch1_9_1(s1, s2)
     assert not ch1_9_1(s1, s3)
-    return True
 
 
 def test_frequencies():
@@ -480,4 +472,3 @@ def test_frequencies():
     ]
     for test_case, outcome in test_cases:
         assert make_frequencies(test_case) == outcome
-    return True
